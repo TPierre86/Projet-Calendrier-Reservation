@@ -1,4 +1,13 @@
-Arrive sur la page d'acceuil du calendrier
-se connecte à son profil
-à accès à un paneau administrateur
-peut utiliser ses droits administrateur (voirs droit utilisateur)
+Arrive sur la page d'acceuil du calendrier ou il doit entrer ses identifiants
+→ Se connecte à son profil
+Bascule sur la page du calendrier :
+→ Le calendrier affiche les 3 mois glissants
+→ Le calendrier affiche les évênements
+Clique sur une case vide :
+→ Peut créer un évênement "ménage"
+→ Peut créer un évênement "récurent" pour une association
+→ 
+Clique sur un évênement existant
+→ Peut modifier les évênements
+→ 
+à accès à un paneau administrateur :

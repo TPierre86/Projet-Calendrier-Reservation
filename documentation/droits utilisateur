@@ -1,44 +1,44 @@
 Gestionnaire :
 
--son compte existe déjà avec les droits administrateur conséquent
--voir le calendrier
--voir les commentaires laissé par les associations
--peut créer des réservation récurente aux associations (toute les deux semaines)
--accès à un panneau d'administration permettant de :
-    ajouter & supprimer les associations 
-    lister les différents membres des associations
-    gérer les utilisateurs (ajouter/supprimer/modifier/administrer)
-    gérer les associations (ajouter/supprimer/modifier)
-    gérer les salles (ajouter/supprimer/modifier)
--peut créer des évenements "ménage" pour l'entreprise d'entretien
-    voir les commentaires laissé par le personnel de ménage
--ajouter des commentaire :
-    sur les réservations
-    sur les créneaux ménages
--peut exporter le calendrier en excel/calendrier google
+Son compte est créé par défaut avec des droits administrateur complets.
+A accès à l’ensemble du calendrier (toutes les salles et toutes les associations).
+Peut voir les commentaires laissés par les associations.
+Peut créer des réservations récurrentes pour chaque association (toutes les deux semaines, jour fixe).
+Dispose d’un panneau d’administration lui permettant de :
+    Gérer les associations : ajouter, modifier, supprimer ;
+    Lister les membres de chaque association ;
+    Gérer les utilisateurs : ajouter, modifier, supprimer ;
+Gérer les salles : ajouter, modifier, supprimer.
+Peut créer des événements "ménage" à destination de l’entreprise de nettoyage.
+Peut consulter les commentaires laissés par le personnel de ménage.
+Peut ajouter des commentaires :
+    Sur les réservations (récurrentes ou ponctuelles) ;
+    Sur les créneaux de ménage.
+Peut exporter le calendrier global au format Excel ou Google Calendar.
 
 Membre d'association :
 
--créer son compte utilisateur en cliquant sur "s'inscrire"
--à accès au calendrier
--peut télécharger les pdf upload dans les évênement de son association
--peut commenter les évènements de son association
--peut exporter le calendrier en excel/calendrier google
+doit créer un compte utilisateur en cliquant sur "S’inscrire".
+A accès au calendrier de son association.
+Peut télécharger les fichiers PDF ajoutés aux événements de son association.
+Peut commenter les événements de son association.
+Peut exporter le calendrier de son association au format Excel ou Google Calendar.
 
 Président d'association : 
 
--tous les droits d'un membre lambda
--droit accordé par le gestionnaire (initialement un membre lambda)
--peut créer des réservations ponctuelle de salle (3max par mois)
--peut modifier/supprimer des réservations de salle
--peut lister les réservations en cours de son association
--peut upload en plus de commenter ses évênements
--peut exporter le calendrier en excel/calendrier google
+Dispose de tous les droits d’un membre.
+
+Son rôle est attribué par le gestionnaire (il est initialement un membre standard).
+Peut créer jusqu’à 3 réservations ponctuelles par mois pour son association.
+Peut modifier ou supprimer les réservations de son association.
+Peut consulter la liste des réservations en cours de son association.
+Peut téléverser des fichiers PDF en plus de commenter les événements.
+Peut exporter le calendrier de son association au format Excel ou Google Calendar.
 
 Entreprise de ménage :
 
--son compte existe déjà avec les droits requis pour son poste
--peut valider son passage sur les évênement "ménage" créé par le gestionnaire
--peut commenter les évênement ménage
--peut voir et commenter les évênements des associations
+Dispose d’un compte déjà créé, avec les droits adaptés à sa fonction.
+Peut valider son passage sur les événements de type "ménage" créés par le gestionnaire.
+Peut ajouter un commentaire sur les événements de ménage.
+Peut voir et commenter les événements organisés par les associations.
 
