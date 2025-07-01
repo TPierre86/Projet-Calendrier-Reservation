@@ -1,0 +1,17 @@
+Arrive sur la page d'acceuil du calendrier
+
+→ Le calendrier s'affiche mais il ne peux pas intéragir avec
+→ Le calendier affiche les réservations/évênements
+→ Se connecte ou s'inscrit sur le site
+
+Peut maintenant intéragir avec le calendrier
+
+→ Visuel sur les réservations de son association
+→ Télécharger les fichiés PDF de son association
+→ Commenter les événements de son association
+→ Exporter le calendrier en format Excel ou Google Calendar
+→ Naviguer vers les mois suivant ou précèdent
+→ Basculer le format calendrier en Semaine 
+→ Basculer le format calendrier en Jour
+→ Intéragir avec le bouton Aujourd'hui pour s'y retrouvé 
+→ Peut se déconnecter
