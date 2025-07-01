@@ -1,0 +1,44 @@
+Gestionnaire :
+
+-son compte existe déjà avec les droits administrateur conséquent
+-voir le calendrier
+-voir les commentaires laissé par les associations
+-peut créer des réservation récurente aux associations (toute les deux semaines)
+-accès à un panneau d'administration permettant de :
+    ajouter & supprimer les associations 
+    lister les différents membres des associations
+    gérer les utilisateurs (ajouter/supprimer/modifier/administrer)
+    gérer les associations (ajouter/supprimer/modifier)
+    gérer les salles (ajouter/supprimer/modifier)
+-peut créer des évenements "ménage" pour l'entreprise d'entretien
+    voir les commentaires laissé par le personnel de ménage
+-ajouter des commentaire :
+    sur les réservations
+    sur les créneaux ménages
+-peut exporter le calendrier en excel/calendrier google
+
+Membre d'association :
+
+-créer son compte utilisateur en cliquant sur "s'inscrire"
+-à accès au calendrier
+-peut télécharger les pdf upload dans les évênement de son association
+-peut commenter les évènements de son association
+-peut exporter le calendrier en excel/calendrier google
+
+Président d'association : 
+
+-tous les droits d'un membre lambda
+-droit accordé par le gestionnaire (initialement un membre lambda)
+-peut créer des réservations ponctuelle de salle (3max par mois)
+-peut modifier/supprimer des réservations de salle
+-peut lister les réservations en cours de son association
+-peut upload en plus de commenter ses évênements
+-peut exporter le calendrier en excel/calendrier google
+
+Entreprise de ménage :
+
+-son compte existe déjà avec les droits requis pour son poste
+-peut valider son passage sur les évênement "ménage" créé par le gestionnaire
+-peut commenter les évênement ménage
+-peut voir et commenter les évênements des associations
+
