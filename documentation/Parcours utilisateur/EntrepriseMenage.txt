@@ -11,9 +11,9 @@ Bascule sur la page du calendrier :
 Clique sur une case vide :
 → Ne peux rien faire 
 
-Clique sur un événement existant (seulement événement "MENAGE"):
-→ Peut dire que l'événement est finis
-→ Peut commenter l’événement
+Clique sur un événement existant :
+→ Peut dire que le ménage est finis 
+→ Peut commenter l’événement 
 → Peut télécharger les fichiers PDF joints à l’événement
 
 Il peut, depuis le calendrier, l’exporter au format Excel ou Google Calendar
