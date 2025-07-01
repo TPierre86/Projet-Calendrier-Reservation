@@ -4,46 +4,78 @@ Le comité Monestié
 
 Objectif du projet : 
 
+
 9 Asso partage un local -> une grande salle de réunion/ un bar/ un réfectoire 
+
 Gérer les réservations pour les différentes asso 
+
 Chaque asso -> créneau récurrent toutes les 2 semaines 5 (toujours le même jour). 
+
 Réserver de manière ponctuelle 
+
 Chaque asso-> ajouté commentaire/ fiche pdf-> détailler la réservation (évènement etc) 
+
 Ces réservations restent sous le contrôle d’un gestionnaire de site (mairie propriétaire des lieux) ou de la personne référente de l’association. 
+
 Après chaque utilisation de la grande salle de réunion -> personne désigné s’occupe des TIGs 
+
 L’application gère la prestation de ménage 
+
 Asso/gestionnaire/personne ménage -> échanger via un fil de commentaires  
 
 2. Les réservations : 
 
+
 Un indicateur visuel permettra de différencier les réservations récurrentes des ponctuelles. Un indicateur visuel permettra d’identifier les réservations par association. Le planning affichera 3 mois. 
+
 
 3.  Accès Gestionnaire de site : 
 
+
 Les gestionnaires de site peuvent :  
+
 Paramétrer les réservations récurrentes (créneaux) pour les différentes associations ;  
+
 Voir les réservations (récurrentes et ponctuelles) de l’ensemble des associations ; 
+
 Gérer les utilisateurs de l’application (ajouter, modifier, supprimer, lister) ;  
+
 Gérer les ressources (salles) (ajouter, modifier, supprimer, lister) ;  
+
 Gérer les associations (ajouter, modifier, supprimer, lister) avec les personnes qui en font partie ;  
+
 Exporter le calendrier sous format excel et calendrier google ; 
+
 Voir les commentaires laissés par la personne en charge du ménage et ceux laissés par les associations ;  
+
 Ajouter des commentaires sur chaque réservation (max 40 – 50 caractères), à destination de chaque association et à l’attention de la personne en charge du ménage - Voir les passages (dates) du personnel de ménage. 
+
 
 4. Accès Association : 
 
+
 Les associations peuvent :  
+
 Lister, ajouter, modifier, supprimer des réservations ponctuelles (3 max par mois) ;  
+
 Ajouter des commentaires (max 40 – 50 caractères) et uploader des pdfs sur toutes les réservations (ponctuelles ou récurrentes) ;  
+
 Visualiser les commentaires des gestionnaires de sites, de la personne en charge du ménage, des membres de l’association ;  
+
 Exporter le calendrier de l’association sous format excel et calendrier google. 
+
 
 5. Accès personnel de ménage : 
 
+
 Le personnel en charge du ménage pourra :  
+
 Valider son passage après avoir effectué le ménage ;  
+
 Visualiser les commentaires des gestionnaires et des associations et laisser des commentaires (max 40 – 60 caractères). 
 
+
 6. Gestion des fichiers PDFs – programme de chaque association : 
+
 
 Les programmes sont déposés sur un « panneau d’affichage » et devront être 	conservés sur deux trimestres (en cours et suivants). Tous les autres pdfs seront 	supprimés. Ceci afin de gérer au mieux l’espace de stockage de l’application. 
