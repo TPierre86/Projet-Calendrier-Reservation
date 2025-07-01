@@ -1,0 +1,41 @@
+Arrive sur la page d’accueil du calendrier où il doit entrer ses identifiants
+→ Le calendrier s'affiche, mais il ne peut pas interagir avec
+→ Le calendrier affiche les événements déjà créés
+
+→ Se connecte à son profil
+
+Bascule sur la page du calendrier :
+→ Le calendrier s'affiche, il peut désormais interagir avec
+→ Le calendrier affiche les événements
+
+Clique sur une case vide :
+→ Peut créer un événement "ménage" :
+  → Peut ajouter un commentaire à l’événement
+  → Peut définir l’heure de l’événement "ménage"
+
+→ Peut créer un événement "récurrent" pour une association :
+  → Peut ajouter un commentaire à l’événement
+  → Peut définir l’heure du créneau
+
+Clique sur un événement existant :
+→ Peut modifier l’événement
+→ Peut commenter l’événement
+→ Peut télécharger les fichiers PDF joints à l’événement
+
+A accès à un panneau administrateur d’où il :
+→ Peut gérer les associations : ajouter, modifier, supprimer
+→ Peut gérer les membres de chaque association : ajouter, modifier, supprimer
+→ Peut gérer les utilisateurs : ajouter, modifier, supprimer
+→ Peut gérer les salles : ajouter, modifier, supprimer
+
+Il peut, depuis le calendrier, l’exporter au format Excel ou Google Calendar
+
+Depuis le calendrier, il peut naviguer :
+→ Vers les mois suivants
+→ Vers les mois précédents
+→ Basculer l’affichage du calendrier en semaines
+→ Basculer l’affichage du calendrier en jours
+→ Revenir à l’affichage initial du calendrier par mois
+
+Le gestionnaire peut se déconnecter
+

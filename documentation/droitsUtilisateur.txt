@@ -8,7 +8,7 @@ Dispose d’un panneau d’administration lui permettant de :
     Gérer les associations : ajouter, modifier, supprimer ;
     Lister les membres de chaque association ;
     Gérer les utilisateurs : ajouter, modifier, supprimer ;
-Gérer les salles : ajouter, modifier, supprimer.
+    Gérer les salles : ajouter, modifier, supprimer.
 Peut créer des événements "ménage" à destination de l’entreprise de nettoyage.
 Peut consulter les commentaires laissés par le personnel de ménage.
 Peut ajouter des commentaires :
