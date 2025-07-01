@@ -1,0 +1,23 @@
+Arrive sur la page d'acceuil du calendrier ou il doit entrer ses identifiants
+-Se connecte à son profil
+
+Bascule sur la page du calendrier :
+-Le calendrier affiche les 3 mois glissants
+-visualise sur le calendrier les dates et heures déjà reservés par tous le monde
+
+Si il clic sur une date 
+
+-peut faire une reservation ponctuelle de salle pour son association (3 max par mois)
+
+Si clic sur reservation de son association
+
+-peut modifier/supprimer une reservation ponctuelle
+-peut uploader les fichiers pdf ainsi que les commenter
+
+Si clic sur mes reservations 
+
+-peut visualiser la liste de ses reservations en cours
+
+Si clic sur exporter calendrier
+
+-peut exporter le calendrier en excel/calendrier google
