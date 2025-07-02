@@ -1,6 +1,6 @@
 <?php
 
-class DAOPays {
+class DAOReservation {
 private $host="localhost";
 private $dbname="reservation_salles";
 private $username="gestionnaire";
@@ -58,9 +58,13 @@ public function getUtilisateurs() {
     return $utilisateurs;
 }
 
+
+
 public function deconnection() {
 $this->dbh=null;
 }
 
 
 }
+
+	
