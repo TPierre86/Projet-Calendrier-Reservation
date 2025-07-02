@@ -1,0 +1,19 @@
+<?php
+?>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inscription réussie</title>
+    <meta http-equiv="refresh" content="5;url=connexion.php" />
+    <link rel="stylesheet" href="refresh.css" />
+  </head>
+  <body>
+    <article class="message">
+      <p class="done">✅ Inscription réussie !</p>
+      Redirection en cours vers la page de connexion.......
+    </article>
+    <p class="bug">Si la redirection automatique ne fonctionne pas : lien</p>
+  </body>
+</html
