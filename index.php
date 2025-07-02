@@ -2,6 +2,8 @@
 require_once('database/DAO.php');
 $dao = new DAOReservation();
 $dao->connection();
+
+
 ?>
 
 <!DOCTYPE html>
@@ -32,6 +34,7 @@ $dao->connection();
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
         </header>
         <section class="modal-body">
+          <form id="formulaire" action="GET">
           <p id="selectedDateText"></p>
           <section class="mb-3">
             <label for="startTime" class="form-label">Heure de début</label>
@@ -82,6 +85,7 @@ $dao->connection();
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
           <button id="saveBtn" class="btn btn-primary">Enregistrer</button>
         </footer>
+        </form>
       </article>
     </article>
   </section>
