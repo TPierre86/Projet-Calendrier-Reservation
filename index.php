@@ -3,13 +3,12 @@ require_once('database/DAO.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   //Recuperer les données
-  $startDate = isset($_GET['startDate'])?($_GET['startDate']) : "";
-  $endDate = $_GET['endDate'];
-  $startTime =$_GET['startTime'];
-  $endTime = $_GET['endTime'];
-  $commentInput = $_GET['commentInput'];
-  $attachments = $_GET['attachments'];
-  $roomSelect = $_GET['roomSelect'];
+  $startDate = isset($_GET['startDate'])?($_GET['startDate']):"";
+  $endDate = isset($_GET['endDate'])?($_GET['endDate']):"";
+  $startTime =isset($_GET['startTime'])?($_GET['startTime']):"";
+  $endTime = isset($_GET['endTime'])?($_GET['endTime']):"";
+  $commentInput = isset($_GET['commentInput'])?($_GET['commentInput']):"";
+  $roomSelect = isset($_GET['roomSelect'])?($_GET['roomSelect']):"";
 
   // Gérer la pièce jointe (si envoyée)
     $attachments = null;
@@ -22,9 +21,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $attachments = $targetPath; // Stocke le chemin pour la BDD
         }
     }
+  // Gérer le utilisateur_id
+  /**
+   * !Il faut recupérer l'id_utilisateur de la personne connectée
+   *  */  
+  $utilisateur_id=$_SESSION['utilisateur_id'] ?? null;
 }  
 $dao = new DAOReservation();
 $dao->connection();
+// --------commande pour New Reservation--------------
+
+// $success = $dao->NewReservation($startDate, $endDate, $startTime, $endTime, $commentInput, $attachments, $roomSelect, $utilisateur_id);
+
+//     if ($success) {
+//         echo "Réservation enregistrée avec succès.";
+//     } else {
+//         echo "Erreur lors de l'enregistrement de la réservation.";
+//     }
 ?>
 
 <!DOCTYPE html>

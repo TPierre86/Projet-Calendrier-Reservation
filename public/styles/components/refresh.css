@@ -1,0 +1,12 @@
+body {
+  padding: 0;
+  width: 100%;
+}
+
+.done {
+  font-size: 1.2em;
+}
+
+.bug {
+  font-size: 0.6em;
+}
