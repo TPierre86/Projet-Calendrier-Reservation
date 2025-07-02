@@ -1,5 +1,5 @@
 <?php
-
+var_dump($_GET);
 class DAOReservation {
 private $host="localhost";
 private $dbname="reservation-salles";
@@ -58,8 +58,8 @@ public function getUtilisateurs() {
     return $utilisateurs;
 }
 
-public function NewReservation($date_debut,$date_fin,$heure_debut,$heure_fin,$commentaire,$pieces_jointe,$salle_id,$utilisateur_id) {
-    $newReservation=$this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `commentaire`, `pieces_jointe`, `salle_id`, `utilisateur_id`) VALUES ('".$date_debut."','".$date_fin."','".$heure_debut."','".$heure_fin."','".$commentaire."','".$pieces_jointe."','".$salle_id."','".$utilisateur_id."')");
+public function NewReservation($startDate,$endDate,$startTime,$endTime,$commentInput,$attachments,$roomSelect,$utilisateur_id) {
+    $newReservation=$this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `commentaire`, `pieces_jointe`, `salle_id`, `utilisateur_id`) VALUES ('".$startDate."','".$endDate."','".$startTime."','".$endTime."','".$commentInput."','".$attachments."','".$roomSelect."','".$utilisateur_id."')");
     $newReservation->execute();
     return $newReservation;
 }
