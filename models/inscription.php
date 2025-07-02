@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $firstName = isset($_POST['firstName'])?($_POST['firstName']):"";
   $tel = isset($_POST['tel'])?($_POST['tel']):"";
   $mail = isset($_POST['mail'])?($_POST['mail']):"";
-  $pwd = isset($_POST['pwd'])?($_POST['pwd']):"";
+  $pwd = isset($_POST['pwd']) ? password_hash($_POST['pwd'], PASSWORD_DEFAULT) : "";
   $profil = isset($_POST['profil'])?($_POST['profil']):"";
   $association_id = isset($_POST['association_id'])?($_POST['association_id']):"";
 /*Comparer les données pour ne pas crée de news users doublons*/  
