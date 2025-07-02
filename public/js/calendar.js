@@ -1,6 +1,5 @@
 const calendarEl = document.getElementById("calendar");
 const eventModal = new bootstrap.Modal(document.getElementById("eventModal"));
-const selectedDateText = document.getElementById("selectedDateText");
 const startTime = document.getElementById("startTime");
 const endTime = document.getElementById("endTime");
 const commentInput = document.getElementById("commentInput");
@@ -13,104 +12,104 @@ const recurrenceDaySelect = document.getElementById("recurrenceDay");
 const recurrenceOptions = document.getElementById("recurrenceOptions");
 
 // Variables pour stocker l'événement sélectionné ou en cours de modification
-let currentEvent = null;
-let selectedRangeStart = null;
-let selectedRangeEnd = null;
+let currentEvent = null; //enregistre la selection fait par l'utilisateur
+let selectedRangeStart = null; // en cas de selection multiple enregistre la date de début de l'évênement
+let selectedRangeEnd = null; // en cas de selection multiple enregistre la date de fin de l'évênement
 
 // Affiche/masque les options de récurrence
-recurrenceCheckbox.addEventListener("change", () => {
-recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none";
+recurrenceCheckbox.addEventListener("change", () => { // fonction qui modifie le "display :none" dans la partie récurrence du form
+recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none"; 
 });
 
 // Initialisation du calendrier FullCalendar
-const calendar = new FullCalendar.Calendar(calendarEl, {
-initialView: "dayGridMonth",
-locale: "fr",
-selectable: true,
-headerToolbar: {
+const calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage du calendrier lors du lancement de la page
+  initialView: "dayGridMonth", //vue par défault "grid" par mois
+  locale: "fr", //configuer le calendrier en français
+  firstday : 1, // fais commencer le calendrier le lundi
+  selectable: true, // permet la selection des cases du calendrier pour créer des évênements
+  headerToolbar: { // partie au dessus du calendrier
     left: "prev,next today",
     center: "title",
     right: "dayGridMonth,timeGridWeek,timeGridDay",
-},
-buttonText: {
+  },
+  buttonText: { //bouton au dessus du calendrier
     today: "Aujourd’hui",
     month: "Mois",
     week: "Semaine",
     day: "Jour",
-},
-
-  // Lorsqu'on sélectionne un créneau (jour entier ou plage horaire) (vue jour)
-select: function (info) {
-    currentEvent = null;
-    const isAllDay = info.allDay;
-    let startDate = new Date(info.start);
-    let endDate = new Date(info.end);
-        if (isAllDay) { // En vue mois (allDay), on ajuste la date de fin
-            endDate.setDate(endDate.getDate() - 1);
-        }
-        selectedRangeStart = startDate.toISOString().slice(0, 10);
-        selectedRangeEnd = endDate.toISOString().slice(0, 10);
-
-        selectedDateText.textContent = isAllDay ? `Période : ${selectedRangeStart} → ${selectedRangeEnd}`
-            : `Date : ${selectedRangeStart}`;
-
-        // Remplit les heures automatiquement si ce n’est pas une sélection de journée
-        if (!isAllDay) {
-            startTime.value = info.start.toISOString().substring(11, 16);
-            endTime.value = info.end.toISOString().substring(11, 16);
-        } else {
-            startTime.value = "";
-            endTime.value = "";
-        }
-
-    // Réinitialisation des champs de la modale
-    commentInput.value = "";
-    roomSelect.selectedIndex = 0;
-    recurrenceCheckbox.checked = false;
-    recurrenceOptions.style.display = "none";
-    deleteBtn.style.display = "none";
-
-    // Affichage de la modale
-    eventModal.show();
-},
-  // Lorsqu'on clique sur un événement existant
-eventClick: function (info) {
-    currentEvent = info.event;
-    selectedRangeStart = currentEvent.startStr.substring(0, 10);
-    selectedRangeEnd = selectedRangeStart;
-
-    selectedDateText.textContent = `Date sélectionnée : ${selectedRangeStart}`;
-    commentInput.value = currentEvent.title.replace(/\[.*?\]\s*/, "");
-    startTime.value = currentEvent.start.toISOString().substring(11, 16);
-    endTime.value = currentEvent.end
-      ? currentEvent.end.toISOString().substring(11, 16)
-      : "";
-
-    // Récupère la salle depuis le titre ([Salle])
-    const roomMatch = currentEvent.title.match(/\[(.*?)\]/);
-    if (roomMatch) {
-      const roomName = roomMatch[1];
-      for (let i = 0; i < roomSelect.options.length; i++) {
-        if (roomSelect.options[i].text === roomName) {
-          roomSelect.selectedIndex = i;
-          break;
-        }
-      }
-    }
-
-    // Masquer les options de récurrence lors d'une édition
-    recurrenceCheckbox.checked = false;
-    recurrenceOptions.style.display = "none";
-
-    // Affiche le bouton de suppression
-    deleteBtn.style.display = "inline-block";
-
-    // Affiche la modale
-    eventModal.show();
   },
 
+  // Lorsqu'on sélectionne un créneau (plage horaire uniquement)
+  select: function (info) {
+    currentEvent = null; // On prépare la création d'un nouvel événement (pas d'édition)
+    let startDate = new Date(info.start); // Date de début sélectionnée
+    let endDate = new Date(info.end);     // Date de fin sélectionnée
+
+    selectedRangeStart = startDate.toISOString().slice(0, 10); // Stocke la date de début au format AAAA-MM-JJ
+    selectedRangeEnd = endDate.toISOString().slice(0, 10);     // Stocke la date de fin au même format
+
+    // Remplit automatiquement les heures
+    startTime.value = info.start.toISOString().substring(11, 16); // Heure de début (HH:MM)
+    endTime.value = info.end.toISOString().substring(11, 16);     // Heure de fin (HH:MM)
+
+    // Réinitialise les champs de la modale pour repartir d'un formulaire vierge
+    commentInput.value = "";           // Vide le commentaire
+    roomSelect.selectedIndex = 0;      // Remet la sélection de salle à zéro
+    recurrenceCheckbox.checked = false;// Décoche la récurrence
+    recurrenceOptions.style.display = "none"; // Masque les options de récurrence
+    deleteBtn.style.display = "none";         // Cache le bouton de suppression (nouvel événement)
+
+    // Affiche la fenêtre modale pour permettre à l'utilisateur de saisir les détails de la réservation
+    eventModal.show();
+  },
   // Liste des événements (réservations)
-  events: [],
+  events: [], 
+  /**
+   * ! on aura surement un problème pour ajouter tel évênement à tel association
+   */
+});
+
+// Lorsqu'on clique sur un événement existant 
+/** 
+ *? Fonction qui a pour but de modifier ou supprimer un événement existant*/
+calendar.on('eventClick', function (info) { //fonction qui sers d'EventListener dans calendar
+  currentEvent = info.event; // Objet événement FullCalendar correspondant à l'événement cliqué par l'utilisateur
+  selectedRangeStart = currentEvent.startStr.substring(0, 10); //garde uniquement la date de début en format YYYY-MM-DD
+  selectedRangeEnd = selectedRangeStart;
+
+  commentInput.value = currentEvent.title.replace(/\[.*?\]\s*/, "");// retire le nom de la salle du titre de l'évênement
+
+  // Remplit les heures
+  startTime.value = currentEvent.start.toISOString().substring(11, 16); // Récupère l'heure de début au format HH:MM
+  endTime.value = currentEvent.end
+  currentEvent.end.toISOString().substring(11, 16) // Récupère l'heure de fin au format HH:MM
+  // Active les champs horaires
+  startTime.disabled = false;
+  endTime.disabled = false;
+
+  /** Récupère la salle depuis le titre ([Salle])
+   *! fonction à modifier / supprimer à terme pour aller chercher directement dans la BdD le nom des salles  */ 
+  const roomMatch = currentEvent.title.match(/\[(.*?)\]/);
+  if (roomMatch) {
+    const roomName = roomMatch[1];
+    for (let i = 0; i < roomSelect.options.length; i++) {
+      if (roomSelect.options[i].text === roomName) {
+        roomSelect.selectedIndex = i;
+        break;
+      }
+    }
+  }
+
+
+  // Masquer les options de récurrence lors d'une édition
+  recurrenceCheckbox.checked = false;
+  recurrenceOptions.style.display = "none";
+
+  // Affiche le bouton de suppression
+  deleteBtn.style.display = "inline-block";
+
+  // Affiche la modale
+  eventModal.show();
 });
 
 // Affiche le calendrier
@@ -124,7 +123,7 @@ saveBtn.addEventListener("click", () => {
   const room = roomSelect.value;
 
   // Vérifie les champs obligatoires
-  if (!start || !end || !comment) {
+  if (!start || !end || !comment || !room) {
     alert("Merci de remplir tous les champs.");
     return;
   }
@@ -147,8 +146,10 @@ saveBtn.addEventListener("click", () => {
   // Si on modifie un événement existant
   if (currentEvent) {
     currentEvent.setProp("title", `[${room}] ${comment}`);
-    currentEvent.setStart(selectedRangeStart + startTimeStr);
-    currentEvent.setEnd(selectedRangeStart + endTimeStr);
+    // Utilise la date d'origine de l'événement pour start et end
+    const eventDate = currentEvent.startStr.substring(0, 10);
+    currentEvent.setStart(eventDate + startTimeStr);
+    currentEvent.setEnd(eventDate + endTimeStr);
   } else {
     // Cas d'une récurrence sur plusieurs semaines
     if (recurrence) {

@@ -44,7 +44,7 @@
           <option>Le Foyer de la Place Haute</option>
           <option>Esprit de Village</option>
         </select>
-        <button>
+        <button type="submit">
           <span class="circle1"></span>
           <span class="circle2"></span>
           <span class="circle3"></span>

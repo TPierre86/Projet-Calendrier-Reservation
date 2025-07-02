@@ -3,9 +3,11 @@ var_dump($_GET);
 class DAOReservation {
 private $host="localhost";
 private $dbname="reservation-salles";
-private $username="gestionnaire";
-private $password="admin";
+private $username="root";
+private $password="";
 private $dbh;
+
+
 
 public function __construct() {
 
@@ -80,6 +82,12 @@ $this->dbh=null;
 }
 
 
+public function getMail($email) {
+    $getMail = $this->dbh->prepare("SELECT * FROM utilisateurs WHERE email=:email");
+    $getMail->execute(['email' => $email]);
+    return $getMail->fetch(PDO::FETCH_ASSOC);
 }
 
-	
+}
+
+?>

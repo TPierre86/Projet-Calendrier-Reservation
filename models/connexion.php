@@ -1,5 +1,31 @@
 <?php
+require_once('../database/DAO.php');
 
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') { //a changer
+    $mailUtilisateur = isset($_GET['mail'])?($_GET['mail']) : '';
+    $motDePasse = isset($_GET['pwd'])?($_GET['pwd']) : '';
+
+    $dao = new DAOReservation();
+    $dao->connection();
+
+    $utilisateur = $dao->getMail($mailUtilisateur);
+
+    if ($utilisateur) {
+        $pwd = $utilisateur["password"];
+        if (password_verify($motDePasse, $pwd)) {
+            header('Location: /Projet-Calendrier-Reservation/public/index.php');
+            exit;
+        } else {
+            $message = "identifiant incorrect";
+            echo "<script type='text/javascript'>alert('$message');</script>";
+        }
+    } else {
+        $message = "identifiant incorrect";
+        echo "<script type='text/javascript'>alert('$message');</script>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -13,12 +39,12 @@
     <body>
     <article>
         <h1>Connexion</h1>
-    <form method="post" class="form">
+    <form method="get" class="form">
         <label for="mail" class="txt">Adresse e-mail</label>
         <input type="text" id="mail" name="mail" class="form1" required />
         <label for="pwd" class="txt">Mots de passe</label>
         <input type="password" id="pwd" name="pwd" class="form1" required />
-        <button>
+        <button type="submit">
         <span class="circle1"></span>
         <span class="circle2"></span>
         <span class="circle3"></span>
@@ -30,3 +56,5 @@
     </article>
     </body>
 </html>
+
+

@@ -3,7 +3,7 @@ require_once('database/DAO.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   //Recuperer les données
-  $startDate = $_GET['startDate'];
+  $startDate = isset($_GET['startDate'])?($_GET['startDate']) : "";
   $endDate = $_GET['endDate'];
   $startTime =$_GET['startTime'];
   $endTime = $_GET['endTime'];
@@ -56,7 +56,7 @@ $dao->connection();
         </header>
         <section class="modal-body">
           <form id="formulaire" method="GET">
-          <p id="selectedDateText"></p>
+          <!-- <p id="selectedDateText"></p> -->
           <section class="mb-3">
             <label for="startDate" class="form-label">Date de début</label>
             <input type="date" class="form-control" id="startDate" name="startDate">
