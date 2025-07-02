@@ -1,5 +1,7 @@
 <?php 
-//require_once calendrier
+require_once('database/DAO.php');
+$dao = new DAOReservation();
+$dao->connection();
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +16,7 @@
 
   <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
 
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="public/styles/components/calendar.css" />
 </head>
 <body>
   <main class="container mt-4">
@@ -70,7 +72,7 @@
                 <option value="4">Jeudi</option>
                 <option value="5">Vendredi</option>
                 <option value="6">Samedi</option>
-                <option value="6">Dimanche</option>
+                <option value="7">Dimanche</option>
               </select>
             </section>
           </section>
@@ -89,6 +91,6 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
   <!-- Ton script personnalisé -->
-  <script src="calendar.js"></script>
+  <script src="public/js/calendar.js"></script>
 </body>
 </html>
