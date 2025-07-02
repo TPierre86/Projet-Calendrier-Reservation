@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 01 juil. 2025 à 16:07
+-- Généré le : mer. 02 juil. 2025 à 09:05
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -55,8 +55,8 @@ INSERT INTO `associations` (`id_association`, `nom_association`) VALUES
 
 CREATE TABLE `reservations` (
   `id_reservation` int(255) NOT NULL,
-  `date-debut` date NOT NULL,
-  `date_fin` int(11) NOT NULL,
+  `date_debut` date NOT NULL,
+  `date_fin` date NOT NULL,
   `heure_debut` time NOT NULL,
   `heur_fin` time NOT NULL,
   `commentaire` text NOT NULL,
@@ -64,6 +64,14 @@ CREATE TABLE `reservations` (
   `salle_id` int(11) NOT NULL,
   `utilisateur_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `reservations`
+--
+
+INSERT INTO `reservations` (`id_reservation`, `date_debut`, `date_fin`, `heure_debut`, `heur_fin`, `commentaire`, `pieces_jointe`, `salle_id`, `utilisateur_id`) VALUES
+(1, '2025-07-03', '2025-07-03', '09:00:00', '10:00:00', 'AG ', '', 1, 2),
+(2, '2025-07-15', '2025-07-15', '09:00:00', '10:00:00', 'bal', '', 3, 2);
 
 -- --------------------------------------------------------
 
@@ -73,34 +81,17 @@ CREATE TABLE `reservations` (
 
 CREATE TABLE `salles` (
   `id_salle` int(11) NOT NULL,
-  `nom` text NOT NULL
+  `nom_salle` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `salles`
 --
 
-INSERT INTO `salles` (`id_salle`, `nom`) VALUES
+INSERT INTO `salles` (`id_salle`, `nom_salle`) VALUES
 (1, 'salle de réunion'),
 (2, 'bar'),
 (3, 'réfectoire');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `utilisateur`
---
-
-CREATE TABLE `utilisateur` (
-  `id` int(255) NOT NULL,
-  `nom` text NOT NULL,
-  `prénom` text NOT NULL,
-  `telephone` int(10) NOT NULL,
-  `email` text NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `profil` text NOT NULL,
-  `association_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Index pour les tables déchargées
@@ -117,7 +108,7 @@ ALTER TABLE `associations`
 --
 ALTER TABLE `reservations`
   ADD PRIMARY KEY (`id_reservation`),
-  ADD KEY `salle_id` (`salle_id`,`utilisateur_id`),
+  ADD KEY `salle_id` (`salle_id`),
   ADD KEY `utilisateur_id` (`utilisateur_id`);
 
 --
@@ -125,13 +116,6 @@ ALTER TABLE `reservations`
 --
 ALTER TABLE `salles`
   ADD PRIMARY KEY (`id_salle`);
-
---
--- Index pour la table `utilisateur`
---
-ALTER TABLE `utilisateur`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `association_id` (`association_id`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
@@ -147,19 +131,13 @@ ALTER TABLE `associations`
 -- AUTO_INCREMENT pour la table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id_reservation` int(255) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_reservation` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `salles`
 --
 ALTER TABLE `salles`
   MODIFY `id_salle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT pour la table `utilisateur`
---
-ALTER TABLE `utilisateur`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT;
 
 --
 -- Contraintes pour les tables déchargées
@@ -170,13 +148,7 @@ ALTER TABLE `utilisateur`
 --
 ALTER TABLE `reservations`
   ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`salle_id`) REFERENCES `salles` (`id_salle`) ON DELETE CASCADE,
-  ADD CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`utilisateur_id`) REFERENCES `utilisateur` (`id`) ON DELETE CASCADE;
-
---
--- Contraintes pour la table `utilisateur`
---
-ALTER TABLE `utilisateur`
-  ADD CONSTRAINT `utilisateur_ibfk_1` FOREIGN KEY (`association_id`) REFERENCES `associations` (`id_association`) ON DELETE CASCADE;
+  ADD CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`utilisateur_id`) REFERENCES `utilisateurs` (`id_utilisateur`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
