@@ -4,6 +4,7 @@ $dao = new DAOReservation();
 $dao->connexion();
 
 $associations =$dao->getAssociations();
+$users= $dao->getUtilisateurs();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   //Recuperer les données
@@ -14,18 +15,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $pwd = isset($_POST['pwd'])?($_POST['pwd']):"";
   $profil = isset($_POST['profil'])?($_POST['profil']):"";
   $association_id = isset($_POST['association_id'])?($_POST['association_id']):"";
+/*Comparer les données pour ne pas crée de news users doublons*/  
+foreach($users as $user){
+if ($user["nom_utilisateur"] == $name && $user["prenom_utilisateur"] == $firstName || $user["email"] == $mail) {
+            $userExists = true;
+            break;
+        }
+    }
 
-$success = $dao->NewUtilisateur($name,$firstName,$tel,$mail,$pwd,$profil,$association_id);
-if ($success) {
-        echo "Inscription enregistrée avec succès.";
+    if ($userExists) {
+        $message = "Utilisateur déjà inscrit.";
+        echo "<script type='text/javascript'>alert('$message');</script>";
     } else {
-        echo "Erreur lors de l'inscription.";
+        $success = $dao->NewUtilisateur($name, $firstName, $tel, $mail, $pwd, $profil, $association_id);
+        if ($success) {
+            header("Location: refresh.php");
+            exit;
+        } else {
+            echo "Erreur lors de l'inscription.";
+        }
     }
 }
-
-
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,7 +48,7 @@ if ($success) {
   <body>
     <article>
       <h1>Inscription</h1>
-      <form method="POST" class="form" action="refresh.php">
+      <form method="POST" class="form" action="">
         <label for="name" class="txt">Nom</label>
         <input type="text" id="name" name="name" class="form1" required />
         <label for="firstName" class="txt">Prénom</label>

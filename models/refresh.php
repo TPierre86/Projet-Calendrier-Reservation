@@ -14,6 +14,6 @@
       <p class="done">✅ Inscription réussie !</p>
       Redirection en cours vers la page de connexion.......
     </article>
-    <p class="bug">Si la redirection automatique ne fonctionne pas : lien</p>
+    <p class="bug">Si la redirection automatique ne fonctionne pas :<a href=http://localhost/Projet-Calendrier-Reservation/models/connexion.php>connexion</p>
   </body>
 </html
