@@ -11,7 +11,7 @@ public function __construct() {
 
 }
 
-public function connection() {
+public function connexion() {
 try {
 $this->dbh = new PDO('mysql:host='.$this->host.';dbname='.$this->dbname, $this->username, $this->password);
 //print "Connexion réussie";

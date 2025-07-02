@@ -1,4 +1,30 @@
 <?php
+require_once ('../database/DAO.php');
+$dao = new DAOReservation();
+$dao->connexion();
+
+$associations =$dao->getAssociations();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  //Recuperer les données
+  $name = isset($_POST['name'])?($_POST['name']):"";
+  $firstName = isset($_POST['firstName'])?($_POST['firstName']):"";
+  $tel = isset($_POST['tel'])?($_POST['tel']):"";
+  $mail = isset($_POST['mail'])?($_POST['mail']):"";
+  $pwd = isset($_POST['pwd'])?($_POST['pwd']):"";
+  $profil = isset($_POST['profil'])?($_POST['profil']):"";
+  $association_id = isset($_POST['association_id'])?($_POST['association_id']):"";
+
+$success = $dao->NewUtilisateur($name,$firstName,$tel,$mail,$pwd,$profil,$association_id);
+if ($success) {
+        echo "Inscription enregistrée avec succès.";
+    } else {
+        echo "Erreur lors de l'inscription.";
+    }
+}
+
+
+
 
 ?>
 <!DOCTYPE html>
@@ -12,14 +38,14 @@
   <body>
     <article>
       <h1>Inscription</h1>
-      <form method="post" class="form" action="refresh.php">
+      <form method="POST" class="form" action="refresh.php">
         <label for="name" class="txt">Nom</label>
         <input type="text" id="name" name="name" class="form1" required />
-        <label for="first-name" class="txt">Prénom</label>
+        <label for="firstName" class="txt">Prénom</label>
         <input
           type="text"
-          id="first-name"
-          name="first-name"
+          id="firstName"
+          name="firstName"
           class="form1"
           required
         />
@@ -29,20 +55,15 @@
         <input type="text" id="mail" name="mail" class="form1" required />
         <label for="pwd" class="txt">Mots de passe</label>
         <input type="password" id="pwd" name="pwd" class="form1" required />
+        <input type="hidden" name="profil" class="form1" value="Membres">
         <label for="association" class="txt">Associations</label>
-        <select>
+        <select name="association_id">
           <option value="" disabled selected hidden>
             Choisissez une association
           </option>
-          <option>Les Rives du Cérou</option>
-          <option>Le Cercle du Vieux Bourg</option>
-          <option>La Clé des Remparts</option>
-          <option>L’Union du Pays Monestiéen</option>
-          <option>Les Collines d’Occitanie</option>
-          <option>Les Voix du Tarn</option>
-          <option>La Maison des Quatre Saisons</option>
-          <option>Le Foyer de la Place Haute</option>
-          <option>Esprit de Village</option>
+          <?php foreach($associations as $association) { ?>
+            <option value="<?php print $association['id_association']; ?>"><?php print $association['nom_association']; ?></option>
+          <?php } ?>
         </select>
         <button type="submit">
           <span class="circle1"></span>
