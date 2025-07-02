@@ -10,7 +10,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Comité monestié</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="headers&footers.css" />
     <a href="//img.icons8.com/plumpy/24/circled-menu--v1.png>"></a>
   </head>
   <body>
