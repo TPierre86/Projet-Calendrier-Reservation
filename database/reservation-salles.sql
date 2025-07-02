@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 02 juil. 2025 à 09:05
+-- Généré le : mer. 02 juil. 2025 à 09:59
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -93,6 +93,30 @@ INSERT INTO `salles` (`id_salle`, `nom_salle`) VALUES
 (2, 'bar'),
 (3, 'réfectoire');
 
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `utilisateurs`
+--
+
+CREATE TABLE `utilisateurs` (
+  `id_utilisateur` int(11) NOT NULL,
+  `nom_utilisateur` text NOT NULL,
+  `prenom_utilisateur` text NOT NULL,
+  `telephone` text NOT NULL,
+  `email` text NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `profil` text NOT NULL,
+  `association_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `utilisateurs`
+--
+
+INSERT INTO `utilisateurs` (`id_utilisateur`, `nom_utilisateur`, `prenom_utilisateur`, `telephone`, `email`, `password`, `profil`, `association_id`) VALUES
+(2, 'Admin', 'Mairie', '0618698068', 'mairie@yahoo.fr', 'admin', 'Gestionnaire', NULL);
+
 --
 -- Index pour les tables déchargées
 --
@@ -118,6 +142,13 @@ ALTER TABLE `salles`
   ADD PRIMARY KEY (`id_salle`);
 
 --
+-- Index pour la table `utilisateurs`
+--
+ALTER TABLE `utilisateurs`
+  ADD PRIMARY KEY (`id_utilisateur`),
+  ADD KEY `association_id` (`association_id`);
+
+--
 -- AUTO_INCREMENT pour les tables déchargées
 --
 
@@ -140,6 +171,12 @@ ALTER TABLE `salles`
   MODIFY `id_salle` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
+-- AUTO_INCREMENT pour la table `utilisateurs`
+--
+ALTER TABLE `utilisateurs`
+  MODIFY `id_utilisateur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- Contraintes pour les tables déchargées
 --
 
@@ -149,6 +186,12 @@ ALTER TABLE `salles`
 ALTER TABLE `reservations`
   ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`salle_id`) REFERENCES `salles` (`id_salle`) ON DELETE CASCADE,
   ADD CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`utilisateur_id`) REFERENCES `utilisateurs` (`id_utilisateur`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `utilisateurs`
+--
+ALTER TABLE `utilisateurs`
+  ADD CONSTRAINT `utilisateurs_ibfk_1` FOREIGN KEY (`association_id`) REFERENCES `associations` (`id_association`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
