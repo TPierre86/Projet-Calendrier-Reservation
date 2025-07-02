@@ -64,8 +64,8 @@ public function NewReservation($startDate,$endDate,$startTime,$endTime,$commentI
     return $newReservation;
 }
 
-public function NewUtilisateur($nom_utilisateur,$prenom_utilisateur,$telephone,$email,$password,$profil,$association_id){
-    $newUtilisateur = $this->dbh->prepare("INSERT INTO `utilisateurs`(`nom_utilisateur`, `prenom_utilisateur`, `telephone`, `email`, `password`, `profil`, `association_id`) VALUES ('".$nom_utilisateur."','".$prenom_utilisateur."','".$telephone."','".$email."','".$password."','".$profil."','".$association_id."')");
+public function NewUtilisateur($name,$firstName,$tel,$mail,$pwd,$profil,$association_id){
+    $newUtilisateur = $this->dbh->prepare("INSERT INTO `utilisateurs`(`nom_utilisateur`, `prenom_utilisateur`, `telephone`, `email`, `password`, `profil`, `association_id`) VALUES ('".$name."','".$firstName."','".$tel."','".$mail."','".$pwd."','".$profil."','".$association_id."')");
     $newUtilisateur->execute();
     return $newUtilisateur;
 }
