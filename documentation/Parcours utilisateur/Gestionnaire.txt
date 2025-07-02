@@ -22,11 +22,13 @@ Clique sur un événement existant :
 → Peut commenter l’événement
 → Peut télécharger les fichiers PDF joints à l’événement
 
+
 A accès à un panneau administrateur d’où il :
 → Peut gérer les associations : ajouter, modifier, supprimer
 → Peut gérer les membres de chaque association : ajouter, modifier, supprimer
 → Peut gérer les utilisateurs : ajouter, modifier, supprimer
 → Peut gérer les salles : ajouter, modifier, supprimer
+
 
 Il peut, depuis le calendrier, l’exporter au format Excel ou Google Calendar
 
