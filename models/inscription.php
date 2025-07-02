@@ -7,7 +7,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inscription</title>
+<<<<<<< HEAD
     <link rel="stylesheet" href="style.css" />
+=======
+    <link rel="stylesheet" href="/Projet-Calendrier-Reservation/public/styles/components/inscription.css" />
+>>>>>>> 0b233303d738cceacfba161cd6756df68b651462
   </head>
   <body>
     <article>

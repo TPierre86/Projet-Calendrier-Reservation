@@ -1,8 +1,8 @@
 <?php
-
+var_dump($_GET);
 class DAOReservation {
 private $host="localhost";
-private $dbname="reservation_salles";
+private $dbname="reservation-salles";
 private $username="gestionnaire";
 private $password="admin";
 private $dbh;
@@ -58,8 +58,23 @@ public function getUtilisateurs() {
     return $utilisateurs;
 }
 
+public function NewReservation($startDate,$endDate,$startTime,$endTime,$commentInput,$attachments,$roomSelect,$utilisateur_id) {
+    $newReservation=$this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `commentaire`, `pieces_jointe`, `salle_id`, `utilisateur_id`) VALUES ('".$startDate."','".$endDate."','".$startTime."','".$endTime."','".$commentInput."','".$attachments."','".$roomSelect."','".$utilisateur_id."')");
+    $newReservation->execute();
+    return $newReservation;
+}
 
+public function NewUtilisateur($nom_utilisateur,$prenom_utilisateur,$telephone,$email,$password,$profil,$association_id){
+    $newUtilisateur = $this->dbh->prepare("INSERT INTO `utilisateurs`(`nom_utilisateur`, `prenom_utilisateur`, `telephone`, `email`, `password`, `profil`, `association_id`) VALUES ('".$nom_utilisateur."','".$prenom_utilisateur."','".$telephone."','".$email."','".$password."','".$profil."','".$association_id."')");
+    $newUtilisateur->execute();
+    return $newUtilisateur;
+}
 
+public function NewAssociation($nom_association){
+    $newAssociation=$this->dbh->prepare("INSERT INTO `associations`(`nom_association`) VALUES ('".$nom_association."')");
+    $newAssociation->execute();
+    return $newAssociation;
+}
 public function deconnection() {
 $this->dbh=null;
 }
