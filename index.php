@@ -1,14 +1,14 @@
 <?php 
 require_once('database/DAO.php');
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+session_start();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   //Recuperer les données
-  $startDate = isset($_GET['startDate'])?($_GET['startDate']):"";
-  $endDate = isset($_GET['endDate'])?($_GET['endDate']):"";
-  $startTime =isset($_GET['startTime'])?($_GET['startTime']):"";
-  $endTime = isset($_GET['endTime'])?($_GET['endTime']):"";
-  $commentInput = isset($_GET['commentInput'])?($_GET['commentInput']):"";
-  $roomSelect = isset($_GET['roomSelect'])?($_GET['roomSelect']):"";
+  $startDate = isset($_POST['startDate'])?($_POST['startDate']):"";
+  $endDate = isset($_POST['endDate'])?($_POST['endDate']):"";
+  $startTime =isset($_POST['startTime'])?($_POST['startTime']):"";
+  $endTime = isset($_POST['endTime'])?($_POST['endTime']):"";
+  $commentInput = isset($_POST['commentInput'])?($_POST['commentInput']):"";
+  $roomSelect = isset($_POST['roomSelect'])?($_POST['roomSelect']):"";
 
   // Gérer la pièce jointe (si envoyée)
     $attachments = null;
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   $utilisateur_id=$_SESSION['utilisateur_id'] ?? null;
 }  
 $dao = new DAOReservation();
-$dao->connection();
+$dao->connexion();
 // --------commande pour New Reservation--------------
 
 // $success = $dao->NewReservation($startDate, $endDate, $startTime, $endTime, $commentInput, $attachments, $roomSelect, $utilisateur_id);
@@ -68,7 +68,7 @@ $dao->connection();
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
         </header>
         <section class="modal-body">
-          <form id="formulaire" method="GET">
+          <form id="formulaire" method="POST">
           <!-- <p id="selectedDateText"></p> -->
           <section class="mb-3">
             <label for="startDate" class="form-label">Date de début</label>

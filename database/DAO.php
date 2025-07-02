@@ -1,5 +1,5 @@
 <?php
-var_dump($_GET);
+
 class DAOReservation {
 private $host="localhost";
 private $dbname="reservation-salles";
@@ -83,10 +83,11 @@ $this->dbh=null;
 
 
 public function getMail($email) {
-    $getMail = $this->dbh->prepare("SELECT * FROM utilisateurs WHERE email=:email");
-    $getMail->execute(['email' => $email]);
-    return $getMail->fetch(PDO::FETCH_ASSOC);
+    $getMail = $this->dbh->prepare("SELECT email, password FROM utilisateurs WHERE email=:email");
+    $getMail->execute([':email' => $email]);
+    return $getMail;
 }
+
 
 }
 

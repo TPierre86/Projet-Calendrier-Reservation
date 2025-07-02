@@ -3,28 +3,29 @@ require_once('../database/DAO.php');
 
 
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET') { //a changer
-    $mailUtilisateur = isset($_GET['mail'])?($_GET['mail']) : '';
-    $motDePasse = isset($_GET['pwd'])?($_GET['pwd']) : '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $mailUtilisateur = isset($_POST['mail'])?($_POST['mail']) : '';
+    $motDePasse = isset($_POST['pwd'])?($_POST['pwd']) : '';
 
     $dao = new DAOReservation();
-    $dao->connection();
+    $dao->connexion();
 
-    $utilisateur = $dao->getMail($mailUtilisateur);
+    $utilisateurs = $dao->getMail($mailUtilisateur);
 
+    foreach ($utilisateurs as $utilisateur){
     if ($utilisateur) {
         $pwd = $utilisateur["password"];
-        if (password_verify($motDePasse, $pwd)) {
-            header('Location: /Projet-Calendrier-Reservation/public/index.php');
+    }
+        if (password_verify($motDePasse, $pwd) || $motDePasse===$pwd) {
+            session_start();
+            header('Location: ../index.php');
             exit;
         } else {
-            $message = "identifiant incorrect";
+            $message = "identifiant ou mot de passe incorrect";
             echo "<script type='text/javascript'>alert('$message');</script>";
+            exit;
         }
-    } else {
-        $message = "identifiant incorrect";
-        echo "<script type='text/javascript'>alert('$message');</script>";
-    }
+}
 }
 ?>
 
@@ -39,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') { //a changer
     <body>
     <article>
         <h1>Connexion</h1>
-    <form method="get" class="form">
+    <form method="POST" class="form">
         <label for="mail" class="txt">Adresse e-mail</label>
         <input type="text" id="mail" name="mail" class="form1" required />
         <label for="pwd" class="txt">Mots de passe</label>
