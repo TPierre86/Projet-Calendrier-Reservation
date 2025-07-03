@@ -1,4 +1,4 @@
-body {
+#bodyFormInscription {
   margin: 0;
   padding: 0;
   width: 100vw;
@@ -7,18 +7,18 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('/Projet-Calendrier-Reservation/public/styles/img/pont.jfif');
+  background-image: url("pont.jfif");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   image-rendering: auto;
 }
-form {
+#formulaireInscription {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.form1 {
+.inputForm {
   font-size: 20px;
   margin-bottom: 50px;
   border-radius: 8px;
@@ -27,7 +27,7 @@ form {
   box-sizing: border-box;
 }
 
-article {
+#formInscription {
   display: flex;
   flex-direction: column;
   padding: 80px;
@@ -41,21 +41,14 @@ article {
   font-size: 20px;
   font-weight: bold;
 }
-h1 {
+#titreFormInscription {
   margin-bottom: 20%;
   text-align: center;
   border-bottom: 1px solid #000000;
   padding-bottom: 16px;
 }
 
-h2 {
-  margin-bottom: 20%;
-  text-align: center;
-  border-bottom: 1px solid #000000;
-  padding-bottom: 16px;
-}
-
-button {
+#submitButton {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
   color: white;
@@ -108,7 +101,14 @@ button:hover span:not(:nth-child(6)) {
   transform: translate(-50%, -50%) scale(4);
   transition: 1.5s ease;
 }
-select {
+#selectAssociation {
   margin-bottom: 15%;
   padding: 5px;
+}
+
+h2 {
+  margin-bottom: 20%;
+  text-align: center;
+  border-bottom: 1px solid #000000;
+  padding-bottom: 16px;
 }
