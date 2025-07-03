@@ -1,13 +1,12 @@
 <?php
 require_once ('../database/DAO.php');
-
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  //Recuperer les données
   $dao = new DAOReservation();
   $dao->connexion();
-
   $associations =$dao->getAssociations();
+  
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  //Recuperer les données
+
   $users= $dao->getUtilisateurs();
   
   $name = isset($_POST['name'])?($_POST['name']):"";
@@ -17,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $pwd = isset($_POST['pwd']) ? password_hash($_POST['pwd'], PASSWORD_DEFAULT) : "";
   $profil = isset($_POST['profil'])?($_POST['profil']):"";
   $association_id = isset($_POST['association_id'])?($_POST['association_id']):"";
+  $userExists = false;
 /*Comparer les données pour ne pas crée de news users doublons*/  
 foreach($users as $user){
 if ($user["nom_utilisateur"] == $name && $user["prenom_utilisateur"] == $firstName || $user["email"] == $mail) {
