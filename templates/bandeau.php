@@ -21,7 +21,7 @@ if (isset($_SESSION['prenom'])) {
             const connectStatus = document.getElementById('connectStatus');
             const userName = "<?php echo $userName; ?>";
             if (connectStatus.dataset.logged === "1") {
-                connectStatus.innerHTML = `Bienvenue, ${userName} ! <br><a href='/Projet-Calendrier-Reservation/models/membre.php'>Se déconnecter</a>`;
+                connectStatus.innerHTML = `<span class='bienvenue'>Bienvenue, ${userName} !</span> <br><a class='bienvenue' href='/Projet-Calendrier-Reservation/models/membre.php'>Se déconnecter</a>`;
             }else {
                 connectStatus.innerHTML = "Pas Bienvenue";
             }
