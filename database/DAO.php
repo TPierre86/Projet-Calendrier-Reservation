@@ -16,10 +16,10 @@ public function __construct() {
 public function connexion() {
 try {
 $this->dbh = new PDO('mysql:host='.$this->host.';dbname='.$this->dbname, $this->username, $this->password);
-// print "Connexion réussie"; // À supprimer
+ print "Connexion réussie"; // À supprimer
 } catch (PDOException $e) {
-// print $e->getMessage(); // À supprimer
-// print "Oups ! connexion échouée."; // À supprimer
+ print $e->getMessage(); // À supprimer
+ print "Oups ! connexion échouée."; // À supprimer
 throw $e; // Laisse l'exception remonter
 }
 }
@@ -80,7 +80,7 @@ public function NewReservation($startDate,$endDate,$startTime,$endTime,$commentI
 
 public function NewUtilisateur($name,$firstName,$tel,$mail,$pwd,$profil,$association_id){
     $newUtilisateur = $this->dbh->prepare("INSERT INTO `utilisateurs`(`nom_utilisateur`, `prenom_utilisateur`, `telephone`, `email`, `password`, `profil`, `association_id`) VALUES ('".$name."','".$firstName."','".$tel."','".$mail."','".$pwd."','".$profil."','".$association_id."')");
-    $newUtilisateur->execute();
+    $newUtilisateur->execute([$name,$firstName,$tel,$mail,$pwd,$profil,$association_id]);
     return $newUtilisateur;
 }
 
@@ -104,7 +104,7 @@ $this->dbh=null;
 public function getMail($email) {
     $getMail = $this->dbh->prepare("SELECT id_utilisateur, email, password, prenom_utilisateur, profil FROM utilisateurs WHERE email=:email");
     $getMail->execute([':email' => $email]);
-    return $getMail->fetchAll(PDO::FETCH_ASSOC);  // récupère tous les résultats sous forme de tableau associatif
+    return $getMail->fetch(PDO::FETCH_ASSOC);
 }
 
 public function deleteUtilisateur($id_utilisateur) {
