@@ -60,6 +60,12 @@ public function getUtilisateurs() {
     return $utilisateurs;
 }
 
+public function UtilisateurLabelAssociation() {
+    $usersLabelAssociation=$this->dbh->prepare("SELECT nom_utilisateur, prenom_utilisateur, telephone, email, profil, association_id, nom_association FROM `utilisateurs` INNER JOIN associations ON utilisateurs.association_id = associations.id_association ORDER BY nom_utilisateur");
+    $usersLabelAssociation->execute();
+    return $usersLabelAssociation;
+}
+
 public function NewReservation($startDate,$endDate,$startTime,$endTime,$commentInput,$attachments,$roomSelect,$utilisateur_id) {
     $newReservation=$this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `commentaire`, `pieces_jointe`, `salle_id`, `utilisateur_id`) VALUES ('".$startDate."','".$endDate."','".$startTime."','".$endTime."','".$commentInput."','".$attachments."','".$roomSelect."','".$utilisateur_id."')");
     $newReservation->execute();
@@ -83,11 +89,15 @@ $this->dbh=null;
 
 
 public function getMail($email) {
-    $getMail = $this->dbh->prepare("SELECT id_utilisateur, email, password FROM utilisateurs WHERE email=:email");
+    $getMail = $this->dbh->prepare("SELECT id_utilisateur, email, password, profil FROM utilisateurs WHERE email=:email");
     $getMail->execute([':email' => $email]);
     return $getMail;
 }
 
+public function deleteUtilisateur($id_utilisateur) {
+    $deletUser = $this->dbh->prepare("DELETE FROM utilisateurs WHERE id_utilisateur = ?");
+    $deletUser->execute([$id_utilisateur]);
+}
 
 }
 
