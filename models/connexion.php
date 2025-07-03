@@ -1,7 +1,6 @@
 <?php
 require_once('../database/DAO.php');
-
-
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $mailUtilisateur = isset($_POST['mail'])?($_POST['mail']) : '';
@@ -13,19 +12,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $utilisateurs = $dao->getMail($mailUtilisateur);
 
     foreach ($utilisateurs as $utilisateur){
-    if ($utilisateur) {
-        $pwd = $utilisateur["password"];
-    }
-        if (password_verify($motDePasse, $pwd) || $motDePasse===$pwd) {
-            session_start();
+    if ($utilisateur && password_verify($motDePasse, $utilisateur["password"]) || $motDePasse===$utilisateur["password"] ) {
             $_SESSION['profil'] = $utilisateur["profil"];
+            $_SESSION["connected_user"]=$utilisateur["id_utilisateur"];
             header('Location: ../index.php');
             exit;
-        } else {
+        } 
             $message = "identifiant ou mot de passe incorrect";
             echo "<script type='text/javascript'>alert('$message');</script>";
-            exit;
-        }
+            
 }
 }
 ?>
@@ -58,5 +53,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </article>
     </body>
 </html>
-
-

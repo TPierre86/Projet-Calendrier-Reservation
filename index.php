@@ -1,6 +1,7 @@
 <?php 
 require_once('database/DAO.php');
 session_start();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   //Recuperer les données
   $startDate = isset($_POST['startDate'])?($_POST['startDate']):"";
@@ -21,23 +22,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $attachments = $targetPath; // Stocke le chemin pour la BDD
         }
     }
+
   // Gérer le utilisateur_id
-  /**
-   * !Il faut recupérer l'id_utilisateur de la personne connectée
-   *  */  
-  $utilisateur_id=$_SESSION['utilisateur_id'] ?? null;
-}  
+ if (isset($_SESSION["connected_user"])) {
+    $utilisateur_id = $_SESSION["connected_user"];
+    echo "Utilisateur connecté avec l'ID : " . $utilisateur_id;
+} else {
+    echo "Aucun utilisateur connecté.";
+}
+
+// --------commande pour New Reservation--------------
 $dao = new DAOReservation();
 $dao->connexion();
-// --------commande pour New Reservation--------------
+$reservations = $dao->getReservation();
+foreach ($reservations as $reservation) {
+  if ($startDate == $reservation["date_debut"] && $startTime == $reservation["heure_debut"] && $roomSelect == $reservation["salle_id"] || $startDate == $reservation["date_debut"] && ($startTime < $reservation["heure_fin"]) && $roomSelect == $reservation["salle_id"]) {
+    $reservationExist = true;
+    break;
+  }
+}
 
-// $success = $dao->NewReservation($startDate, $endDate, $startTime, $endTime, $commentInput, $attachments, $roomSelect, $utilisateur_id);
+  if ($reservationExist) {
+      $message = "Reservation Impossible. Salle déjà occupée.";
+      echo "<script type='text/javascript'>alert('$message');</script>";
+  } else {
+    $success = $dao->NewReservation($startDate, $endDate, $startTime, $endTime, $commentInput, $attachments, $roomSelect, $utilisateur_id);
+      if ($success) {
+          $message = "Reservation réussi";
+          echo "<script type='text/javascript'>alert('$message');</script>";
+        }
+  }
 
-//     if ($success) {
-//         echo "Réservation enregistrée avec succès.";
-//     } else {
-//         echo "Erreur lors de l'enregistrement de la réservation.";
-//     }
+}  
+
+
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +76,6 @@ $dao->connexion();
   <main class="container mt-4">
     <section id="calendar"></section>
   </main>
-
   <!-- Modal pour les réservations -->
   <section class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
     <article class="modal-dialog">
