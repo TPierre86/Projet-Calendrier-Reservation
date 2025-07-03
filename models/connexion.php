@@ -34,21 +34,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Inscription</title>
     <link rel="stylesheet" href="/Projet-Calendrier-Reservation/public/styles/components/inscription.css" />
     </head>
-    <body>
-    <article>
-        <h1>Connexion</h1>
-    <form method="POST" class="form">
+    <body id="bodyFormInscription">
+    <article id="formInscription">
+        <h1 id="titreFormInscription">Connexion</h1>
+    <form method="POST" id="formulaireInscription">
         <label for="mail" class="txt">Adresse e-mail</label>
-        <input type="text" id="mail" name="mail" class="form1" required />
+        <input type="text" id="mail" name="mail" class="inputForm" required />
         <label for="pwd" class="txt">Mots de passe</label>
-        <input type="password" id="pwd" name="pwd" class="form1" required />
-        <button type="submit">
+        <input type="password" id="pwd" name="pwd" class="inputForm" required />
+        <button type="submit" id="submitButton">
         <span class="circle1"></span>
         <span class="circle2"></span>
         <span class="circle3"></span>
         <span class="circle4"></span>
         <span class="circle5"></span>
-        <span class="text">Connexion</span>
+        <span>Connexion</span>
         </button>
     </form>
     </article>

@@ -1,12 +1,12 @@
-body {
+#bodyRefresh {
   padding: 0;
   width: 100%;
 }
 
-.done {
+#good {
   font-size: 1.2em;
 }
 
-.bug {
+#bug {
   font-size: 0.6em;
 }

@@ -27,7 +27,7 @@ print "Oups ! connexion échouée.";
 public function getAssociations() {
 $associations = $this->dbh->prepare("SELECT * FROM associations ORDER BY nom_association");
 $associations->execute();
-return $associations;
+return $associations->fetchAll(PDO::FETCH_ASSOC);
 }
 
 public function getMembresByAssociation($id_association) {
@@ -103,6 +103,20 @@ public function getMail($email) {
 public function deleteUtilisateur($id_utilisateur) {
     $deletUser = $this->dbh->prepare("DELETE FROM utilisateurs WHERE id_utilisateur = ?");
     $deletUser->execute([$id_utilisateur]);
+}
+
+public function updateUtilisateur($id_utilisateur, $name, $firstName, $mail, $tel, $profil, $association_id) {
+    $stmt = $this->dbh->prepare("
+        UPDATE utilisateurs SET 
+        nom_utilisateur = ?, 
+        prenom_utilisateur = ?, 
+        email = ?, 
+        telephone = ?, 
+        profil = ?, 
+        association_id = ?
+        WHERE id_utilisateur = ?
+    ");
+    return $stmt->execute([$name, $firstName, $mail, $tel, $profil, $association_id, $id_utilisateur]);
 }
 
 }

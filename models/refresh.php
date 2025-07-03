@@ -9,11 +9,11 @@
     <meta http-equiv="refresh" content="5;url=connexion.php" />
     <link rel="stylesheet" href="refresh.css" />
   </head>
-  <body>
-    <article class="message">
-      <p class="done">✅ Inscription réussie !</p>
+  <body id="bodyRefresh">
+    <article>
+      <p id="good">✅ Inscription réussie !</p>
       Redirection en cours vers la page de connexion.......
     </article>
-    <p class="bug">Si la redirection automatique ne fonctionne pas :<a href=http://localhost/Projet-Calendrier-Reservation/models/connexion.php>connexion</p>
+    <p id="bug">Si la redirection automatique ne fonctionne pas :<a href=http://localhost/Projet-Calendrier-Reservation/models/connexion.php>connexion</p>
   </body>
 </html
