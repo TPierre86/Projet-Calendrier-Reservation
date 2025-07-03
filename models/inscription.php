@@ -1,13 +1,12 @@
 <?php
 require_once ('../database/DAO.php');
-
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  //Recuperer les données
   $dao = new DAOReservation();
   $dao->connexion();
-
   $associations =$dao->getAssociations();
+  
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  //Recuperer les données
+
   $users= $dao->getUtilisateurs();
   
   $name = isset($_POST['name'])?($_POST['name']):"";
@@ -17,6 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $pwd = isset($_POST['pwd']) ? password_hash($_POST['pwd'], PASSWORD_DEFAULT) : "";
   $profil = isset($_POST['profil'])?($_POST['profil']):"";
   $association_id = isset($_POST['association_id'])?($_POST['association_id']):"";
+  $userExists = false;
 /*Comparer les données pour ne pas crée de news users doublons*/  
 foreach($users as $user){
 if ($user["nom_utilisateur"] == $name && $user["prenom_utilisateur"] == $firstName || $user["email"] == $mail) {
@@ -47,29 +47,29 @@ if ($user["nom_utilisateur"] == $name && $user["prenom_utilisateur"] == $firstNa
     <title>Inscription</title>
     <link rel="stylesheet" href="/Projet-Calendrier-Reservation/public/styles/components/inscription.css" />
   </head>
-  <body>
-    <article>
-      <h1>Inscription</h1>
-      <form method="POST" class="form" action="">
+  <body id="bodyFormInscription">
+    <article id="formInscription">
+      <h1 id="titreFormInscription">Inscription</h1>
+      <form method="POST" id="formulaireInscription" action="">
         <label for="name" class="txt">Nom</label>
-        <input type="text" id="name" name="name" class="form1" required />
+        <input type="text" id="name" name="name" class="inputForm" required />
         <label for="firstName" class="txt">Prénom</label>
         <input
           type="text"
           id="firstName"
           name="firstName"
-          class="form1"
+          class="inputForm"
           required
         />
         <label for="tel" class="txt">n° Téléphone (format: 0615251168)</label>
-        <input type="text" id="tel" name="tel" class="form1" pattern="0[67][0-9]{8}" required />
+        <input type="text" id="tel" name="tel" class="inputForm" pattern="0[67][0-9]{8}" required />
         <label for="mail" class="txt">Adresse e-mail</label>
-        <input type="text" id="mail" name="mail" class="form1" required />
+        <input type="text" id="mail" name="mail" class="inputForm" required />
         <label for="pwd" class="txt">Mots de passe</label>
-        <input type="password" id="pwd" name="pwd" class="form1" required />
-        <input type="hidden" name="profil" class="form1" value="Membres">
+        <input type="password" id="pwd" name="pwd" class="inputForm" required />
+        <input type="hidden" name="profil" class="inputForm" value="Membres">
         <label for="association" class="txt">Associations</label>
-        <select name="association_id">
+        <select name="association_id" id="selectAssociation">
           <option value="" disabled selected hidden>
             Choisissez une association
           </option>
@@ -77,7 +77,7 @@ if ($user["nom_utilisateur"] == $name && $user["prenom_utilisateur"] == $firstNa
             <option value="<?php print $association['id_association']; ?>"><?php print $association['nom_association']; ?></option>
           <?php } ?>
         </select>
-        <button type="submit">
+        <button type="submit" id="submitButton">
           <span class="circle1"></span>
           <span class="circle2"></span>
           <span class="circle3"></span>
