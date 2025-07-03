@@ -1,13 +1,15 @@
 <?php
 require_once ('../database/DAO.php');
-$dao = new DAOReservation();
-$dao->connexion();
 
-$associations =$dao->getAssociations();
-$users= $dao->getUtilisateurs();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   //Recuperer les données
+  $dao = new DAOReservation();
+  $dao->connexion();
+
+  $associations =$dao->getAssociations();
+  $users= $dao->getUtilisateurs();
+  
   $name = isset($_POST['name'])?($_POST['name']):"";
   $firstName = isset($_POST['firstName'])?($_POST['firstName']):"";
   $tel = isset($_POST['tel'])?($_POST['tel']):"";

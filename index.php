@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
   // Gérer le utilisateur_id
- if (isset($_SESSION["connected_user"])) {
+if (isset($_SESSION["connected_user"])) {
     $utilisateur_id = $_SESSION["connected_user"];
     echo "Utilisateur connecté avec l'ID : " . $utilisateur_id;
 } else {
@@ -58,21 +58,7 @@ foreach ($reservations as $reservation) {
 
 ?>
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Calendrier de Réservations</title>
 
-  <!-- Bootstrap Darkly Theme -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/cerulean/bootstrap.min.css" />
-
-  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
-
-  <link rel="stylesheet" href="public/styles/components/calendar.css" />
-</head>
-<body>
   <main class="container mt-4">
     <section id="calendar"></section>
   </main>
@@ -86,7 +72,6 @@ foreach ($reservations as $reservation) {
         </header>
         <section class="modal-body">
           <form id="formulaire" method="POST">
-          <!-- <p id="selectedDateText"></p> -->
           <section class="mb-3">
             <label for="startDate" class="form-label">Date de début</label>
             <input type="date" class="form-control" id="startDate" name="startDate">
@@ -153,11 +138,4 @@ foreach ($reservations as $reservation) {
     </article>
   </section>
 
-  <!-- Librairies JS -->
-  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Ton script personnalisé -->
-  <script src="public/js/calendar.js"></script>
-</body>
-</html>
+ 

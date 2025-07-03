@@ -55,6 +55,7 @@ footer {
   justify-content: flex-start;
   gap: 300px;
   border-top: solid 2px rgb(28, 53, 69);
+  bottom: 0;
 }
 .logo {
   margin: 0;
