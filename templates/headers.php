@@ -1,7 +1,11 @@
 <?php
-
-
-
+require_once(__DIR__ . '/../database/DAO.php');
+session_start();
+var_dump($_SESSION);
+$userName = '';
+if (isset($_SESSION['prenom_utilisateur'])) {
+$userName = htmlspecialchars($_SESSION['prenom_utilisateur']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -24,10 +28,16 @@
         <nav class="menue">
             <img width="24" height="24" src="https://img.icons8.com/plumpy/24/circled-menu--v1.png" alt="circled-menu--v1"/>Menue
         </nav>
-        <article class="connect">
+        <article class="connect" id="connectStatus" data-logged="<?php echo isset($_SESSION['connected_user']) ? '1' : '0'; ?>">
           <span>Se connecter |</span>
           <span>S'inscrire</span>
         </article>
+        <script>
+  const connectStatus = document.getElementById('connectStatus');
+  if (connectStatus.dataset.logged === "1") {
+    connectStatus.innerHTML = "Bienvenue, <?php echo $userName ; ?> !<br> <a href='/Projet-Calendrier-Reservation/models/membre.php'>Se déconnecter</a>";
+  }
+</script>
     </header>
 
 
