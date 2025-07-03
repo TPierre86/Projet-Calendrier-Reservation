@@ -31,7 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $association_id = isset($_POST['association_id'])?($_POST['association_id']):"";
     
          /*Comparer les données pour ne pas crée de news users doublons*/
-         $userExists = false;
         foreach($users as $user){
         
             if ($user["nom_utilisateur"] == $name && $user["prenom_utilisateur"] == $firstName || $user["email"] == $mail) {
@@ -69,19 +68,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
  * ! Modifier un Utilisateur
  */
         if ($action === 'enregistrer'){
-        $id_utilisateur = $_POST['id_utilisateur'];
-        $users= $dao->getUtilisateurs();
-            $name = isset($_POST['name'])?($_POST['name']):"";
-            $firstName = isset($_POST['firstName'])?($_POST['firstName']):"";
-            $tel = isset($_POST['tel'])?($_POST['tel']):"";
-            $mail = isset($_POST['mail'])?($_POST['mail']):"";
-                if (!empty($_POST['pwd'])) {
-                    $pwd = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
-                    $dao->updatePassword($id_utilisateur, $pwd); // une méthode dédiée
-                }
-            $profil = isset($_POST['profil'])?($_POST['profil']):"";
-            $association_id = isset($_POST['association_id'])?($_POST['association_id']):"";    
-        
+        $id_utilisateur = isset($_POST['id_utilisateur']) ? $_POST['id_utilisateur'] : '';
+        $name = isset($_POST['name']) ? $_POST['name'] : '';
+        $firstName = isset($_POST['firstName']) ? $_POST['firstName'] : '';
+        $tel = isset($_POST['tel']) ? $_POST['tel'] : '';
+        $mail = isset($_POST['mail']) ? $_POST['mail'] : '';
+        $profil = isset($_POST['profil']) ? $_POST['profil'] : '';
+        $association_id = isset($_POST['association_id']) ? $_POST['association_id'] : '';
+        // Si le mot de passe a été modifié, on le met à jour
+        if (!empty($_POST['pwd'])) {
+            $pwd = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
+            $dao->updatePassword($id_utilisateur, $pwd);
+        }
         $dao->updateUtilisateur($id_utilisateur, $name, $firstName, $mail, $tel, $profil, $association_id);
         // Redirection ou traitement du formulaire de modification
         header("Location: gestionUtilisateur.php");
@@ -184,8 +182,6 @@ require_once('../../templates/headers.php');
     <!-- Formulaire HTML de modification -->
      <section id="form-modifier"  style="display: none;">
 <form  method="POST" action="" >
-    <input type="hidden" name="id_utilisateur" id="modifier-id" value="">
-
     <label>Nom:</label>
     <input type="text" name="name" value=""><br>
 
@@ -199,7 +195,7 @@ require_once('../../templates/headers.php');
     <input type="text" name="tel" value=""><br>
 
     <label>Mot de passe:</label>
-    <input type="password" name="pwd" value="" placeholder="Laissez vide pour ne pas changer"><br>
+    <input type="text" name="pwd" value=""><br>
 
    <label>Association :</label>
     <select name="association_id" id="modifier-association" required>
