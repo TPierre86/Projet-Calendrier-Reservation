@@ -62,12 +62,12 @@ const calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage d
     // Affiche la fenêtre modale pour permettre à l'utilisateur de saisir les détails de la réservation
     eventModal.show();
   },
-  // Liste des événements (réservations)
-  events: [], 
+  events: '/Projet-Calendrier-Reservation/database/loadEvents.php', 
   /**
    * ! on aura surement un problème pour ajouter tel évênement à tel association
    */
 });
+calendar.render();
 
 // Lorsqu'on clique sur un événement existant 
 /** 

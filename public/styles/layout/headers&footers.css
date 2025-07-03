@@ -1,13 +1,20 @@
 /*DEBUT HEADER/FOOTER*/
-body {
+#bodyHeader {
   width: 100%;
   padding: 0;
   margin: 0;
   height: auto;
 }
 
-.head {
-  background-image: url('/Projet-Calendrier-Reservation/public/styles/img/pont.jfif');
+#bodyFotter {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  height: auto;
+}
+
+#titreSite {
+  background-image: url("/Projet-Calendrier-Reservation/public/styles/img/pont.jfif");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -16,7 +23,7 @@ body {
   height: 200px;
 }
 
-.titre {
+#titre {
   width: 100%;
   color: rgba(250, 253, 247, 0.863);
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
@@ -24,30 +31,18 @@ body {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  gap: 20px;
 }
-.titre1 {
+#titre1 {
   font-size: 50px;
-  margin-bottom: 0px;
+  margin-top: 15px;
+  color: rgba(250, 253, 247, 0.863);
 }
-.titre2 {
+#titre2 {
   font-size: 20px;
+  color: rgba(250, 253, 247, 0.863);
 }
-main {
-  width: 100%;
-}
-nav {
-  margin-top: 50px;
-  display: flex;
 
-  justify-content: space-around;
-  align-items: center;
-
-  height: 30px;
-}
-.nav {
-  color: rgb(28, 53, 69);
-  font-size: 25px;
-}
 footer {
   width: 100%;
   display: flex;
@@ -55,39 +50,36 @@ footer {
   justify-content: flex-start;
   gap: 300px;
   border-top: solid 2px rgb(28, 53, 69);
-  bottom: 0;
+  margin-top: 25px;
 }
-.logo {
+#blason {
   margin: 0;
   display: flex;
   align-items: center;
 }
-.logo img {
+#blason img {
   width: 100px;
   height: auto;
   display: block;
 }
-.info {
+#infoCommune {
   display: flex;
   flex-direction: column;
   gap: 10px;
   color: rgb(28, 53, 69);
 }
-.create {
+#edited {
   gap: 10px;
   color: rgb(28, 53, 69);
 }
-.lien {
+#info {
   color: rgb(28, 53, 69);
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 80px;
+  margin-top: 10px;
 }
-main {
-  display: flex;
-  justify-content: center;
-}
+
 .connect {
   position: absolute;
   top: 15px;
@@ -95,13 +87,11 @@ main {
   color: rgba(250, 253, 247, 0.863);
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   z-index: 1000;
-  display: flex;
   gap: 15px;
   font-size: 22px;
 }
-
-.menue {
-  display: flex;
-  justify-content: flex-start;
+.titreFooter {
+  color: rgba(0, 0, 0, 0.863);
 }
+
 /*FIN HEADER/FOOTER*/

@@ -3,23 +3,24 @@
 
 
 ?>
+<body id="bodyFooter">
     <footer>
-      <article class="logo">
+      <article id="blason">
         <img src="/Projet-Calendrier-Reservation/public/styles/img/blason.png">
       </article>
-      <article class="info">
-        <h1>Commune de Monestiés</h1>
+      <article id="infoCommune">
+        <h1 class="titreFooter">Commune de Monestiés</h1>
         <span>Place de la mairie</span>
         <span>81640</span>
         <span>Monestiés</span>
       </article>
-      <article class="lien">
+      <article id="info">
         <span>https://www.monesties.fr/</span>
         <span>05.63.80.14.00</span>
       </article>
-      <article class="create">
-        <h1>Site édité par :</h1>
-        <div class="nom">
+      <article id="edited">
+        <h1 class="titreFooter">Site édité par :</h1>
+        <div>
         <span>Marion , Romain , Thibault et Antony</span>
         </div>
       </article>
@@ -29,4 +30,3 @@
     <script src="/Projet-Calendrier-Reservation/public/js/calendar.js"></script>
     <script src="/Projet-Calendrier-Reservation/public/js/menuBurger.js"></script>
   </body>
-</html>

@@ -34,6 +34,7 @@ if (isset($_SESSION["connected_user"])) {
 // --------commande pour New Reservation--------------
 $dao = new DAOReservation();
 $dao->connexion();
+$reservationExist=false;
 $reservations = $dao->getReservation();
 foreach ($reservations as $reservation) {
   if ($startDate == $reservation["date_debut"] && $startTime == $reservation["heure_debut"] && $roomSelect == $reservation["salle_id"] || $startDate == $reservation["date_debut"] && ($startTime < $reservation["heure_fin"]) && $roomSelect == $reservation["salle_id"]) {
