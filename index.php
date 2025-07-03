@@ -26,9 +26,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   // Gérer le utilisateur_id
 if (isset($_SESSION["connected_user"])) {
     $utilisateur_id = $_SESSION["connected_user"];
-    echo "Utilisateur connecté avec l'ID : " . $utilisateur_id;
+    //echo "Utilisateur connecté avec l'ID : " . $utilisateur_id;
 } else {
-    echo "Aucun utilisateur connecté.";
+    //echo "Aucun utilisateur connecté.";
 }
 
 // --------commande pour New Reservation--------------
@@ -44,23 +44,28 @@ foreach ($reservations as $reservation) {
 }
 
   if ($reservationExist) {
-      $message = "Reservation Impossible. Salle déjà occupée.";
-      echo "<script type='text/javascript'>alert('$message');</script>";
+      $_SESSION['message'] = "Reservation Impossible. Salle déjà occupée.";
+      header('Location: /Projet-Calendrier-Reservation/index.php');
+      exit;
   } else {
-    $success = $dao->NewReservation($startDate, $endDate, $startTime, $endTime, $commentInput, $attachments, $roomSelect, $utilisateur_id);
+      $success = $dao->NewReservation(...);
       if ($success) {
-          $message = "Reservation réussi";
-          echo "<script type='text/javascript'>alert('$message');</script>";
-        }
+          $_SESSION['message'] = "Reservation réussi";
+          header('Location: /Projet-Calendrier-Reservation/index.php');
+          exit;
+      }
   }
-
-}  
-
-
+}
 ?>
 
 
-  <main class="container mt-4">
+  <main class="container mt-4">*
+  <?php
+  if (isset($_SESSION['message'])) {
+      echo "<script type='text/javascript'>alert('{$_SESSION['message']}');</script>";
+      unset($_SESSION['message']);
+  }
+  ?>
     <section id="calendar"></section>
   </main>
   <!-- Modal pour les réservations -->
