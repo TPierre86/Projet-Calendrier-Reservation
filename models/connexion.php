@@ -12,16 +12,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $utilisateurs = $dao->getMail($mailUtilisateur);
 
     foreach ($utilisateurs as $utilisateur){
-    if ($utilisateur && password_verify($motDePasse, $utilisateur["password"]) || $motDePasse===$utilisateur["password"] ) {
-            $_SESSION['profil'] = $utilisateur["profil"];
-            $_SESSION["connected_user"]=$utilisateur["id_utilisateur"];
-            header('Location: ../index.php');
-            exit;
-        } 
-            $message = "identifiant ou mot de passe incorrect";
-            echo "<script type='text/javascript'>alert('$message');</script>";
-            
-}
+        if ($utilisateur && password_verify($motDePasse, $utilisateur["password"]) || $motDePasse===$utilisateur["password"] ) {  
+                $_SESSION['profil'] = $utilisateur["profil"];          
+                $_SESSION["connected_user"]=$utilisateur["id_utilisateur"];
+                $_SESSION["prenom"]=$utilisateur["prenom_utilisateur"];
+                header('Location: ../index.php');
+                exit;
+            } 
+        
+    $message = "identifiant ou mot de passe incorrect";
+    echo "<script type='text/javascript'>alert('$message');</script>";
+        }
 }
 ?>
 
