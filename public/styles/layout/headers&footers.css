@@ -13,6 +13,10 @@
   height: auto;
 }
 
+.bienvenue{
+  color:red;
+}
+
 #titreSite {
   background-image: url("/Projet-Calendrier-Reservation/public/styles/img/pont.jfif");
   background-size: cover;
