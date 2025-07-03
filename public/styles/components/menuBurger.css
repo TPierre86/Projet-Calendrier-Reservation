@@ -43,7 +43,7 @@
 }
 
 #nav-menu-close {
-    position: fixed;
+    position: absolute;
     top: 200px;
     left: 20px;
     z-index: 1100;
