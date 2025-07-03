@@ -83,7 +83,7 @@ $this->dbh=null;
 
 
 public function getMail($email) {
-    $getMail = $this->dbh->prepare("SELECT email, password FROM utilisateurs WHERE email=:email");
+    $getMail = $this->dbh->prepare("SELECT id_utilisateur, email, password FROM utilisateurs WHERE email=:email");
     $getMail->execute([':email' => $email]);
     return $getMail;
 }
