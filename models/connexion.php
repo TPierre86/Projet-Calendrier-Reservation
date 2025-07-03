@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['profil'] = $utilisateur["profil"];          
                 $_SESSION["connected_user"]=$utilisateur["id_utilisateur"];
                 $_SESSION["prenom"]=$utilisateur["prenom_utilisateur"];
-                header('Location: ../index.php');
+                header('Location: ../controllers.php');
                 exit;
             } 
         

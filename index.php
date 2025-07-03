@@ -1,6 +1,6 @@
 <?php 
 require_once('database/DAO.php');
-session_start();
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   //Recuperer les données
