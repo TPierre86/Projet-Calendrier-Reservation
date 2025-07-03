@@ -60,8 +60,14 @@ public function getUtilisateurs() {
     return $utilisateurs;
 }
 
+public function getUtilisateursById($id_utilisateur) {
+    $utilisateurs=$this->dbh->prepare("SELECT * FROM utilisateurs WHERE id_utilisateur = ?");
+    $utilisateurs->execute([$id_utilisateur]);
+    return $utilisateurs;
+}
+
 public function UtilisateurLabelAssociation() {
-    $usersLabelAssociation=$this->dbh->prepare("SELECT nom_utilisateur, prenom_utilisateur, telephone, email, profil, association_id, nom_association FROM `utilisateurs` INNER JOIN associations ON utilisateurs.association_id = associations.id_association ORDER BY nom_utilisateur");
+    $usersLabelAssociation=$this->dbh->prepare("SELECT id_utilisateur, nom_utilisateur, prenom_utilisateur, telephone, email, profil, password, association_id, nom_association FROM `utilisateurs` INNER JOIN associations ON utilisateurs.association_id = associations.id_association ORDER BY nom_utilisateur");
     $usersLabelAssociation->execute();
     return $usersLabelAssociation;
 }
