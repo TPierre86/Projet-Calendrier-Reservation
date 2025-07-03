@@ -1,15 +1,44 @@
 #nav-menu-open {
-    height: 100% ;
-    width: 250px ;
+    height: 100%;
+    width: 250px;
     position: fixed;
-    z-index: 1 ;
+    z-index: 1000;
     top: 0;
-    right: -250px;
+    left: -250px;
     background-color: beige;
     padding-top: 60px;
-    transition: left 0.5s ease;
+    transition: right 0.5s ease;
+}
+
+#nav-menu-open ul {
+    list-style: none;
+    padding: 0;
+}
+
+#nav-menu-open li {
+    margin: 20px 0;
+}
+
+#btn-close-menu, #btn-open-menu {
+    background: none;
+    border: none;
+    font-size: 2rem;
+}
+
+#nav-menu-close {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1100;
 }
 
 .list-menu {
-    
+    display       : flex;
+    flex-direction: column;
+    position: absolute;
+    margin  : 0;
+    left   : 0;
+    top     : 0;
+    min-width: 50vw;
+    height   : 100vh;
 }
