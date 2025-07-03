@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($utilisateurs as $utilisateur){
         if ($utilisateur && password_verify($motDePasse, $utilisateur["password"]) || $motDePasse===$utilisateur["password"] ) {            
                 $_SESSION["connected_user"]=$utilisateur["id_utilisateur"];
+                $_SESSION["prenom"]=$utilisateur["prenom_utilisateur"];
                 header('Location: ../templates/headers.php');
                 exit;
             } 

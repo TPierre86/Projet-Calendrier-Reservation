@@ -1,11 +1,9 @@
 <?php
 require_once(__DIR__ . '/../database/DAO.php');
 session_start();
-var_dump($_SESSION);
-$userName = '';
-if (isset($_SESSION['prenom_utilisateur'])) {
-$userName = htmlspecialchars($_SESSION['prenom_utilisateur']);
-}
+
+$userName = htmlspecialchars($_SESSION['prenom']);
+
 ?>
 
 <!DOCTYPE html>
