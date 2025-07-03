@@ -1,5 +1,5 @@
-<?php require_once('../templates/headers.php');
-require_once('../index.php');
+<?php require_once('templates/headers.php');
+require_once('index.php');
 ?>
 
 
@@ -16,4 +16,4 @@ require_once('../index.php');
     <button id="btn-open-menu"><i class="fa-solid fa-bars"></i></button>
 </article>
 
-<?php require_once('../templates/footer.php');?>
+<?php require_once('templates/footer.php');?>

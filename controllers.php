@@ -1,11 +1,10 @@
 <?php
-
+require_once('database/DAO.php');
 session_start();
-
 require_once("templates/headers.php");
+require_once("templates/bandeau.php");
 
-
-
+var_dump($_SESSION);
 
 switch ($_SESSION['profil']){
     case'Membre':
