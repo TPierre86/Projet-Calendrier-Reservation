@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
   // Gérer le utilisateur_id
- if (isset($_SESSION["connected_user"])) {
+if (isset($_SESSION["connected_user"])) {
     $utilisateur_id = $_SESSION["connected_user"];
     echo "Utilisateur connecté avec l'ID : " . $utilisateur_id;
 } else {
@@ -55,10 +55,10 @@ foreach ($reservations as $reservation) {
 
 }  
 
-require_once('../templates/headers.php');
+
 ?>
 
-<body>
+
   <main class="container mt-4">
     <section id="calendar"></section>
   </main>
@@ -138,4 +138,4 @@ require_once('../templates/headers.php');
     </article>
   </section>
 
-  <?php require_once('../templates/footer.php');?>
+ 

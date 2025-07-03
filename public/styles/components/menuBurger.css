@@ -1,44 +1,58 @@
 #nav-menu-open {
     height: 100%;
     width: 250px;
-    position: fixed;
+    position: absolute;
     z-index: 1000;
-    top: 0;
+    top: 200px;
     left: -250px;
-    background-color: beige;
+    background-color: rgb(247, 247, 238);
     padding-top: 60px;
-    transition: right 0.5s ease;
+    transition: left 0.5s ease;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+    margin-top: 0;
+    padding-top: 0;
+}
+
+#btn-close-menu {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
 }
 
 #nav-menu-open ul {
     list-style: none;
-    padding: 0;
+    padding: 0 20px;
+    margin: 0;
+    
 }
 
 #nav-menu-open li {
     margin: 20px 0;
 }
 
-#btn-close-menu, #btn-open-menu {
+#btn-open-menu {
     background: none;
     border: none;
     font-size: 2rem;
+    cursor: pointer;
+    
 }
 
 #nav-menu-close {
     position: fixed;
-    top: 20px;
+    top: 200px;
     left: 20px;
     z-index: 1100;
 }
 
 .list-menu {
-    display       : flex;
-    flex-direction: column;
-    position: absolute;
-    margin  : 0;
-    left   : 0;
-    top     : 0;
-    min-width: 50vw;
-    height   : 100vh;
+    text-decoration: none;
+    color: #333;
+    font-size: 1.2rem;
+    display: block;
+    padding: 10px 0;
 }

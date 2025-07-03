@@ -8,7 +8,7 @@ require_once('../index.php');
     <ul>
         <li><a class="list-menu" href="#">Gestion des Utilisateurs</a></li>
         <li><a class="list-menu" href="#">Gestion des Associations</a></li>
-        <li><a class="list-menu" href="#">Gestion des Utilisateurs</a></li>
+        <li><a class="list-menu" href="#">Gestion des Membres</a></li>
         <li><a class="list-menu" href="#">Gestion des Salles</a></li>
     </ul>
 </nav>
