@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url("pont.jfif");
+  background-image: url("/Projet-Calendrier-Reservation/public/styles/img/pont.jfif");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -30,7 +30,7 @@
 #formInscription {
   display: flex;
   flex-direction: column;
-  padding: 80px;
+  padding: 60px;
   border-radius: 50px;
   background: rgba(255, 255, 255, 0.65);
   -webkit-backdrop-filter: blur(1px);
