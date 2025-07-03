@@ -6,13 +6,14 @@ $dao->connexion();
 
 $utilisateurs =$dao->UtilisateurLabelAssociation();
 $associations =$dao->getAssociations();
+
+
+
 // activer les boutons spprimer et modifier
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     
     $action = $_POST['action'];
-
     
-
 /**
  * ! Création d'un nouveau Utilisateur
  */
@@ -30,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $association_id = isset($_POST['association_id'])?($_POST['association_id']):"";
     
          /*Comparer les données pour ne pas crée de news users doublons*/
+         $userExists = false;
         foreach($users as $user){
         
             if ($user["nom_utilisateur"] == $name && $user["prenom_utilisateur"] == $firstName || $user["email"] == $mail) {
@@ -66,31 +68,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 /**
  * ! Modifier un Utilisateur
  */
-    if ($action === 'modifier') {
+        if ($action === 'enregistrer'){
+        $id_utilisateur = $_POST['id_utilisateur'];
+        $users= $dao->getUtilisateurs();
+            $name = isset($_POST['name'])?($_POST['name']):"";
+            $firstName = isset($_POST['firstName'])?($_POST['firstName']):"";
+            $tel = isset($_POST['tel'])?($_POST['tel']):"";
+            $mail = isset($_POST['mail'])?($_POST['mail']):"";
+                if (!empty($_POST['pwd'])) {
+                    $pwd = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
+                    $dao->updatePassword($id_utilisateur, $pwd); // une méthode dédiée
+                }
+            $profil = isset($_POST['profil'])?($_POST['profil']):"";
+            $association_id = isset($_POST['association_id'])?($_POST['association_id']):"";    
+        
+        $dao->updateUtilisateur($id_utilisateur, $name, $firstName, $mail, $tel, $profil, $association_id);
         // Redirection ou traitement du formulaire de modification
-        header("Location: modifier_utilisateur.php?id=$id_utilisateur");
+        header("Location: gestionUtilisateur.php");
         exit;
-    }
+        }
+    
 }
 
 
+require_once('../../templates/headers.php');
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gestionUtilisateur</title>
-    <!-- <link rel="stylesheet" href="/Projet-Calendrier-Reservation/public/styles/components/inscription.css" /> -->
-  </head>
 
 <main>
     <article>
         <h1>Gérer les utilisateurs</h1>
         <button id="nouveau">Nouveau Utilisateur</button>
             <section id="form-nouveau" style="display: none;">
-                <form method="POST" action="">
+                <form id="form2" method="POST" action="">
                     <label for="name" class="txt">Nom</label>
                     <input type="text" id="name" name="name" class="form1" required />
         
@@ -134,6 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 <th>Télephone</th>
                 <th>Email</th>
                 <th>Profil</th>
+                <th>Id association</th>
                 <th>Association</th>
                 <th>Action</th>
             </tr>
@@ -146,6 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 <td><?php print $utilisateur['telephone'] ?></td>
                 <td><?php print $utilisateur['email'] ?></td>
                 <td><?php print $utilisateur['profil'] ?></td>
+                <td><?php print $utilisateur['association_id'] ?></td>
                 <td><?php print $utilisateur['nom_association'] ?></td>
                 <td>
                 <!-- Formulaire SUPPRIMER -->    
@@ -154,16 +166,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                     <button type="submit" name="action" value="supprimer">Supprimer</button>
                     </form>
                 <!-- Formulaire MODIFIER -->
-                <form method="POST" action="" onsubmit="return confirm('Voulez-vous vraiment modifier cet utilisateur ?');">
-                    <input type="hidden" name="id_utilisateur" value="<?php echo $utilisateur['id_utilisateur']; ?>">
-                    <button type="submit" name="action" value="modifier">Modifier</button>
-                    </form>
-                </td>
+                    <button type="button" class="modifier-btn"
+                        data-id="<?= $utilisateur['id_utilisateur'] ?>"
+                        data-name="<?= htmlspecialchars($utilisateur['nom_utilisateur']) ?>"
+                        data-firstname="<?= htmlspecialchars($utilisateur['prenom_utilisateur']) ?>"
+                        data-email="<?= htmlspecialchars($utilisateur['email']) ?>"
+                        data-tel="<?= htmlspecialchars($utilisateur['telephone']) ?>"
+                        data-password="<?= htmlspecialchars($utilisateur['password']) ?>"
+                        data-association-id="<?= $utilisateur['association_id'] ?>"
+                    >Modifier</button>
+               </td>
             </tr>
             <?php } ?>
             
         </tbody>
     </table>
+    <!-- Formulaire HTML de modification -->
+     <section id="form-modifier"  style="display: none;">
+<form  method="POST" action="" >
+    <input type="hidden" name="id_utilisateur" id="modifier-id" value="">
+
+    <label>Nom:</label>
+    <input type="text" name="name" value=""><br>
+
+    <label>Prénom:</label>
+    <input type="text" name="firstName" value=""><br>
+
+    <label>Email:</label>
+    <input type="email" name="mail" value=""><br>
+
+    <label>Téléphone:</label>
+    <input type="text" name="tel" value=""><br>
+
+    <label>Mot de passe:</label>
+    <input type="password" name="pwd" value="" placeholder="Laissez vide pour ne pas changer"><br>
+
+   <label>Association :</label>
+    <select name="association_id" id="modifier-association" required>
+        <option value="" disabled selected hidden>Choisissez une association</option>
+        <?php 
+           
+            foreach ($associations as $association) { ?>
+        <option value="<?php print $association['id_association']; ?>">
+            <?php print $association['nom_association']; ?>
+        </option>
+    <?php } ?>
+</select><br>
+
+    <button type="submit" name="action" value="enregistrer">Enregistrer les modifications</button>
+</form>
+</section>
     </article>
     <script src="../../public/js/adminUtilisateur.js"></script>
 </main>
