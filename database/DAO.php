@@ -43,7 +43,7 @@ public function getReservation() {
 }
 
 public function getReservationByAssociation($id_association) {
-    $reservation = $this->bdh->prepare("SELECT * FROM reservations INNER JOIN utilisateurs ON (utilisateurs.id_utilisateur=reservations.utilisateur_id) WHERE association_id=".$id_association." ORDER BY date_debut, heure_debut");
+    $reservation = $this->dbh->prepare("SELECT * FROM reservations INNER JOIN utilisateurs ON (utilisateurs.id_utilisateur=reservations.utilisateur_id) WHERE association_id=".$id_association." ORDER BY date_debut, heure_debut");
     $reservation->execute();
     return $reservation;
 }
@@ -57,13 +57,13 @@ public function getSalles() {
 public function getUtilisateurs() {
     $utilisateurs=$this->dbh->prepare("SELECT * FROM utilisateurs");
     $utilisateurs->execute();
-    return $utilisateurs;
+    return $utilisateurs->fetchAll(PDO::FETCH_ASSOC);
 }
 
 public function getUtilisateursById($id_utilisateur) {
     $utilisateurs=$this->dbh->prepare("SELECT * FROM utilisateurs WHERE id_utilisateur = ?");
     $utilisateurs->execute([$id_utilisateur]);
-    return $utilisateurs;
+    return $utilisateurs->fetch(PDO::FETCH_ASSOC);
 }
 
 public function UtilisateurLabelAssociation() {
@@ -97,7 +97,7 @@ $this->dbh=null;
 public function getMail($email) {
     $getMail = $this->dbh->prepare("SELECT id_utilisateur, email, password, prenom_utilisateur, profil FROM utilisateurs WHERE email=:email");
     $getMail->execute([':email' => $email]);
-    return $getMail;
+    return $getMail->fetch(PDO::FETCH_ASSOC);
 }
 
 public function deleteUtilisateur($id_utilisateur) {
@@ -119,6 +119,9 @@ public function updateUtilisateur($id_utilisateur, $name, $firstName, $mail, $te
     return $stmt->execute([$name, $firstName, $mail, $tel, $profil, $association_id, $id_utilisateur]);
 }
 
+public function updatePassword($id_utilisateur, $pwd) {
+    $stmt = $this->dbh->prepare("UPDATE utilisateurs SET password = ? WHERE id_utilisateur = ?");
+    return $stmt->execute([$pwd, $id_utilisateur]);
 }
 
-?>
+}?>

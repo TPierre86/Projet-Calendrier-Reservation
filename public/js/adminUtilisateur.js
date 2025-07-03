@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', () => {
         formModifier.querySelector("input[name='firstName']").value = button.dataset.firstname;
         formModifier.querySelector("input[name='mail']").value = button.dataset.email;
         formModifier.querySelector("input[name='tel']").value = button.dataset.tel;
-        formModifier.querySelector("input[name='pwd']").value = button.dataset.password;
         const associationSelect = formModifier.querySelector("select[name='association_id']");
         const associationValue = button.dataset.associationId;
         
