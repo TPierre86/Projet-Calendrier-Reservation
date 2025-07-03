@@ -9,21 +9,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dao = new DAOReservation();
     $dao->connexion();
 
-    $utilisateurs = $dao->getMail($mailUtilisateur);
+$utilisateurs = $dao->getMail($mailUtilisateur);
 
-    foreach ($utilisateurs as $utilisateur){
-        if ($utilisateur && password_verify($motDePasse, $utilisateur["password"]) || $motDePasse===$utilisateur["password"] ) {  
-                $_SESSION['profil'] = $utilisateur["profil"];          
-                $_SESSION["connected_user"]=$utilisateur["id_utilisateur"];
-                $_SESSION["prenom"]=$utilisateur["prenom_utilisateur"];
-                header('Location: ../controllers.php');
-                exit;
-            } 
-        
-    $message = "identifiant ou mot de passe incorrect";
-    echo "<script type='text/javascript'>alert('$message');</script>";
-        }
+foreach ($utilisateurs as $utilisateur) {
+    if ($utilisateur && (password_verify($motDePasse, $utilisateur["password"]) || $motDePasse === $utilisateur["password"])) {  
+        // Connexion OK
+        $_SESSION['profil'] = $utilisateur["profil"];          
+        $_SESSION["connected_user"] = $utilisateur["id_utilisateur"];
+        $_SESSION["prenom"] = $utilisateur["prenom_utilisateur"];
+        header('Location: ../controllers.php');
+        exit;
+    }
 }
+
+// Si aucun utilisateur n’a matched, afficher erreur
+$message = "identifiant ou mot de passe incorrect";
+echo "<script type='text/javascript'>alert('$message');</script>";
+};
 ?>
 
 <!DOCTYPE html>
