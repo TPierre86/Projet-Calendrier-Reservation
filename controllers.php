@@ -1,5 +1,17 @@
-headert/
+<?php
 
-if else
+require_once("templates/headers.php");
 
-footer 
+
+
+
+
+
+
+
+
+
+
+
+
+require_once("templates/footer.php");
