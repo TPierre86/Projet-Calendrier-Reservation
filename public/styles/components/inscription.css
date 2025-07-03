@@ -112,3 +112,17 @@ h2 {
   border-bottom: 1px solid #000000;
   padding-bottom: 16px;
 }
+
+#bienvenu {
+  font-size: 50px;
+}
+
+#deco {
+  color: rgb(25, 36, 46);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.co {
+  color: rgb(25, 36, 46);
+}

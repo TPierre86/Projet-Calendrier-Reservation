@@ -84,9 +84,9 @@ public function NewUtilisateur($name,$firstName,$tel,$mail,$pwd,$profil,$associa
     return $newUtilisateur;
 }
 
-public function NewAssociation($nom_association){
-    $newAssociation=$this->dbh->prepare("INSERT INTO `associations`(`nom_association`) VALUES ('".$nom_association."')");
-    $newAssociation->execute();
+public function NewAssociation($name){
+    $newAssociation=$this->dbh->prepare("INSERT INTO `associations`(`nom_association`) VALUES (?)");
+    $newAssociation->execute([$name]);
     return $newAssociation;
 }
 
@@ -104,7 +104,7 @@ $this->dbh=null;
 public function getMail($email) {
     $getMail = $this->dbh->prepare("SELECT id_utilisateur, email, password, prenom_utilisateur, profil FROM utilisateurs WHERE email=:email");
     $getMail->execute([':email' => $email]);
-    return $getMail->fetch(PDO::FETCH_ASSOC);
+    return $getMail->fetchAll(PDO::FETCH_ASSOC);  // récupère tous les résultats sous forme de tableau associatif
 }
 
 public function deleteUtilisateur($id_utilisateur) {
@@ -115,6 +115,20 @@ public function deleteUtilisateur($id_utilisateur) {
 public function deleteSalle($id_salle) {
     $deletSalle = $this->dbh->prepare("DELETE FROM salles WHERE id_salle = ?");
     $deletSalle->execute([$id_salle]);
+}
+
+public function deleteAssociation($id_association) {
+    $deletAssociation = $this->dbh->prepare("DELETE FROM associations WHERE id_association = ?");
+    $deletAssociation->execute([$id_association]);
+}
+
+public function updateAssociation($id_association, $name) {
+    $stmt = $this->dbh->prepare("
+        UPDATE associations SET 
+        nom_association = ?
+        WHERE id_association = ?
+    ");
+    return $stmt->execute([$name, $id_association]);
 }
 
 public function updateSalle($id_salle, $name) {

@@ -14,14 +14,14 @@ if (isset($_SESSION['prenom'])) {
             <article>
         </section>
         <article class="connect" id="connectStatus" data-logged="<?php echo isset($_SESSION['connected_user']) ? '1' : '0'; ?>">
-            <a href="/Projet-Calendrier-Reservation/models/connexion.php">Se connecter |</a>
-            <a href="/Projet-Calendrier-Reservation/models/inscription.php">S'inscrire</a>
+            <a class="co" href="/Projet-Calendrier-Reservation/models/connexion.php">Se connecter |</a>
+            <a class="co" href="/Projet-Calendrier-Reservation/models/inscription.php">S'inscrire</a>
         </article>
         <script>
             const connectStatus = document.getElementById('connectStatus');
             const userName = "<?php echo $userName; ?>";
             if (connectStatus.dataset.logged === "1") {
-                connectStatus.innerHTML = `<span class='bienvenue'>Bienvenue, ${userName} !</span> <br><a class='bienvenue' href='/Projet-Calendrier-Reservation/models/membre.php'>Se déconnecter</a>`;
+                connectStatus.innerHTML = `<span id="bienvenu"> Bienvenue, ${userName} !</span> <br><a id="deco" href='/Projet-Calendrier-Reservation/models/membre.php'>Se déconnecter</a>`;
             }else {
                 connectStatus.innerHTML = "Pas Bienvenue";
             }
