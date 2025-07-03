@@ -138,5 +138,3 @@ foreach ($reservations as $reservation) {
       </article>
     </article>
   </section>
-
- 
