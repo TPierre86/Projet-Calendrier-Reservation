@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
         if (password_verify($motDePasse, $pwd) || $motDePasse===$pwd) {
             session_start();
+            $_SESSION['profil'] = $utilisateur["profil"];
             header('Location: ../index.php');
             exit;
         } else {
