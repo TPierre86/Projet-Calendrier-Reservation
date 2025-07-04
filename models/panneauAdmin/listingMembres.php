@@ -9,7 +9,6 @@ $dao->connexion();
   // Gérer l'association de l'utilisateur connecté
 if (isset($_SESSION["association_id"])) {
     $association_id = $_SESSION["association_id"];
-    echo "Association connectée avec l'ID : " . $association_id;
 } else {
     echo "Aucune association connectée.";
 }

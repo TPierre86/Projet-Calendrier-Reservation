@@ -27,7 +27,7 @@ switch ($_SESSION['profil']){
         require_once("models/association.php");
         break;
     default:
-        require_once("index.php"); //On verra pars la suite
+        require_once("models/visiteur.php"); //On verra pars la suite
 
 }
 
