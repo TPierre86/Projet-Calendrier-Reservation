@@ -69,63 +69,89 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         }
     
 }
+// Pagination
+$parPage = 10; // Nombre de lignes par page
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$total = count($associations);
+$totalPages = ceil($total / $parPage);
+$start = ($page - 1) * $parPage;
+$associationsPage = array_slice($associations, $start, $parPage);
+
 
 
 require_once('../../templates/headers.php');
 
 ?>
 
-<main>
-    <article>
-        <h1>Gérer les Associations</h1>
-        <button id="nouveau">Nouvelle Association</button>
+<main id="mainGestion">
+    <article id="formGestion">
+        <h1 id="titreGestion">Gérer les Associations</h1>
+        <button class="submitButton" id="nouveau">Nouvelle Association</button>
+        <section id="gestionRow">   
             <section id="form-nouveau" style="display: none;">
-                <form id="form2" method="POST" action="">
+                <form id="formCreer" method="POST" action="">
 
-                    <label for="name" class="txt">Nom</label>
+                    <label for="name" class="txt" id="labelNom">Nom</label>
                     <input type="text" id="name" name="name" class="form1" required />
 
-                    <button type="submit" name="action" value="creer">Créer</button>
+                    <button class="submitButton" id="creer" type="submit" name="action" value="creer">Créer</button>
                 </form>
             </section>
-    <table>
-        <h2>Liste des Associations</h2>
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($associations as $association) { ?> 
-            <tr>
-                <td><?php print $association['nom_association'] ?></td>
-                <td>
-                <!-- Formulaire SUPPRIMER -->    
-                <form method="POST" action="" onsubmit="return confirm('Voulez-vous vraiment supprimer cette association ?');">
-                    <input type="hidden" name="id_association" value="<?php echo $association['id_association']; ?>">
-                    <button type="submit" name="action" value="supprimer">Supprimer</button>
-                    </form>
-                <!-- Formulaire MODIFIER -->
-                    <button type="button" class="modifier-btn"
-                        data-id="<?= $association['id_association'] ?>"
-                        data-name="<?= htmlspecialchars($association['nom_association']) ?>"
-                    >Modifier</button>
-               </td>
-            </tr>
-            <?php } ?>
-            
-        </tbody>
-    </table>
-    <!-- Formulaire HTML de modification -->
-     <section id="form-modifier"  style="display: none;">
-<form  method="POST" action="" >
-    <input type="hidden" name="id_association" value="">
-    <label>Nom:</label>
-    <input type="text" name="name" value=""><br>
-    <button type="submit" name="action" value="enregistrer">Enregistrer les modifications</button>
-</form>
-</section>
+            <section id="tableContainer">
+                    <h2 id="titreListe">Liste des Associations</h2>
+                <table id="tableListe">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($associationsPage as $association) { ?> 
+                        <tr>
+                            <td><?php print $association['nom_association'] ?></td>
+                            <td >
+                                <article id="rowButton">
+                                <!-- Formulaire SUPPRIMER -->    
+                                <form method="POST" action="" onsubmit="return confirm('Voulez-vous vraiment supprimer cette association ?');">
+                                    <input class="form1" type="hidden" name="id_association" value="<?php echo $association['id_association']; ?>">
+                                    <button class="submitButton" id="supprimer" type="submit" name="action" value="supprimer"><i class="fa-solid fa-trash"></i></button>
+                                    </form>
+                                <!-- Formulaire MODIFIER -->
+                                    <button id="modifier" type="button" class="modifier-btn submitButton"
+                                        data-id="<?= $association['id_association'] ?>"
+                                        data-name="<?= htmlspecialchars($association['nom_association']) ?>"
+                                    ><i class="fa-solid fa-pen"></i></button>
+                                </article>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                        
+                    </tbody>
+                </table>
+                <section class="pagination">
+                    <?php if ($page > 1): ?>
+                        <a href="?page=<?= $page - 1 ?>">&laquo; Précédent</a>
+                    <?php endif; ?>
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <a href="?page=<?= $i ?>" <?= $i === $page ? 'style="font-weight:bold;text-decoration:underline;"' : '' ?>><?= $i ?></a>
+                    <?php endfor; ?>
+                    <?php if ($page < $totalPages): ?>
+                        <a href="?page=<?= $page + 1 ?>">Suivant &raquo;</a>
+                    <?php endif; ?>
+                    </section>
+            </section>
+            <!-- Formulaire HTML de modification -->
+            <section id="form-modifier"  style="display: none;">
+                <form id="formModifier" method="POST" action="" >
+                    <input type="hidden" name="id_association" value="">
+                    <label for="name" class="txt">Nom:</label>
+                    <input class="form1" type="text" name="name" value=""><br>
+                    <button class="submitButton" id="enregistrer" type="submit" name="action" value="enregistrer">Enregistrer les modifications</button>
+                </form>
+            </section>
+        </section>    
     </article>
     <script src="../../public/js/adminAssociations.js"></script>
+    <script src="https://kit.fontawesome.com/5bef22b054.js" crossorigin="anonymous"></script>
 </main>
