@@ -17,6 +17,7 @@ foreach ($utilisateurs as $utilisateur) {
         $_SESSION['profil'] = $utilisateur["profil"];          
         $_SESSION["connected_user"] = $utilisateur["id_utilisateur"];
         $_SESSION["prenom"] = $utilisateur["prenom_utilisateur"];
+        $_SESSION["association_id"] = $utilisateur["association_id"];
         header('Location: ../controllers.php');
         exit;
     }

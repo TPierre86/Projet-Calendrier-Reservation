@@ -23,7 +23,7 @@ switch ($_SESSION['profil']){
     case 'Menage':
         require_once("models/menage.php");
         break;
-    case 'Président':
+    case "Président d'association":
         require_once("models/association.php");
         break;
     default:
