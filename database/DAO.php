@@ -31,8 +31,8 @@ return $associations->fetchAll(PDO::FETCH_ASSOC);
 }
 
 public function getMembresByAssociation($id_association) {
-    $membres = $this->dbh->prepare("SELECT * FROM utilisateurs WHERE association_id=".$id_association);
-    $membres->execute();
+    $membres = $this->dbh->prepare("SELECT * FROM utilisateurs WHERE association_id=?");
+    $membres->execute([$id_association]);
     return $membres->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -43,8 +43,8 @@ public function getReservation() {
 }
 
 public function getReservationByAssociation($id_association) {
-    $reservation = $this->dbh->prepare("SELECT * FROM reservations INNER JOIN utilisateurs ON (utilisateurs.id_utilisateur=reservations.utilisateur_id) WHERE association_id=".$id_association." ORDER BY date_debut, heure_debut");
-    $reservation->execute();
+    $reservation = $this->dbh->prepare("SELECT * FROM reservations INNER JOIN utilisateurs ON (utilisateurs.id_utilisateur=reservations.utilisateur_id) WHERE association_id=? ORDER BY date_debut, heure_debut");
+    $reservation->execute([$id_association]);
     return $reservation->fetchAll(PDO::FETCH_ASSOC);
 }
 
@@ -73,14 +73,14 @@ public function UtilisateurLabelAssociation() {
 }
 
 public function NewReservation($startDate,$endDate,$startTime,$endTime,$commentInput,$attachments,$roomSelect,$utilisateur_id) {
-    $newReservation=$this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `commentaire`, `pieces_jointe`, `salle_id`, `utilisateur_id`) VALUES ('".$startDate."','".$endDate."','".$startTime."','".$endTime."','".$commentInput."','".$attachments."','".$roomSelect."','".$utilisateur_id."')");
-    $newReservation->execute();
+    $newReservation=$this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `commentaire`, `pieces_jointe`, `salle_id`, `utilisateur_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $newReservation->execute([$startDate, $endDate, $startTime, $endTime, $commentInput, $attachments, $roomSelect, $utilisateur_id]);
     return $newReservation;
 }
 
-public function NewUtilisateur($name,$firstName,$tel,$mail,$pwd,$profil,$association_id){
-    $newUtilisateur = $this->dbh->prepare("INSERT INTO `utilisateurs`(`nom_utilisateur`, `prenom_utilisateur`, `telephone`, `email`, `password`, `profil`, `association_id`) VALUES ('".$name."','".$firstName."','".$tel."','".$mail."','".$pwd."','".$profil."','".$association_id."')");
-    $newUtilisateur->execute([$name,$firstName,$tel,$mail,$pwd,$profil,$association_id]);
+public function NewUtilisateur($name, $firstName, $tel, $mail, $pwd, $profil, $association_id) {
+    $newUtilisateur = $this->dbh->prepare("INSERT INTO `utilisateurs`(`nom_utilisateur`, `prenom_utilisateur`, `telephone`, `email`, `password`, `profil`, `association_id`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $newUtilisateur->execute([$name, $firstName, $tel, $mail, $pwd, $profil, $association_id]);
     return $newUtilisateur;
 }
 
