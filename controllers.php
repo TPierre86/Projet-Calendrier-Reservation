@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('database/DAO.php');
+require_once(__DIR__ . '/database/DAO.php');
 
 // Redirections ou contrôles AVANT tout affichage HTML
 if (!isset($_SESSION['profil'])) {

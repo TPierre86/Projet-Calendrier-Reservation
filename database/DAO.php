@@ -16,10 +16,10 @@ public function __construct() {
 public function connexion() {
 try {
 $this->dbh = new PDO('mysql:host='.$this->host.';dbname='.$this->dbname, $this->username, $this->password);
- print "Connexion réussie"; // À supprimer
+ //print "Connexion réussie"; // À supprimer
 } catch (PDOException $e) {
- print $e->getMessage(); // À supprimer
- print "Oups ! connexion échouée."; // À supprimer
+ //print $e->getMessage(); // À supprimer
+ //print "Oups ! connexion échouée."; // À supprimer
 throw $e; // Laisse l'exception remonter
 }
 }

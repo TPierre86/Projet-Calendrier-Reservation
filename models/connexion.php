@@ -9,10 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $dao = new DAOReservation();
     $dao->connexion();
 
-$utilisateurs = $dao->getMail($mailUtilisateur);
 
+$utilisateurs = $dao->getMail($mailUtilisateur);
+var_dump($utilisateurs); // Pour débogage, à supprimer en production
 foreach ($utilisateurs as $utilisateur) {
-    if ($utilisateur && (password_verify($motDePasse, $utilisateur["password"]) || $motDePasse === $utilisateur["password"])) {  
+    if (($utilisateur) && (password_verify($motDePasse, $utilisateur["password"]) || $motDePasse === $utilisateur["password"])) {  
         // Connexion OK
         $_SESSION['profil'] = $utilisateur["profil"];          
         $_SESSION["connected_user"] = $utilisateur["id_utilisateur"];

@@ -98,4 +98,17 @@ footer {
   color: rgba(0, 0, 0, 0.863);
 }
 
+#bienvenu {
+  font-size: 50px;
+}
+
+#deco {
+  color: rgb(25, 36, 46);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.co {
+  color: rgb(25, 36, 46);
+}
 /*FIN HEADER/FOOTER*/
