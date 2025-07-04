@@ -16,10 +16,10 @@ public function __construct() {
 public function connexion() {
 try {
 $this->dbh = new PDO('mysql:host='.$this->host.';dbname='.$this->dbname, $this->username, $this->password);
- print "Connexion réussie"; // À supprimer
+ //print "Connexion réussie"; // À supprimer
 } catch (PDOException $e) {
- print $e->getMessage(); // À supprimer
- print "Oups ! connexion échouée."; // À supprimer
+ //print $e->getMessage(); // À supprimer
+ //print "Oups ! connexion échouée."; // À supprimer
 throw $e; // Laisse l'exception remonter
 }
 }
@@ -104,7 +104,7 @@ $this->dbh=null;
 public function getMail($email) {
     $getMail = $this->dbh->prepare("SELECT id_utilisateur, email, password, prenom_utilisateur, profil FROM utilisateurs WHERE email=:email");
     $getMail->execute([':email' => $email]);
-    return $getMail->fetch(PDO::FETCH_ASSOC);
+    return $getMail->fetchAll(PDO::FETCH_ASSOC);
 }
 
 public function deleteUtilisateur($id_utilisateur) {

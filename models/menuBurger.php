@@ -1,4 +1,4 @@
-<?php require_once('templates/headers.php');
+<?php
 require_once('index.php');
 ?>
 
