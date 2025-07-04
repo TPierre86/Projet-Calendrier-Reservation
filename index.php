@@ -59,7 +59,7 @@ foreach ($reservations as $reservation) {
 ?>
 
 
-  <main class="container mt-4">*
+  <main class="container mt-4">
   <?php
   if (isset($_SESSION['message'])) {
       echo "<script type='text/javascript'>alert('{$_SESSION['message']}');</script>";
