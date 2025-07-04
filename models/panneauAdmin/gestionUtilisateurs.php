@@ -97,7 +97,7 @@ require_once('../../templates/headers.php');
 
 <main>
     <article>
-        <h1>Gérer les utilisateurs</h1>
+        <h1 id="titreGestion">Gérer les utilisateurs</h1>
         <button id="nouveau">Nouveau Utilisateur</button>
             <section id="form-nouveau" style="display: none;">
                 <form id="form2" method="POST" action="">
