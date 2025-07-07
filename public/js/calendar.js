@@ -233,10 +233,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     commentaire,
                 ]);
             });
-            const ws = XLSX.utils.aoa_to_sheet(data);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Réservations");
-            XLSX.writeFile(wb, "reservations.xlsx");
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Réservations");
+    XLSX.writeFile(wb, "reservations.xlsx");
         });
     }
 })
