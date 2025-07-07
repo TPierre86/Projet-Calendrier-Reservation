@@ -188,7 +188,27 @@ saveBtn.addEventListener("click", () => {
 // Suppression d'un événement existant
 deleteBtn.addEventListener("click", () => {
   if (currentEvent) {
-    currentEvent.remove();
-    eventModal.hide();
+    const eventId = currentEvent.id;
+
+    fetch('/Projet-Calendrier-Reservation/database/deleteEvents.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ id: eventId })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        currentEvent.remove(); // Supprime du calendrier
+        eventModal.hide();     // Ferme la modale
+      } else {
+        alert("Erreur lors de la suppression : " + (data.error || ""));
+      }
+    })
+    .catch(error => {
+      console.error("Erreur réseau :", error);
+      alert("Une erreur réseau s’est produite.");
+    });
   }
 });
