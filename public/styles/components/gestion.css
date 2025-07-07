@@ -1,20 +1,3 @@
-html, body {
-  height: 100%;
-  min-height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-/* Appliquez le background sur body */
-body {
-  background-image: url("../img/pont.jfif");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-  image-rendering: auto;
-  min-height: 200vh;
-}
-
 #mainGestion {
   margin: 0;
   padding: 0;
@@ -23,6 +6,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-image: url("../img/pont.jfif");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: auto;
+  min-height: 100vh;
 }
 
 #gestionRow {
@@ -44,6 +33,8 @@ body {
 
 #form-modifier {
   min-width: 320px;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .form1 {
@@ -98,16 +89,26 @@ body {
 }
 #supprimer {
     background-color: rgb(160, 9, 9);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 #modifier {
     background-color: #0a50b9;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 i {
   font-size: 20px;
 }
 
 #nouveau {
-margin-bottom: 10%;
+margin-bottom: 2%;
 }
 button span:not(:nth-child(6)) {
   position: absolute;
@@ -160,11 +161,15 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 5px;
 }
 .pagination {
   margin-top: 20px;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
 }
 .pagination a {
   color: #0a50b9;
@@ -175,11 +180,18 @@ h2 {
   padding: 4px 10px;
   border-radius: 4px;
   background: #fff;
-  transition: background 0.2s;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  display: inline-block;
 }
-.pagination a:hover {
-  background: #e6e6e6;
+
+.pagination a:hover,
+.pagination a:focus {
+  background: #0a50b9;
+  color: #fff;
+  border: 1px solid #0a50b9;
+  outline: none;
 }
+
 /* Table styling */
 #tableListe {
   width: 100%;
