@@ -73,7 +73,7 @@ public function UtilisateurLabelAssociation() {
 }
 
 public function NewReservation($startDate,$endDate,$startTime,$endTime,$commentInput,$attachments,$roomSelect,$utilisateur_id) {
-    $newReservation=$this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `commentaire`, `pieces_jointe`, `salle_id`, `utilisateur_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $newReservation=$this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heur_fin`, `commentaire`, `pieces_jointe`, `salle_id`, `utilisateur_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
     $newReservation->execute([$startDate, $endDate, $startTime, $endTime, $commentInput, $attachments, $roomSelect, $utilisateur_id]);
     return $newReservation;
 }

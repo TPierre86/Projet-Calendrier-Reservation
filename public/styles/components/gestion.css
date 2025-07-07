@@ -2,7 +2,6 @@
   margin: 0;
   padding: 0;
   width: 100vw;
-  height: 100vh;
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -12,6 +11,7 @@
   background-repeat: no-repeat;
   background-position: center;
   image-rendering: auto;
+  min-height: 100vh;
 }
 
 #gestionRow {
@@ -33,16 +33,18 @@
 
 #form-modifier {
   min-width: 320px;
-  flex: 2;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .form1 {
   font-size: 20px;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
   border-radius: 8px;
   border: 1px solid #b2b2b2;
   width: 300px;
   box-sizing: border-box;
+  margin-top: -10px;
 }
 
 #formGestion {
@@ -59,9 +61,9 @@
 .txt {
   font-size: 20px;
   font-weight: bold;
+  margin-top: -20px;
 }
 #titreGestion {
-  margin-bottom: 20%;
   text-align: center;
   border-bottom: 1px solid #000000;
   padding-bottom: 16px;
@@ -87,16 +89,26 @@
 }
 #supprimer {
     background-color: rgb(160, 9, 9);
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 #modifier {
     background-color: #0a50b9;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 i {
   font-size: 20px;
 }
 
 #nouveau {
-margin-bottom: 10%;
+margin-bottom: 2%;
 }
 button span:not(:nth-child(6)) {
   position: absolute;
@@ -140,7 +152,7 @@ button:hover span:not(:nth-child(6)) {
 }
 
 h2 {
-  margin-bottom: 20%;
+  margin-bottom: 10%;
   text-align: center;
   border-bottom: 1px solid #000000;
   padding-bottom: 16px;
@@ -149,11 +161,15 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
+  gap: 5px;
 }
 .pagination {
   margin-top: 20px;
   text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
 }
 .pagination a {
   color: #0a50b9;
@@ -164,9 +180,70 @@ h2 {
   padding: 4px 10px;
   border-radius: 4px;
   background: #fff;
-  transition: background 0.2s;
-}
-.pagination a:hover {
-  background: #e6e6e6;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  display: inline-block;
 }
 
+.pagination a:hover,
+.pagination a:focus {
+  background: #0a50b9;
+  color: #fff;
+  border: 1px solid #0a50b9;
+  outline: none;
+}
+
+/* Table styling */
+#tableListe {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffffa0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-bottom: 20px;
+}
+
+#tableListe th, #tableListe td {
+  border: 1px solid #e0e0e0;
+  padding: 12px 8px;
+  text-align: left;
+}
+
+#tableListe th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+  color: #222;
+}
+
+#tableListe tr:nth-child(even) {
+  background-color: #fafbfc;
+}
+
+#tableListe tr:hover {
+  background-color: #e6f0fa;
+}
+
+
+
+@media (max-width: 900px) {
+  #tableListe, #tableListe thead, #tableListe tbody, #tableListe th, #tableListe td, #tableListe tr {
+    display: block;
+  }
+  #tableListe thead tr {
+    display: none;
+  }
+  #tableListe td {
+    position: relative;
+    padding-left: 50%;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+  #tableListe td:before {
+    position: absolute;
+    top: 12px;
+    left: 8px;
+    width: 45%;
+    white-space: nowrap;
+    font-weight: bold;
+    color: #555;
+    content: attr(data-label);
+  }
+}

@@ -25,7 +25,7 @@ recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none";
 const calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage du calendrier lors du lancement de la page
   initialView: "dayGridMonth", //vue par défault "grid" par mois
   locale: "fr", //configuer le calendrier en français
-  firstday : 1, // fais commencer le calendrier le lundi
+  firstDay : 1, // fais commencer le calendrier le lundi
   selectable: true, // permet la selection des cases du calendrier pour créer des évênements
   headerToolbar: { // partie au dessus du calendrier
     left: "prev,next today",

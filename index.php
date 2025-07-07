@@ -45,13 +45,13 @@ foreach ($reservations as $reservation) {
 
   if ($reservationExist) {
       $_SESSION['message'] = "Reservation Impossible. Salle déjà occupée.";
-      header('Location: /Projet-Calendrier-Reservation/index.php');
+      header('Location: /Projet-Calendrier-Reservation/controllers.php');
       exit;
   } else {
-      $success = $dao->NewReservation(...);
+      $success = $dao->NewReservation($startDate, $endDate, $startTime, $endTime, $commentInput, $attachments, $roomSelect, $utilisateur_id);
       if ($success) {
           $_SESSION['message'] = "Reservation réussi";
-          header('Location: /Projet-Calendrier-Reservation/index.php');
+          header('Location: /Projet-Calendrier-Reservation/controllers.php');
           exit;
       }
   }
