@@ -192,3 +192,51 @@ deleteBtn.addEventListener("click", () => {
     eventModal.hide();
   }
 });
+
+//button pour exporter les réservations du calendrier en tableau Excell//
+document.addEventListener('DOMContentLoaded', function () {
+    const exportBtn = document.getElementById('exportBtn');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (!window.calendar) {
+                alert("Le calendrier n'est pas chargé !");
+                return;
+            }
+            const events = window.calendar.getEvents();
+            if (events.length === 0) {
+                alert("Aucune réservation à exporter !");
+                return;
+            }
+            const data = [
+                ["Début", "Fin", "Salle", "Commentaire"]
+            ];
+            events.forEach(ev => {
+                  const match = ev.title.match(/^\[(.*?)\]\s*(.*)$/);
+    const salle = match ? match[1] : "";
+    const commentaire = match ? match[2] : "";
+
+        const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+    };
+
+    const startStr = new Date(ev.start).toLocaleString("fr-FR", options);
+    const endStr = new Date(ev.end).toLocaleString("fr-FR", options);
+                data.push([
+                    startStr,
+                    endStr,
+                    salle,
+                    commentaire,
+                ]);
+            });
+            const ws = XLSX.utils.aoa_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Réservations");
+            XLSX.writeFile(wb, "reservations.xlsx");
+        });
+    }
+})
