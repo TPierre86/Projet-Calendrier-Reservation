@@ -25,7 +25,7 @@ recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none";
 const calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage du calendrier lors du lancement de la page
   initialView: "dayGridMonth", //vue par défault "grid" par mois
   locale: "fr", //configuer le calendrier en français
-  firstday : 1, // fais commencer le calendrier le lundi
+  firstDay : 1, // fais commencer le calendrier le lundi
   selectable: true, // permet la selection des cases du calendrier pour créer des évênements
   headerToolbar: { // partie au dessus du calendrier
     left: "prev,next today",
@@ -120,11 +120,10 @@ saveBtn.addEventListener("click", () => {
   const start = startTime.value;
   const end = endTime.value;
   const comment = commentInput.value.trim();
-  const roomId = roomSelect.value;
-  const roomName = roomSelect.options[roomSelect.selectedIndex].text;
+  const room = roomSelect.value;
 
   // Vérifie les champs obligatoires
-  if (!start || !end || !comment || !roomName) {
+  if (!start || !end || !comment || !room) {
     alert("Merci de remplir tous les champs.");
     return;
   }
@@ -146,7 +145,7 @@ saveBtn.addEventListener("click", () => {
 
   // Si on modifie un événement existant
   if (currentEvent) {
-    currentEvent.setProp("title", `[${roomName}] ${comment}`);
+    currentEvent.setProp("title", `[${room}] ${comment}`);
     // Utilise la date d'origine de l'événement pour start et end
     const eventDate = currentEvent.startStr.substring(0, 10);
     currentEvent.setStart(eventDate + startTimeStr);
@@ -166,7 +165,7 @@ saveBtn.addEventListener("click", () => {
         d.setDate(d.getDate() + i * 14);
         const dStr = d.toISOString().slice(0, 10);
         calendar.addEvent({
-          title: `[${roomName}] ${comment}`,
+          title: `[${room}] ${comment}`,
           start: dStr + startTimeStr,
           end: dStr + endTimeStr,
           allDay: false,
@@ -175,7 +174,7 @@ saveBtn.addEventListener("click", () => {
     } else {
       // Ajout d’un événement simple (pas récurrent)
       calendar.addEvent({
-        title: `[${roomName}] ${comment}`,
+        title: `[${room}] ${comment}`,
         start: selectedRangeStart + startTimeStr,
         end: selectedRangeStart + endTimeStr,
         allDay: false,
