@@ -70,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     
 }
 // Pagination
-$parPage = 10; // Nombre de lignes par page
+$parPage = 5; // Nombre de lignes par page
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $total = count($salles);
 $totalPages = ceil($total / $parPage);

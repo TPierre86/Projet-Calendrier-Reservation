@@ -15,7 +15,7 @@ if (isset($_SESSION["association_id"])) {
 $membres =$dao->getMembresByAssociation($association_id);
 
 // Pagination
-$parPage = 10; // Nombre de lignes par page
+$parPage = 5; // Nombre de lignes par page
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $total = count($membres);
 $totalPages = ceil($total / $parPage);
@@ -45,7 +45,6 @@ require_once('../../templates/headers.php');
                 <td><?php print $membre['prenom_utilisateur'] ?></td>
                 <td><?php print $membre['telephone'] ?></td>
                 <td><?php print $membre['email'] ?></td>
-                <td><?php print $membre['association_id'] ?></td>
             </tr>
             <?php } ?>
             

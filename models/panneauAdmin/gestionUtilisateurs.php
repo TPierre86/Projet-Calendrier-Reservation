@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     
 }
 // Pagination
-$parPage = 10; // Nombre de lignes par page
+$parPage = 5; // Nombre de lignes par page
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $total = count($utilisateurs);
 $totalPages = ceil($total / $parPage);
@@ -208,22 +208,22 @@ require_once('../../templates/headers.php');
             <input type="hidden" name="id_utilisateur" id="modifier-id" value="">
 
             <label for="name" class="txt">Nom</label>
-            <input class="form1" type="text" name="name" value=""><br>
+            <input class="form1" type="text" name="name" value="">
 
             <label for="firstName" class="txt">Prénom</label>
-            <input class="form1" type="text" name="firstName" value=""><br>
+            <input class="form1" type="text" name="firstName" value="">
 
             <label for="tel" class="txt">Téléphone</label>
-            <input class="form1" type="text" name="tel" value=""><br>
+            <input class="form1" type="text" name="tel" value="">
 
             <label for="mail" class="txt">Email</label>
-            <input class="form1" type="email" name="mail" value=""><br>
+            <input class="form1" type="email" name="mail" value="">
 
             <label for="pwd" class="txt">Mot de passe</label>
-            <input class="form1" type="password" name="pwd" value="" placeholder="Laissez vide pour ne pas changer"><br>
+            <input class="form1" type="password" name="pwd" value="" placeholder="Laissez vide pour ne pas changer">
 
             <label for="profil" class="txt">Profil</label>
-            <input class="form1" type="text" name="profil" value=""><br>
+            <input class="form1" type="text" name="profil" value="">
 
         <label for="association_id" class="txt">Association</label>
             <select class="form1" name="association_id" id="modifier-association" required>
@@ -235,7 +235,7 @@ require_once('../../templates/headers.php');
                     <?php print $association['nom_association']; ?>
                 </option>
             <?php } ?>
-        </select><br>
+        </select>
 
             <button class="submitButton" id="enregistrer" type="submit" name="action" value="enregistrer">Enregistrer les modifications</button>
         </form>
