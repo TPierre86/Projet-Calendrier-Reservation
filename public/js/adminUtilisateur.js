@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formModifier.querySelector("input[name='firstName']").value = button.dataset.firstname;
         formModifier.querySelector("input[name='mail']").value = button.dataset.email;
         formModifier.querySelector("input[name='tel']").value = button.dataset.tel;
+        formModifier.querySelector("input[name='profil']").value = button.dataset.profil;
         const associationSelect = formModifier.querySelector("select[name='association_id']");
         const associationValue = button.dataset.associationId;
         
@@ -46,8 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (associationSelect.value !== associationValue) {
             associationSelect.selectedIndex = 0;
         }
-
-
 
         // Ajouter un champ caché pour l'ID utilisateur
         let idInput = formModifier.querySelector("input[name='id_utilisateur']");

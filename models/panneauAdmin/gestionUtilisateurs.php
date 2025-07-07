@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         
         $dao->updateUtilisateur($id_utilisateur, $name, $firstName, $mail, $tel, $profil, $association_id);
         // Redirection ou traitement du formulaire de modification
-        header("Location: gestionUtilisateur.php");
+        header("Location: gestionUtilisateurs.php");
         exit;
         }
     
@@ -100,8 +100,7 @@ $utilisateursPage = array_slice($utilisateurs, $start, $parPage);
 
 require_once('../../templates/headers.php');
 
-?>
-
+?>      
 <main id="mainGestion">
     <article id="formGestion">
         <h1 id="titreGestion">Gérer les utilisateurs</h1>
@@ -153,7 +152,6 @@ require_once('../../templates/headers.php');
                         <th>Télephone</th>
                         <th>Email</th>
                         <th>Profil</th>
-                        <th>Id association</th>
                         <th>Association</th>
                         <th>Action</th>
                     </tr>
@@ -161,14 +159,13 @@ require_once('../../templates/headers.php');
                 <tbody>
                     <?php foreach ($utilisateursPage as $utilisateur) { ?> 
                     <tr>
-                        <td><?php print $utilisateur['nom_utilisateur'] ?></td>
-                        <td><?php print $utilisateur['prenom_utilisateur'] ?></td>
-                        <td><?php print $utilisateur['telephone'] ?></td>
-                        <td><?php print $utilisateur['email'] ?></td>
-                        <td><?php print $utilisateur['profil'] ?></td>
-                        <td><?php print $utilisateur['association_id'] ?></td>
-                        <td><?php print $utilisateur['nom_association'] ?></td>
-                        <td>
+                        <td data-label="Nom"><?php print $utilisateur['nom_utilisateur'] ?></td>
+                        <td data-label="Prénom"><?php print $utilisateur['prenom_utilisateur'] ?></td>
+                        <td data-label="Télephone"><?php print $utilisateur['telephone'] ?></td>
+                        <td data-label="Email"><?php print $utilisateur['email'] ?></td>
+                        <td data-label="Profil"><?php print $utilisateur['profil'] ?></td>
+                        <td data-label="Association"><?php print $utilisateur['nom_association'] ?></td>
+                        <td data-label="Action">
                         <article id="rowButton">
                         <!-- Formulaire SUPPRIMER -->    
                         <form method="POST" action="" onsubmit="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?');">
@@ -183,6 +180,7 @@ require_once('../../templates/headers.php');
                                 data-email="<?= htmlspecialchars($utilisateur['email']) ?>"
                                 data-tel="<?= htmlspecialchars($utilisateur['telephone']) ?>"
                                 data-password="<?= htmlspecialchars($utilisateur['password']) ?>"
+                                data-profil="<?= htmlspecialchars($utilisateur['profil']) ?>"
                                 data-association-id="<?= $utilisateur['association_id'] ?>"
                             ><i class="fa-solid fa-pen"></i></button>
                         </article>
@@ -209,22 +207,25 @@ require_once('../../templates/headers.php');
         <form id="formModifier" method="POST" action="" >
             <input type="hidden" name="id_utilisateur" id="modifier-id" value="">
 
-            <label for="name" class="txt">Nom:</label>
+            <label for="name" class="txt">Nom</label>
             <input class="form1" type="text" name="name" value=""><br>
 
-            <label for="firstName" class="txt">Prénom:</label>
+            <label for="firstName" class="txt">Prénom</label>
             <input class="form1" type="text" name="firstName" value=""><br>
 
-            <label for="mail" class="txt">Email:</label>
-            <input class="form1" type="email" name="mail" value=""><br>
-
-            <label for="tel" class="txt">Téléphone:</label>
+            <label for="tel" class="txt">Téléphone</label>
             <input class="form1" type="text" name="tel" value=""><br>
 
-            <label for="pwd" class="txt">Mot de passe:</label>
+            <label for="mail" class="txt">Email</label>
+            <input class="form1" type="email" name="mail" value=""><br>
+
+            <label for="pwd" class="txt">Mot de passe</label>
             <input class="form1" type="password" name="pwd" value="" placeholder="Laissez vide pour ne pas changer"><br>
 
-        <label for="association_id" class="txt">Association :</label>
+            <label for="profil" class="txt">Profil</label>
+            <input class="form1" type="text" name="profil" value=""><br>
+
+        <label for="association_id" class="txt">Association</label>
             <select class="form1" name="association_id" id="modifier-association" required>
                 <option value="" disabled selected hidden>Choisissez une association</option>
                 <?php 

@@ -13,14 +13,23 @@ if (isset($_SESSION["association_id"])) {
     echo "Aucune association connectée.";
 }
 $membres =$dao->getMembresByAssociation($association_id);
+
+// Pagination
+$parPage = 10; // Nombre de lignes par page
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$total = count($membres);
+$totalPages = ceil($total / $parPage);
+$start = ($page - 1) * $parPage;
+$membresPage = array_slice($membres, $start, $parPage);
+
 require_once('../../templates/headers.php');
 ?>
 
 
-<main>
-    <article>
-    <table>
-        <h2>Liste des Membres</h2>
+<main id="mainGestion">
+    <article id="formGestion">
+        <h2 id="titreliste">Liste des Membres</h2>
+    <table id="tableListe">
         <thead>
             <tr>
                 <th>Nom</th>
@@ -30,7 +39,7 @@ require_once('../../templates/headers.php');
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($membres as $membre) { ?> 
+            <?php foreach ($membresPage as $membre) { ?> 
             <tr>
                 <td><?php print $membre['nom_utilisateur'] ?></td>
                 <td><?php print $membre['prenom_utilisateur'] ?></td>
@@ -42,5 +51,16 @@ require_once('../../templates/headers.php');
             
         </tbody>
     </table>
+        <section class="pagination">
+            <?php if ($page > 1): ?>
+                <a href="?page=<?= $page - 1 ?>">&laquo; Précédent</a>
+            <?php endif; ?>
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="?page=<?= $i ?>" <?= $i === $page ? 'style="font-weight:bold;text-decoration:underline;"' : '' ?>><?= $i ?></a>
+            <?php endfor; ?>
+            <?php if ($page < $totalPages): ?>
+                <a href="?page=<?= $page + 1 ?>">Suivant &raquo;</a>
+            <?php endif; ?>
+        </section>
     </article>
 </main>
