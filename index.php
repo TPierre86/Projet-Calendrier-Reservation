@@ -68,6 +68,7 @@ foreach ($reservations as $reservation) {
   ?>
     <section id="calendar"></section>
   </main>
+  <button id="exportBtn" type="button">Export calendar</button>
   <!-- Modal pour les réservations -->
   <section class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
     <article class="modal-dialog">
