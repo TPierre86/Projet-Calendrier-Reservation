@@ -12,7 +12,7 @@ body {
   background-repeat: no-repeat;
   background-position: center;
   image-rendering: auto;
-  min-height: 100vh;
+  min-height: 200vh;
 }
 
 #mainGestion {
@@ -53,6 +53,7 @@ body {
   border: 1px solid #b2b2b2;
   width: 300px;
   box-sizing: border-box;
+  margin-top: -10px;
 }
 
 #formGestion {
@@ -69,6 +70,7 @@ body {
 .txt {
   font-size: 20px;
   font-weight: bold;
+  margin-top: -20px;
 }
 #titreGestion {
   text-align: center;
