@@ -6,6 +6,7 @@ $dao->connexion();
 
 $utilisateurs =$dao->UtilisateurLabelAssociation();
 $associations =$dao->getAssociations();
+$users= $dao->getUtilisateurs();
 
 
 
@@ -19,8 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
  */
     if ($action === 'creer') {
         //Recuperer les données
-        
-        $users= $dao->getUtilisateurs();
 
             $name = isset($_POST['name'])?($_POST['name']):"";
             $firstName = isset($_POST['firstName'])?($_POST['firstName']):"";
@@ -84,23 +83,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         
         $dao->updateUtilisateur($id_utilisateur, $name, $firstName, $mail, $tel, $profil, $association_id);
         // Redirection ou traitement du formulaire de modification
-        header("Location: gestionUtilisateur.php");
+        header("Location: gestionUtilisateurs.php");
         exit;
         }
     
 }
+// Pagination
+$parPage = 5; // Nombre de lignes par page
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$total = count($utilisateurs);
+$totalPages = ceil($total / $parPage);
+$start = ($page - 1) * $parPage;
+$utilisateursPage = array_slice($utilisateurs, $start, $parPage);
+
 
 
 require_once('../../templates/headers.php');
 
-?>
-
-<main>
-    <article>
-        <h1>Gérer les utilisateurs</h1>
-        <button id="nouveau">Nouveau Utilisateur</button>
+?>      
+<main id="mainGestion">
+    <article id="formGestion">
+        <h1 id="titreGestion">Gérer les utilisateurs</h1>
+        <button class="submitButton" id="nouveau">Nouveau Utilisateur</button>
+        <section id="gestionRow">
             <section id="form-nouveau" style="display: none;">
-                <form id="form2" method="POST" action="">
+                <form id="formCreer" method="POST" action="">
                     <label for="name" class="txt">Nom</label>
                     <input type="text" id="name" name="name" class="form1" required />
         
@@ -117,7 +124,7 @@ require_once('../../templates/headers.php');
                     <input type="password" id="pwd" name="pwd" class="form1" required />
 
                     <label for="profil" class="txt">Profil</label>
-                    <select name="profil" id="profil">
+                    <select name="profil" id="profil" class="form1">
                         <option value="Gestionnaire">Gestionnaire</option>
                         <option value="Président d'association">Président d'association</option>
                         <option value="Ménage">Ménage</option>
@@ -125,97 +132,117 @@ require_once('../../templates/headers.php');
                     </select>
                     
                     <label for="association" class="txt">Associations</label>
-                    <select name="association_id">
+                    <select name="association_id" class="form1">
                         <option value="" disabled selected hidden>Choisissez une association</option>
                         <?php foreach($associations as $association) { ?>
                         <option value="<?php print $association['id_association']; ?>"><?php print $association['nom_association']; ?></option>
                         <?php } ?>
                     </select>
 
-                    <button type="submit" name="action" value="creer">Créer</button>
+                    <button class="submitButton" id="creer" type="submit" name="action" value="creer">Créer</button>
                 </form>
             </section>
-    <table>
-        <h2>Liste des Utilisateurs</h2>
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Prénom</th>
-                <th>Télephone</th>
-                <th>Email</th>
-                <th>Profil</th>
-                <th>Id association</th>
-                <th>Association</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($utilisateurs as $utilisateur) { ?> 
-            <tr>
-                <td><?php print $utilisateur['nom_utilisateur'] ?></td>
-                <td><?php print $utilisateur['prenom_utilisateur'] ?></td>
-                <td><?php print $utilisateur['telephone'] ?></td>
-                <td><?php print $utilisateur['email'] ?></td>
-                <td><?php print $utilisateur['profil'] ?></td>
-                <td><?php print $utilisateur['association_id'] ?></td>
-                <td><?php print $utilisateur['nom_association'] ?></td>
-                <td>
-                <!-- Formulaire SUPPRIMER -->    
-                <form method="POST" action="" onsubmit="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?');">
-                    <input type="hidden" name="id_utilisateur" value="<?php echo $utilisateur['id_utilisateur']; ?>">
-                    <button type="submit" name="action" value="supprimer">Supprimer</button>
-                    </form>
-                <!-- Formulaire MODIFIER -->
-                    <button type="button" class="modifier-btn"
-                        data-id="<?= $utilisateur['id_utilisateur'] ?>"
-                        data-name="<?= htmlspecialchars($utilisateur['nom_utilisateur']) ?>"
-                        data-firstname="<?= htmlspecialchars($utilisateur['prenom_utilisateur']) ?>"
-                        data-email="<?= htmlspecialchars($utilisateur['email']) ?>"
-                        data-tel="<?= htmlspecialchars($utilisateur['telephone']) ?>"
-                        data-password="<?= htmlspecialchars($utilisateur['password']) ?>"
-                        data-association-id="<?= $utilisateur['association_id'] ?>"
-                    >Modifier</button>
-               </td>
-            </tr>
-            <?php } ?>
-            
-        </tbody>
-    </table>
+        <section id="tableContainer">
+            <h2 id="titreListe">Liste des Utilisateurs</h2>    
+            <table id="tableListe">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        <th>Télephone</th>
+                        <th>Email</th>
+                        <th>Profil</th>
+                        <th>Association</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($utilisateursPage as $utilisateur) { ?> 
+                    <tr>
+                        <td data-label="Nom"><?php print $utilisateur['nom_utilisateur'] ?></td>
+                        <td data-label="Prénom"><?php print $utilisateur['prenom_utilisateur'] ?></td>
+                        <td data-label="Télephone"><?php print $utilisateur['telephone'] ?></td>
+                        <td data-label="Email"><?php print $utilisateur['email'] ?></td>
+                        <td data-label="Profil"><?php print $utilisateur['profil'] ?></td>
+                        <td data-label="Association"><?php print $utilisateur['nom_association'] ?></td>
+                        <td data-label="Action">
+                        <article id="rowButton">
+                        <!-- Formulaire SUPPRIMER -->    
+                        <form method="POST" action="" onsubmit="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?');">
+                            <input class="form1" type="hidden" name="id_utilisateur" value="<?php echo $utilisateur['id_utilisateur']; ?>">
+                            <button class="submitButton" id="supprimer" type="submit" name="action" value="supprimer"><i class="fa-solid fa-trash"></i></button>
+                            </form>
+                        <!-- Formulaire MODIFIER -->
+                            <button id="modifier" type="button" class="modifier-btn submitButton"
+                                data-id="<?= $utilisateur['id_utilisateur'] ?>"
+                                data-name="<?= htmlspecialchars($utilisateur['nom_utilisateur']) ?>"
+                                data-firstname="<?= htmlspecialchars($utilisateur['prenom_utilisateur']) ?>"
+                                data-email="<?= htmlspecialchars($utilisateur['email']) ?>"
+                                data-tel="<?= htmlspecialchars($utilisateur['telephone']) ?>"
+                                data-password="<?= htmlspecialchars($utilisateur['password']) ?>"
+                                data-profil="<?= htmlspecialchars($utilisateur['profil']) ?>"
+                                data-association-id="<?= $utilisateur['association_id'] ?>"
+                            ><i class="fa-solid fa-pen"></i></button>
+                        </article>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                    
+                </tbody>
+            </table>
+            <section class="pagination">
+                    <?php if ($page > 1): ?>
+                        <a href="?page=<?= $page - 1 ?>">&laquo; Précédent</a>
+                    <?php endif; ?>
+                    <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                        <a href="?page=<?= $i ?>" <?= $i === $page ? 'style="font-weight:bold;text-decoration:underline;"' : '' ?>><?= $i ?></a>
+                    <?php endfor; ?>
+                    <?php if ($page < $totalPages): ?>
+                        <a href="?page=<?= $page + 1 ?>">Suivant &raquo;</a>
+                    <?php endif; ?>
+                    </section>
+        </section>
     <!-- Formulaire HTML de modification -->
      <section id="form-modifier"  style="display: none;">
-<form  method="POST" action="" >
-    <input type="hidden" name="id_utilisateur" id="modifier-id" value="">
+        <form id="formModifier" method="POST" action="" >
+            <input type="hidden" name="id_utilisateur" id="modifier-id" value="">
 
-    <label>Nom:</label>
-    <input type="text" name="name" value=""><br>
+            <label for="name" class="txt">Nom</label>
+            <input class="form1" type="text" name="name" value="">
 
-    <label>Prénom:</label>
-    <input type="text" name="firstName" value=""><br>
+            <label for="firstName" class="txt">Prénom</label>
+            <input class="form1" type="text" name="firstName" value="">
 
-    <label>Email:</label>
-    <input type="email" name="mail" value=""><br>
+            <label for="tel" class="txt">Téléphone</label>
+            <input class="form1" type="text" name="tel" value="">
 
-    <label>Téléphone:</label>
-    <input type="text" name="tel" value=""><br>
+            <label for="mail" class="txt">Email</label>
+            <input class="form1" type="email" name="mail" value="">
 
-    <label>Mot de passe:</label>
-    <input type="password" name="pwd" value="" placeholder="Laissez vide pour ne pas changer"><br>
+            <label for="pwd" class="txt">Mot de passe</label>
+            <input class="form1" type="password" name="pwd" value="" placeholder="Laissez vide pour ne pas changer">
 
-   <label>Association :</label>
-    <select name="association_id" id="modifier-association" required>
-        <option value="" disabled selected hidden>Choisissez une association</option>
-        <?php 
-           
-            foreach ($associations as $association) { ?>
-        <option value="<?php print $association['id_association']; ?>">
-            <?php print $association['nom_association']; ?>
-        </option>
-    <?php } ?>
-</select><br>
+            <label for="profil" class="txt">Profil</label>
+            <input class="form1" type="text" name="profil" value="">
 
-    <button type="submit" name="action" value="enregistrer">Enregistrer les modifications</button>
-</form>
-</section>
+        <label for="association_id" class="txt">Association</label>
+            <select class="form1" name="association_id" id="modifier-association" required>
+                <option value="" disabled selected hidden>Choisissez une association</option>
+                <?php 
+                
+                    foreach ($associations as $association) { ?>
+                <option value="<?php print $association['id_association']; ?>">
+                    <?php print $association['nom_association']; ?>
+                </option>
+            <?php } ?>
+        </select>
+
+            <button class="submitButton" id="enregistrer" type="submit" name="action" value="enregistrer">Enregistrer les modifications</button>
+        </form>
+    </section>    
+    </section>
     </article>
     <script src="../../public/js/adminUtilisateur.js"></script>
+    <script src="https://kit.fontawesome.com/5bef22b054.js" crossorigin="anonymous"></script>
+
 </main>

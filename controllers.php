@@ -3,18 +3,20 @@ session_start();
 require_once(__DIR__ . '/database/DAO.php');
 
 // Redirections ou contrôles AVANT tout affichage HTML
-if (!isset($_SESSION['profil'])) {
-    header('Location: /Projet-Calendrier-Reservation/models/connexion.php');
-    exit;
-}
 
 
 
 require_once("templates/headers.php");
 require_once("templates/bandeau.php");
 
+if (!isset($_SESSION['profil'])) {
+    require_once("models/visiteur.php");
+    require_once("templates/footer.php");
+    exit;
+}
+
 switch ($_SESSION['profil']){
-    case 'Membre':
+    case 'Membres':
         require_once("models/membre.php");
         break;
     case 'Gestionnaire':
@@ -27,7 +29,7 @@ switch ($_SESSION['profil']){
         require_once("models/association.php");
         break;
     default:
-        require_once("index.php"); //On verra pars la suite
+        require_once("models/visiteur.php"); 
 
 }
 

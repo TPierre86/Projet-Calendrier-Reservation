@@ -69,7 +69,7 @@ public function getUtilisateursById($id_utilisateur) {
 public function UtilisateurLabelAssociation() {
     $usersLabelAssociation=$this->dbh->prepare("SELECT id_utilisateur, nom_utilisateur, prenom_utilisateur, telephone, email, profil, password, association_id, nom_association FROM `utilisateurs` INNER JOIN associations ON utilisateurs.association_id = associations.id_association ORDER BY nom_utilisateur");
     $usersLabelAssociation->execute();
-    return $usersLabelAssociation;
+    return $usersLabelAssociation->fetchAll(PDO::FETCH_ASSOC);
 }
 
 public function NewReservation($startDate,$endDate,$startTime,$endTime,$commentInput,$attachments,$roomSelect,$utilisateur_id) {
