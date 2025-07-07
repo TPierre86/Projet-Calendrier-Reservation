@@ -120,10 +120,11 @@ saveBtn.addEventListener("click", () => {
   const start = startTime.value;
   const end = endTime.value;
   const comment = commentInput.value.trim();
-  const room = roomSelect.value;
+  const roomId = roomSelect.value;
+  const roomName = roomSelect.options[roomSelect.selectedIndex].text;
 
   // Vérifie les champs obligatoires
-  if (!start || !end || !comment || !room) {
+  if (!start || !end || !comment || !roomName) {
     alert("Merci de remplir tous les champs.");
     return;
   }
@@ -145,7 +146,7 @@ saveBtn.addEventListener("click", () => {
 
   // Si on modifie un événement existant
   if (currentEvent) {
-    currentEvent.setProp("title", `[${room}] ${comment}`);
+    currentEvent.setProp("title", `[${roomName}] ${comment}`);
     // Utilise la date d'origine de l'événement pour start et end
     const eventDate = currentEvent.startStr.substring(0, 10);
     currentEvent.setStart(eventDate + startTimeStr);
@@ -165,7 +166,7 @@ saveBtn.addEventListener("click", () => {
         d.setDate(d.getDate() + i * 14);
         const dStr = d.toISOString().slice(0, 10);
         calendar.addEvent({
-          title: `[${room}] ${comment}`,
+          title: `[${roomName}] ${comment}`,
           start: dStr + startTimeStr,
           end: dStr + endTimeStr,
           allDay: false,
@@ -174,7 +175,7 @@ saveBtn.addEventListener("click", () => {
     } else {
       // Ajout d’un événement simple (pas récurrent)
       calendar.addEvent({
-        title: `[${room}] ${comment}`,
+        title: `[${roomName}] ${comment}`,
         start: selectedRangeStart + startTimeStr,
         end: selectedRangeStart + endTimeStr,
         allDay: false,
