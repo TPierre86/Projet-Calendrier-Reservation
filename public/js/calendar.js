@@ -45,8 +45,19 @@ const calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage d
     let startDate = new Date(info.start); // Date de début sélectionnée
     let endDate = new Date(info.end);     // Date de fin sélectionnée
 
-    selectedRangeStart = startDate.toISOString().slice(0, 10); // Stocke la date de début au format AAAA-MM-JJ
-    selectedRangeEnd = endDate.toISOString().slice(0, 10);     // Stocke la date de fin au même format
+function formatDateLocal(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // mois de 0 à 11
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// let endDate = new Date(info.end);
+// endDate.setDate(endDate.getDate() - 1); // soustrait 1 jour pour avoir la date réelle de fin
+// selectedRangeEnd = formatDateLocal(endDate);
+
+selectedRangeStart = formatDateLocal(startDate);
+selectedRangeEnd = formatDateLocal(endDate);    // Stocke la date de fin au même format
 
     // Remplit automatiquement les heures
     startTime.value = info.start.toISOString().substring(11, 16); // Heure de début (HH:MM)
@@ -67,7 +78,6 @@ const calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage d
    * ! on aura surement un problème pour ajouter tel évênement à tel association
    */
 });
-calendar.render();
 
 // Lorsqu'on clique sur un événement existant 
 /** 
@@ -116,7 +126,8 @@ calendar.on('eventClick', function (info) { //fonction qui sers d'EventListener 
 calendar.render();
 
 // Enregistrement d'un nouvel événement ou mise à jour
-saveBtn.addEventListener("click", () => {
+saveBtn.addEventListener("click", (e) => {
+  e.preventDefault();
   const start = startTime.value;
   const end = endTime.value;
   const comment = commentInput.value.trim();
@@ -134,55 +145,32 @@ saveBtn.addEventListener("click", () => {
 
   // Informations sur la récurrence
   const recurrence = recurrenceCheckbox.checked;
-  const recurrenceWeeks = parseInt(recurrenceWeeksInput.value);
-  const targetDay = parseInt(recurrenceDaySelect.value);
+  const recurrenceWeeks = recurrenceWeeksInput.value;
 
-  // Construction des dates ISO
-  const baseStartDate = new Date(selectedRangeStart);
-  const baseEndDate = new Date(selectedRangeEnd);
-  const startTimeStr = "T" + start;
-  const endTimeStr = "T" + end;
-
-  // Si on modifie un événement existant
-  if (currentEvent) {
-    currentEvent.setProp("title", `[${room}] ${comment}`);
-    // Utilise la date d'origine de l'événement pour start et end
-    const eventDate = currentEvent.startStr.substring(0, 10);
-    currentEvent.setStart(eventDate + startTimeStr);
-    currentEvent.setEnd(eventDate + endTimeStr);
-  } else {
-    // Cas d'une récurrence sur plusieurs semaines
-    if (recurrence) {
-      let recurDate = new Date(baseStartDate);
-      // Trouve le premier jour correspondant à la récurrence
-      while (recurDate.getDay() !== targetDay) {
-        recurDate.setDate(recurDate.getDate() + 1);
-      }
-
-      // Ajoute un événement pour chaque semaine
-      for (let i = 0; i < recurrenceWeeks; i++) {
-        const d = new Date(recurDate);
-        d.setDate(d.getDate() + i * 14);
-        const dStr = d.toISOString().slice(0, 10);
-        calendar.addEvent({
-          title: `[${room}] ${comment}`,
-          start: dStr + startTimeStr,
-          end: dStr + endTimeStr,
-          allDay: false,
-        });
-      }
+  fetch('/Projet-Calendrier-Reservation/database/addEvent.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      startDate: selectedRangeStart,
+      endDate: selectedRangeEnd,
+      startTime: start,
+      endTime: end,
+      commentInput: comment,
+      roomSelect: room,
+      recurrence: recurrence,
+      recurrenceWeeks: recurrenceWeeks
+      // ajoute utilisateur_id si besoin
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      calendar.refetchEvents();
+      eventModal.hide();
     } else {
-      // Ajout d’un événement simple (pas récurrent)
-      calendar.addEvent({
-        title: `[${room}] ${comment}`,
-        start: selectedRangeStart + startTimeStr,
-        end: selectedRangeStart + endTimeStr,
-        allDay: false,
-      });
+      alert("Erreur lors de l'enregistrement !");
     }
-  }
-  // Ferme la modale après enregistrement
-  eventModal.hide();
+  });
 });
 
 // Suppression d'un événement existant
