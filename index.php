@@ -16,6 +16,15 @@ if (isset($_SESSION['connected_user'])) {
     // L'utilisateur n'est pas connecté
     // echo "Aucun utilisateur connecté.";
 }
+//========Gestion des droits========
+include 'droit.php';
+
+$userRole = getUserRole();
+
+echo "<script>window.userRole = ".json_encode($userRole).";</script>";
+//==================================
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     
     $action = $_POST['action'];
@@ -52,6 +61,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         } else {
             //echo "Aucun utilisateur connecté.";
         }
+
+
 
         // --------commande pour New Reservation--------------
         $reservationExist=false;
@@ -188,10 +199,17 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
         <section class="modal-footer">
           <button name="action" value="supprimer" id="deleteBtn" class="btn btn-danger me-auto" style="display: none;">Supprimer</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-          <button name="action" value="enregistrer" type="submit" id="saveBtn" class="btn btn-primary">Enregistrer</button>
+          <button name="action" value="enregistrer" id="saveBtn" class="btn btn-primary">Enregistrer</button>
         </section>
-        </form>
-          
+        </form> 
       </article>
     </article>
   </section>
+<script>
+  window.userRole = <?php echo json_encode($_SESSION["connected_user"] ?? null); ?>;
+  window.canEdit = <?php echo json_encode(canEdit()); ?>;
+  window.canDelete = <?php echo json_encode(canDelete()); ?>;
+  window.canCreate = <?php echo json_encode(canCreate()); ?>;
+  window.canComment = <?php echo json_encode(canComment()); ?>;
+  window.canView = true; 
+</script>

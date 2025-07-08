@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once(__DIR__ . '/DAO.php');
+// require_once(__DIR__ . '/rights.php');
 header('Content-Type: application/json');
 
 // Récupération des données envoyées en JSON
@@ -35,19 +36,21 @@ try {
     $dao->connexion();
 
     if ($recurrence && $weeks > 0) {
+        $duration = (new DateTime($endDate))->diff(new DateTime($startDate))->days;
         $date = new DateTime($startDate, new DateTimeZone('Europe/Paris'));
         for ($i = 0; $i < $weeks; $i++) {
             $dateIter = clone $date;
             $dateIter->modify('+' . ($i * 2) . ' week'); // Récurrence toutes les 2 semaines
-            $dateString = $dateIter->format('Y-m-d');
+            $dateDebut = $dateIter->format('Y-m-d');
+            $dateFin = (clone $dateIter)->modify('+' . $duration . ' days')->format('Y-m-d');
 
             $dao->NewReservation(
-                $dateString, 
-                $dateString, 
-                $startTime, 
-                $endTime, 
-                null, 
-                $room, 
+                $dateDebut,
+                $dateFin,
+                $startTime,
+                $endTime,
+                null,
+                $room,
                 $utilisateur_id
             );
         }
