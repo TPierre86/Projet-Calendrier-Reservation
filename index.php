@@ -109,17 +109,6 @@ if ($startDate == $reservation["date_debut"] && $roomSelect == $reservation["sal
         header("Location: controllers.php");
         exit;    
       } 
-      if ($action === 'envoyer') { //Création d'un nouveau commentaire
-          $comment = ($_POST['newCommentInput']);
-          $reservation_id = $_POST['reservation_id'];
-          $utilisateur_id = $_SESSION['connected_user'] ?? null;
-          if ($comment && $reservation_id && $utilisateur_id) {
-              $dao->NewComment($reservation_id, $utilisateur_id, $comment);
-          }
-          // Recharge la page pour afficher le nouveau commentaire
-          header("Location: ".$_SERVER['REQUEST_URI']);
-          exit;
-        }
 }
 
 
@@ -166,10 +155,6 @@ if ($startDate == $reservation["date_debut"] && $roomSelect == $reservation["sal
             <input type="time" class="form-control" id="endTime" name="endTime"/>
           </section>
           <section class="mb-3">
-            <label for="commentWindow" class="form-label">Commentaire</label>
-            <button type="button" id="commentWindow"><i class="fa-solid fa-comments"></i></button>
-          </section>
-          <section class="mb-3">
             <label for="attachments">Fichier PDF:</label>
             <input type="file" id="attachments" name="attachments" accept=".pdf">
           </section>
@@ -192,23 +177,6 @@ if ($startDate == $reservation["date_debut"] && $roomSelect == $reservation["sal
         </section>
         </section>
         <section class="modal-footer">
-          <!-- modal commentaires -->
-          <section id="filComments" style="display: none;">
-                <article id="commentsData">
-                  <?php foreach($comments as $comment) {?>
-                    <article class="comment">
-                      <p><?= htmlspecialchars($comment['comment']) ?></p>
-                      <span class="comment-date"> <?= date('d/m/Y H:i', strtotime($comment['heure_comment'])) ?></span>
-                    </article>
-                  <?php } ?>
-                </article>
-                <form id="newComment" onsubmit="return false;">
-                  <input type="text" name="id_comment" value="<?= htmlspecialchars($comment['id_comment']) ?>" hidden>
-                  <input type="hidden" name="reservation_id" value="<?= htmlspecialchars($reservation_id) ?>">
-                  <input name="newCommentInput" type="text" id="newCommentInput" placeholder="Ajouter un commentaire..." required>
-                  <button id="envoyer" name="action" value="envoyer" type="submit"><i class="fa-solid fa-paper-plane"></i></button>
-                </form>
-          </section>
           <button name="action" value="supprimer" id="deleteBtn" class="btn btn-danger me-auto" style="display: none;">Supprimer</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
           <button name="action" value="enregistrer" type="submit" id="saveBtn" class="btn btn-primary">Enregistrer</button>
