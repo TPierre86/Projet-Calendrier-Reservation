@@ -79,12 +79,12 @@ function formatDateLocal(date) {
   return `${year}-${month}-${day}`;
 }
 
-// let endDate = new Date(info.end);
-// endDate.setDate(endDate.getDate() - 1); // soustrait 1 jour pour avoir la date réelle de fin
-// selectedRangeEnd = formatDateLocal(endDate);
+
+//endDate.setDate(endDate.getDate() - 1); // soustrait 1 jour pour avoir la date réelle de fin
+ //selectedRangeEnd = formatDateLocal(endDate);
 
 selectedRangeStart = formatDateLocal(startDate);
-selectedRangeEnd = formatDateLocal(endDate);    // Stocke la date de fin au même format
+selectedRangeEnd = formatDateLocal(new Date(endDate.getTime() - 24*60*60*1000));
 
     // Remplit automatiquement les heures
     startTime.value = info.start.toISOString().substring(11, 16); // Heure de début (HH:MM)
@@ -163,8 +163,12 @@ saveBtn.addEventListener("click", (e) => {
   const end = endTime.value;
   const room = roomSelect.value;
 
+  // *! Récupère les dates depuis les inputs de la modale (toujours prioritaire)
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
+
   // Vérifie les champs obligatoires
-  if (!start || !end || !room) {
+  if (!start || !end || !room || !startDate || !endDate) {
     alert("Merci de remplir tous les champs.");
     return;
   }
@@ -181,8 +185,8 @@ saveBtn.addEventListener("click", (e) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      startDate: selectedRangeStart,
-      endDate: selectedRangeEnd,
+      startDate: startDate,
+      endDate: endDate,
       startTime: start,
       endTime: end,
       roomSelect: room,
