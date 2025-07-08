@@ -206,10 +206,13 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
     </article>
   </section>
 <script>
-  window.userRole = <?php echo json_encode($_SESSION["connected_user"] ?? null); ?>;
+  window.userRole = <?php echo json_encode($_SESSION["profil"] ?? null); ?>;
   window.canEdit = <?php echo json_encode(canEdit()); ?>;
   window.canDelete = <?php echo json_encode(canDelete()); ?>;
   window.canCreate = <?php echo json_encode(canCreate()); ?>;
+  window.canEdit = <?php echo json_encode(canEditAdmin()); ?>;
+  window.canDelete = <?php echo json_encode(canDeleteAdmin()); ?>;
+  window.canCreate = <?php echo json_encode(canCreateAdmin()); ?>;
   window.canComment = <?php echo json_encode(canComment()); ?>;
   window.canView = true; 
 </script>
