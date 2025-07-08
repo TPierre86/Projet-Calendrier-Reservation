@@ -9,6 +9,18 @@ const recurrenceCheckbox = document.getElementById("recurrenceCheckbox");
 const recurrenceWeeksInput = document.getElementById("recurrenceWeeks");
 const recurrenceDaySelect = document.getElementById("recurrenceDay");
 const recurrenceOptions = document.getElementById("recurrenceOptions");
+const associationColors = {
+  1: '#e74c3c', // rouge
+  2: '#3498db', // bleu
+  3: '#27ae60', // vert
+  4: '#f39c12', // orange
+  5: '#9b59b6', // violet
+  6: '#1abc9c', // turquoise
+  7: '#34495e', // gris foncé
+  8: '#e67e22', // orange foncé
+  9: '#c0392b'  // rouge foncé
+};
+
 
 // Variables pour stocker l'événement sélectionné ou en cours de modification
 let currentEvent = null; //enregistre la selection fait par l'utilisateur
@@ -99,7 +111,23 @@ selectedRangeEnd = formatDateLocal(new Date(endDate.getTime() - 24*60*60*1000));
     // Affiche la fenêtre modale pour permettre à l'utilisateur de saisir les détails de la réservation
     eventModal.show();
   },
-  events: '/Projet-Calendrier-Reservation/database/loadEvents.php', 
+events: {
+  url: '/Projet-Calendrier-Reservation/database/loadEvents.php',
+  method: 'GET',
+  failure: function() { alert('Erreur de chargement !'); },
+  // eventDataTransform ici tu peux ajouter d'autres props si besoin, mais ce n'est pas obligatoire
+},
+eventDidMount: function(info) {
+  let assocId = info.event.extendedProps.association_id;
+  let color = associationColors[assocId] || '#607d8b'; // gris par défaut
+
+  // Appliquer la couleur au style CSS de l'événement
+  info.el.style.backgroundColor = color;
+  info.el.style.borderColor = color;
+
+  // Facultatif : forcer la couleur du texte si besoin
+  info.el.style.color = 'white';
+},
   /**
    * ! on aura surement un problème pour ajouter tel évênement à tel association
    */
@@ -301,3 +329,4 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
