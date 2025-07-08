@@ -194,4 +194,24 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
       </article>
     </article>
   </section>
-  
+  <!-- //modal pour les commentaires -->
+  <section class="modal fade" id="filCommentsModal" tabindex="-1" aria-labelledby="filCommentsLabel" aria-hidden="true" style="display = none;">
+    <article class="modal-dialog">
+      <article class="modal-content bg-dark text-white">
+        <header class="modal-header">
+          <h5 class="modal-title" id="filCommentsLabel">Commentaires</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </header>
+        <section class="modal-body" id="filComments">
+          <article id="commentsData">
+          </article>
+
+              <form id="newComment" onsubmit="return false;">
+                  <input type="hidden" name="reservation_id" id="reservation_id" value="">
+                  <input name="newCommentInput" type="text" id="newCommentInput" required></input>
+                  <button id="envoyer" name="action" value="envoyer" type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+              </form>
+        </section>
+      </article>
+    </article>
+  </section>
