@@ -15,10 +15,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $attachments = null;
     if (isset($_FILES['attachments']) && $_FILES['attachments']['error'] == UPLOAD_ERR_OK) {
         $uploadDir = 'uploads/';
+        if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+        }
         $fileName = basename($_FILES['attachments']['name']);
         $targetPath = $uploadDir . time() . "_" . $fileName;
 
-        if (move_uploaded_file($_FILES['pieces_jointe']['tmp_name'], $targetPath)) {
+        if (move_uploaded_file($_FILES['attachments']['tmp_name'], $targetPath)) {
             $attachments = $targetPath; // Stocke le chemin pour la BDD
         }
     }
@@ -79,7 +82,7 @@ foreach ($reservations as $reservation) {
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
         </header>
         <section class="modal-body">
-          <form id="formulaire" method="POST">
+          <form id="formulaire" method="POST" enctype="multipart/form-data">
           <section class="mb-3">
             <label for="startDate" class="form-label">Date de début</label>
             <input type="date" class="form-control" id="startDate" name="startDate">
