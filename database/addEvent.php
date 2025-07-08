@@ -11,6 +11,7 @@ $data = json_decode($rawInput, true);
 if (!$data || !isset($data['startDate'], $data['startTime'], $data['endTime'], $data['roomSelect'])) {
     echo json_encode(["success" => false, "error" => "Requête invalide ou données manquantes."]);
     exit;
+    
 }
 
 $startDate = $data['startDate'];

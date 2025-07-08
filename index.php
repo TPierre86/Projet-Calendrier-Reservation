@@ -176,6 +176,7 @@ if ($startDate == $reservation["date_debut"] && $roomSelect == $reservation["sal
           </section>
         </section>
         </section>
+        
         <section class="modal-footer">
           <button name="action" value="supprimer" id="deleteBtn" class="btn btn-danger me-auto" style="display: none;">Supprimer</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
