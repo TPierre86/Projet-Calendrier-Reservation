@@ -20,6 +20,8 @@ try {
 
     $stmt = $pdo->query($sql);
 
+// Récupération des réservations (remplace 'id' par 'id_reservation')
+
     $events = [];
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $start = $row['date_debut'] . 'T' . $row['heure_debut'];
@@ -27,7 +29,7 @@ try {
 
         $events[] = [
             'id' => $row['id_reservation'],
-            'title' => '[' . $row['nom_salle'] . '] <a href=""><i class="fa-solid fa-comments"></i></a>',
+            'title' => '[' . $row['nom_salle'] . '] <a href="#" class="comment-link" data-id="' . $row['id_reservation'] . '"><i class="fa-solid fa-comments"></i></a>',
             'start' => $start,
             'end' => $end,
             'allDay' => false,

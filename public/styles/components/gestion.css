@@ -11,7 +11,7 @@
   background-repeat: no-repeat;
   background-position: center;
   image-rendering: auto;
-  min-height: 100vh;
+  background-attachment: fixed;
 }
 
 #gestionRow {

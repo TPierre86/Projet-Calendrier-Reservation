@@ -84,7 +84,7 @@ public function getMail($email) {
 }
 
 public function getCommentsByReservation($reservation_id) {
-    $comments = $this->dbh->prepare("SELECT * FROM commentaires WHERE reservation_id = ? ORDER BY heure_comment DESC");
+    $comments = $this->dbh->prepare("SELECT c.id_comment, c.comment, c.heure_comment, u.nom_utilisateur FROM commentaires INNER JOIN utilisateurs ON commentaires.utilisateur_id=utilisateurs.id_utilisateur WHERE reservation_id = ? ORDER BY heure_comment DESC");
     $comments->execute([$reservation_id]);
     return $comments->fetchAll(PDO::FETCH_ASSOC);
 }
