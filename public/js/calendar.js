@@ -2,7 +2,6 @@ const calendarEl = document.getElementById("calendar");
 const eventModal = new bootstrap.Modal(document.getElementById("eventModal"));
 const startTime = document.getElementById("startTime");
 const endTime = document.getElementById("endTime");
-const commentInput = document.getElementById("commentInput");
 const roomSelect = document.getElementById("roomSelect");
 const saveBtn = document.getElementById("saveBtn");
 const deleteBtn = document.getElementById("deleteBtn");
@@ -26,6 +25,7 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
   initialView: "dayGridMonth", //vue par défault "grid" par mois
   locale: "fr", //configuer le calendrier en français
   firstDay : 1, // fais commencer le calendrier le lundi
+  firstDay : 1, // fais commencer le calendrier le lundi
   selectable: true, // permet la selection des cases du calendrier pour créer des évênements
   headerToolbar: { // partie au dessus du calendrier
     left: "prev,next today",
@@ -38,22 +38,41 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
     week: "Semaine",
     day: "Jour",
   },
-
+  eventContent: function(arg) {
+    // Affiche le titre de l'événement avec la salle entre crochets
+    const title = arg.event.title;
+    const roomMatch = title.match(/\[(.*?)\]/);
+    if (roomMatch) {
+      const roomName = roomMatch[1];
+      return { html: `<strong>${roomName}</strong> - ${arg.timeText} <a href="http://www.afpa.fr">test</a>"` };
+    }
+    return { html: arg.timeText }; // Si pas de salle, affiche juste l'heure
+  },
   // Lorsqu'on sélectionne un créneau (plage horaire uniquement)
   select: function (info) {
     currentEvent = null; // On prépare la création d'un nouvel événement (pas d'édition)
     let startDate = new Date(info.start); // Date de début sélectionnée
     let endDate = new Date(info.end);     // Date de fin sélectionnée
 
-    selectedRangeStart = startDate.toISOString().slice(0, 10); // Stocke la date de début au format AAAA-MM-JJ
-    selectedRangeEnd = endDate.toISOString().slice(0, 10);     // Stocke la date de fin au même format
+function formatDateLocal(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // mois de 0 à 11
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+// let endDate = new Date(info.end);
+// endDate.setDate(endDate.getDate() - 1); // soustrait 1 jour pour avoir la date réelle de fin
+// selectedRangeEnd = formatDateLocal(endDate);
+
+selectedRangeStart = formatDateLocal(startDate);
+selectedRangeEnd = formatDateLocal(endDate);    // Stocke la date de fin au même format
 
     // Remplit automatiquement les heures
     startTime.value = info.start.toISOString().substring(11, 16); // Heure de début (HH:MM)
     endTime.value = info.end.toISOString().substring(11, 16);     // Heure de fin (HH:MM)
 
     // Réinitialise les champs de la modale pour repartir d'un formulaire vierge
-    commentInput.value = "";           // Vide le commentaire
     roomSelect.selectedIndex = 0;      // Remet la sélection de salle à zéro
     recurrenceCheckbox.checked = false;// Décoche la récurrence
     recurrenceOptions.style.display = "none"; // Masque les options de récurrence
@@ -67,38 +86,42 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
    * ! on aura surement un problème pour ajouter tel évênement à tel association
    */
 });
-window.calendar.render();
 
 // Lorsqu'on clique sur un événement existant 
 /** 
  *? Fonction qui a pour but de modifier ou supprimer un événement existant*/
 window.calendar.on('eventClick', function (info) { //fonction qui sers d'EventListener dans calendar
   currentEvent = info.event; // Objet événement FullCalendar correspondant à l'événement cliqué par l'utilisateur
-  selectedRangeStart = currentEvent.startStr.substring(0, 10); //garde uniquement la date de début en format YYYY-MM-DD
-  selectedRangeEnd = selectedRangeStart;
+  document.querySelector('input[name="id_reservation"]').value = currentEvent.id;
+    // Utilise les propriétés étendues pour remplir les champs
+  document.getElementById('startDate').value = currentEvent.extendedProps.date_debut;
+  document.getElementById('endDate').value = currentEvent.extendedProps.date_fin;
+  document.getElementById('startTime').value = currentEvent.extendedProps.heure_debut;
+  document.getElementById('endTime').value = currentEvent.extendedProps.heure_fin;
+  document.getElementById('roomSelect').value = currentEvent.extendedProps.salle_id;
 
-  commentInput.value = currentEvent.title.replace(/\[.*?\]\s*/, "");// retire le nom de la salle du titre de l'évênement
+  // selectedRangeStart = currentEvent.startStr.substring(0, 10); //garde uniquement la date de début en format YYYY-MM-DD
+  // selectedRangeEnd = selectedRangeStart;
 
-  // Remplit les heures
-  startTime.value = currentEvent.start.toISOString().substring(11, 16); // Récupère l'heure de début au format HH:MM
-  endTime.value = currentEvent.end
-  currentEvent.end.toISOString().substring(11, 16) // Récupère l'heure de fin au format HH:MM
-  // Active les champs horaires
-  startTime.disabled = false;
-  endTime.disabled = false;
+  // // Remplit les heures
+  // startTime.value = currentEvent.start.toISOString().substring(11, 16); // Récupère l'heure de début au format HH:MM
+  // endTime.value = currentEvent.end.toISOString().substring(11, 16) // Récupère l'heure de fin au format HH:MM
+  // // Active les champs horaires
+  // startTime.disabled = false;
+  // endTime.disabled = false;
 
-  /** Récupère la salle depuis le titre ([Salle])
-   *! fonction à modifier / supprimer à terme pour aller chercher directement dans la BdD le nom des salles  */ 
-  const roomMatch = currentEvent.title.match(/\[(.*?)\]/);
-  if (roomMatch) {
-    const roomName = roomMatch[1];
-    for (let i = 0; i < roomSelect.options.length; i++) {
-      if (roomSelect.options[i].text === roomName) {
-        roomSelect.selectedIndex = i;
-        break;
-      }
-    }
-  }
+  // /** Récupère la salle depuis le titre ([Salle])
+  //  *! fonction à modifier / supprimer à terme pour aller chercher directement dans la BdD le nom des salles  */ 
+  // const roomMatch = currentEvent.title.match(/\[(.*?)\]/);
+  // if (roomMatch) {
+  //   const roomName = roomMatch[1];
+  //   for (let i = 0; i < roomSelect.options.length; i++) {
+  //     if (roomSelect.options[i].text === roomName) {
+  //       roomSelect.selectedIndex = i;
+  //       break;
+  //     }
+  //   }
+  // }
 
 
   // Masquer les options de récurrence lors d'une édition
@@ -116,14 +139,14 @@ window.calendar.on('eventClick', function (info) { //fonction qui sers d'EventLi
 window.calendar.render();
 
 // Enregistrement d'un nouvel événement ou mise à jour
-saveBtn.addEventListener("click", () => {
+saveBtn.addEventListener("click", (e) => {
+  e.preventDefault();
   const start = startTime.value;
   const end = endTime.value;
-  const comment = commentInput.value.trim();
   const room = roomSelect.value;
 
   // Vérifie les champs obligatoires
-  if (!start || !end || !comment || !room) {
+  if (!start || !end || !room) {
     alert("Merci de remplir tous les champs.");
     return;
   }
@@ -134,55 +157,31 @@ saveBtn.addEventListener("click", () => {
 
   // Informations sur la récurrence
   const recurrence = recurrenceCheckbox.checked;
-  const recurrenceWeeks = parseInt(recurrenceWeeksInput.value);
-  const targetDay = parseInt(recurrenceDaySelect.value);
+  const recurrenceWeeks = recurrenceWeeksInput.value;
 
-  // Construction des dates ISO
-  const baseStartDate = new Date(selectedRangeStart);
-  const baseEndDate = new Date(selectedRangeEnd);
-  const startTimeStr = "T" + start;
-  const endTimeStr = "T" + end;
-
-  // Si on modifie un événement existant
-  if (currentEvent) {
-    currentEvent.setProp("title", `[${room}] ${comment}`);
-    // Utilise la date d'origine de l'événement pour start et end
-    const eventDate = currentEvent.startStr.substring(0, 10);
-    currentEvent.setStart(eventDate + startTimeStr);
-    currentEvent.setEnd(eventDate + endTimeStr);
-  } else {
-    // Cas d'une récurrence sur plusieurs semaines
-    if (recurrence) {
-      let recurDate = new Date(baseStartDate);
-      // Trouve le premier jour correspondant à la récurrence
-      while (recurDate.getDay() !== targetDay) {
-        recurDate.setDate(recurDate.getDate() + 1);
-      }
-
-      // Ajoute un événement pour chaque semaine
-      for (let i = 0; i < recurrenceWeeks; i++) {
-        const d = new Date(recurDate);
-        d.setDate(d.getDate() + i * 14);
-        const dStr = d.toISOString().slice(0, 10);
-        window.calendar.addEvent({
-          title: `[${room}] ${comment}`,
-          start: dStr + startTimeStr,
-          end: dStr + endTimeStr,
-          allDay: false,
-        });
-      }
+  fetch('/Projet-Calendrier-Reservation/database/addEvent.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      startDate: selectedRangeStart,
+      endDate: selectedRangeEnd,
+      startTime: start,
+      endTime: end,
+      roomSelect: room,
+      recurrence: recurrence,
+      recurrenceWeeks: recurrenceWeeks
+      // ajoute utilisateur_id si besoin
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      window.calendar.refetchEvents();
+      eventModal.hide();
     } else {
-      // Ajout d’un événement simple (pas récurrent)
-      window.calendar.addEvent({
-        title: `[${room}] ${comment}`,
-        start: selectedRangeStart + startTimeStr,
-        end: selectedRangeStart + endTimeStr,
-        allDay: false,
-      });
+      alert("Erreur lors de l'enregistrement !");
     }
-  }
-  // Ferme la modale après enregistrement
-  eventModal.hide();
+  });
 });
 
 // Suppression d'un événement existant
@@ -193,6 +192,30 @@ deleteBtn.addEventListener("click", () => {
   }
 });
 
+document.getElementById('envoyer').addEventListener('click', function(e) {
+  e.preventDefault();
+  const input = document.getElementById('newCommentInput');
+  const comment = input.value;
+  const reservation_id = document.querySelector('input[name="reservation_id"]').value;
+
+  if (comment.trim() === '') return;
+
+  const formData = new FormData();
+  formData.append('action', 'envoyer');
+  formData.append('newCommentInput', comment);
+  formData.append('reservation_id', reservation_id);
+
+  fetch('', {
+    method: 'POST',
+    body: formData
+  }).then(response => {
+    if (response.ok) {
+      location.reload(); // ou dynamiquement ajouter le commentaire
+    } else {
+      alert("Erreur lors de l'ajout du commentaire.");
+    }
+  });
+});
 //button pour exporter les réservations du calendrier en tableau Excell//
 document.addEventListener('DOMContentLoaded', function () {
     const exportBtn = document.getElementById('exportBtn');
@@ -209,12 +232,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
             const data = [
-                ["Début", "Fin", "Salle", "Commentaire"]
+                ["Début", "Fin", "Salle"]
             ];
             events.forEach(ev => {
                   const match = ev.title.match(/^\[(.*?)\]\s*(.*)$/);
     const salle = match ? match[1] : "";
-    const commentaire = match ? match[2] : "";
 
         const options = {
         year: 'numeric',
@@ -230,7 +252,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     startStr,
                     endStr,
                     salle,
-                    commentaire,
                 ]);
             });
     const ws = XLSX.utils.aoa_to_sheet(data);
@@ -264,7 +285,6 @@ document.addEventListener('DOMContentLoaded', function () {
             events.forEach(ev => {
                 const match = ev.title.match(/^\[(.*?)\]\s*(.*)$/);
                 const salle = match ? match[1] : "";
-                const commentaire = match ? match[2] : "";
 
                 // Dates au format ISO pour Google Calendar (UTC, sans millisecondes)
                 const start = new Date(ev.start).toISOString().replace(/[-:]|\.\d{3}/g, '');
@@ -273,7 +293,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Générer le lien
                 const url = `https://calendar.google.com/calendar/render?action=TEMPLATE` +
                     `&text=${encodeURIComponent('Réservation: ' + salle)}` +
-                    `&details=${encodeURIComponent(commentaire)}` +
                     `&location=${encodeURIComponent(salle)}` +
                     `&dates=${start}/${end}`;
 

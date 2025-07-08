@@ -24,6 +24,11 @@ throw $e; // Laisse l'exception remonter
 }
 }
 
+public function deconnection() {
+$this->dbh=null;
+}
+
+/** Avoir les donnees */
 public function getAssociations() {
 $associations = $this->dbh->prepare("SELECT * FROM associations ORDER BY nom_association");
 $associations->execute();
@@ -72,11 +77,26 @@ public function UtilisateurLabelAssociation() {
     return $usersLabelAssociation->fetchAll(PDO::FETCH_ASSOC);
 }
 
-public function NewReservation($startDate,$endDate,$startTime,$endTime,$commentInput,$attachments,$roomSelect,$utilisateur_id) {
-    $newReservation=$this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heur_fin`, `commentaire`, `pieces_jointe`, `salle_id`, `utilisateur_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $newReservation->execute([$startDate, $endDate, $startTime, $endTime, $commentInput, $attachments, $roomSelect, $utilisateur_id]);
+public function getMail($email) {
+    $getMail = $this->dbh->prepare("SELECT * FROM utilisateurs WHERE email=:email");
+    $getMail->execute([':email' => $email]);
+    return $getMail->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function getCommentsByReservation($reservation_id) {
+    $comments = $this->dbh->prepare("SELECT * FROM commentaires WHERE reservation_id = ? ORDER BY heure_comment DESC");
+    $comments->execute([$reservation_id]);
+    return $comments->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**Ajouter les donnees */
+
+public function NewReservation($startDate,$endDate,$startTime,$endTime,$attachments,$roomSelect,$utilisateur_id) {
+    $newReservation=$this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `pieces_jointe`, `salle_id`, `utilisateur_id`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $newReservation->execute([$startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $utilisateur_id]);
     return $newReservation;
 }
+
 
 public function NewUtilisateur($name, $firstName, $tel, $mail, $pwd, $profil, $association_id) {
     $newUtilisateur = $this->dbh->prepare("INSERT INTO `utilisateurs`(`nom_utilisateur`, `prenom_utilisateur`, `telephone`, `email`, `password`, `profil`, `association_id`) VALUES (?, ?, ?, ?, ?, ?, ?)");
@@ -96,17 +116,12 @@ public function NewSalle($name) {
     return $newSalle;
 }
 
-public function deconnection() {
-$this->dbh=null;
+public function NewComment($reservation_id, $utilisateur_id, $comment) {
+    $stmt = $this->dbh->prepare("INSERT INTO commentaires (reservation_id, utilisateur_id, comment, heure_comment) VALUES (?, ?, ?, NOW())");
+    return $stmt->execute([$reservation_id, $utilisateur_id, $comment]);
 }
 
-
-public function getMail($email) {
-    $getMail = $this->dbh->prepare("SELECT * FROM utilisateurs WHERE email=:email");
-    $getMail->execute([':email' => $email]);
-    return $getMail->fetchAll(PDO::FETCH_ASSOC);
-}
-
+/**Supprimer les données */
 public function deleteUtilisateur($id_utilisateur) {
     $deletUser = $this->dbh->prepare("DELETE FROM utilisateurs WHERE id_utilisateur = ?");
     $deletUser->execute([$id_utilisateur]);
@@ -122,6 +137,12 @@ public function deleteAssociation($id_association) {
     $deletAssociation->execute([$id_association]);
 }
 
+public function deleteReservation($id_reservation) {
+    $deletReservation = $this->dbh->prepare("DELETE FROM reservations WHERE id_reservation = ?");
+    $deletReservation->execute([$id_reservation]);
+}
+
+/**Modifier les données */
 public function updateAssociation($id_association, $name) {
     $stmt = $this->dbh->prepare("
         UPDATE associations SET 
@@ -159,4 +180,18 @@ public function updatePassword($id_utilisateur, $pwd) {
     return $stmt->execute([$pwd, $id_utilisateur]);
 }
 
-}?>
+public function updateReservation($id_reservation, $startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect) {
+    $stmt = $this->dbh->prepare("
+        UPDATE reservations SET 
+        date_debut = ?, 
+        date_fin = ?, 
+        heure_debut = ?, 
+        heure_fin = ?,
+        pieces_jointe = ?, 
+        salle_id = ?
+        WHERE id_reservation = ?
+    ");
+    return $stmt->execute([$startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $id_reservation]);
+}
+}
+?>
