@@ -9,6 +9,10 @@ const recurrenceCheckbox = document.getElementById("recurrenceCheckbox");
 const recurrenceWeeksInput = document.getElementById("recurrenceWeeks");
 const recurrenceDaySelect = document.getElementById("recurrenceDay");
 const recurrenceOptions = document.getElementById("recurrenceOptions");
+const canCreate = window.canCreate;
+const canEdit = window.canEdit;
+const canDelete = window.canDelete;
+const canComment = window.canComment;
 
 // Variables pour stocker l'événement sélectionné ou en cours de modification
 let currentEvent = null; //enregistre la selection fait par l'utilisateur
@@ -25,7 +29,7 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
   initialView: "dayGridMonth", //vue par défault "grid" par mois
   locale: "fr", //configuer le calendrier en français
   firstDay : 1, // fais commencer le calendrier le lundi
-  selectable: true, // permet la selection des cases du calendrier pour créer des évênements
+  selectable: canCreate, // permet la selection des cases du calendrier pour créer des évênements
   headerToolbar: { // partie au dessus du calendrier
     left: "prev,next today",
     center: "title",
@@ -68,6 +72,11 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
 },
   // Lorsqu'on sélectionne un créneau (plage horaire uniquement)
   select: function (info) {
+    if (!canCreate) {
+      alert("Vous n'avez pas les droits pour créer un événement.");
+      calendar.unselect();
+      return;
+    }
     currentEvent = null; // On prépare la création d'un nouvel événement (pas d'édition)
     let startDate = new Date(info.start); // Date de début sélectionnée
     let endDate = new Date(info.end);     // Date de fin sélectionnée
@@ -78,10 +87,6 @@ function formatDateLocal(date) {
   const day = String(date.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
-
-
-//endDate.setDate(endDate.getDate() - 1); // soustrait 1 jour pour avoir la date réelle de fin
- //selectedRangeEnd = formatDateLocal(endDate);
 
 selectedRangeStart = formatDateLocal(startDate);
 selectedRangeEnd = formatDateLocal(new Date(endDate.getTime() - 24*60*60*1000));
@@ -100,15 +105,17 @@ selectedRangeEnd = formatDateLocal(new Date(endDate.getTime() - 24*60*60*1000));
     eventModal.show();
   },
   events: '/Projet-Calendrier-Reservation/database/loadEvents.php', 
-  /**
-   * ! on aura surement un problème pour ajouter tel évênement à tel association
-   */
+
 });
 
 // Lorsqu'on clique sur un événement existant 
 /** 
  *? Fonction qui a pour but de modifier ou supprimer un événement existant*/
 window.calendar.on('eventClick', function (info) { //fonction qui sers d'EventListener dans calendar
+  if (!canEdit) {
+    alert("vous n'avez pas le droit de modifier cette réservation.");
+    return;
+  }
   currentEvent = info.event; // Objet événement FullCalendar correspondant à l'événement cliqué par l'utilisateur
   document.querySelector('input[name="id_reservation"]').value = currentEvent.id;
     // Utilise les propriétés étendues pour remplir les champs
@@ -118,29 +125,6 @@ window.calendar.on('eventClick', function (info) { //fonction qui sers d'EventLi
   document.getElementById('endTime').value = currentEvent.extendedProps.heure_fin;
   document.getElementById('roomSelect').value = currentEvent.extendedProps.salle_id;
 
-  // selectedRangeStart = currentEvent.startStr.substring(0, 10); //garde uniquement la date de début en format YYYY-MM-DD
-  // selectedRangeEnd = selectedRangeStart;
-
-  // // Remplit les heures
-  // startTime.value = currentEvent.start.toISOString().substring(11, 16); // Récupère l'heure de début au format HH:MM
-  // endTime.value = currentEvent.end.toISOString().substring(11, 16) // Récupère l'heure de fin au format HH:MM
-  // // Active les champs horaires
-  // startTime.disabled = false;
-  // endTime.disabled = false;
-
-  // /** Récupère la salle depuis le titre ([Salle])
-  //  *! fonction à modifier / supprimer à terme pour aller chercher directement dans la BdD le nom des salles  */ 
-  // const roomMatch = currentEvent.title.match(/\[(.*?)\]/);
-  // if (roomMatch) {
-  //   const roomName = roomMatch[1];
-  //   for (let i = 0; i < roomSelect.options.length; i++) {
-  //     if (roomSelect.options[i].text === roomName) {
-  //       roomSelect.selectedIndex = i;
-  //       break;
-  //     }
-  //   }
-  // }
-
 
   // Masquer les options de récurrence lors d'une édition
   recurrenceCheckbox.checked = false;
@@ -148,6 +132,8 @@ window.calendar.on('eventClick', function (info) { //fonction qui sers d'EventLi
 
   // Affiche le bouton de suppression
   deleteBtn.style.display = "inline-block";
+
+  deleteBtn.style.display = canDelete ? 'inline-block' : 'none';
 
   // Affiche la modale
   eventModal.show();
@@ -159,6 +145,10 @@ window.calendar.render();
 // Enregistrement d'un nouvel événement ou mise à jour
 saveBtn.addEventListener("click", (e) => {
   e.preventDefault();
+  if (!canCreate && !canEdit) {
+    alert("Vous n'avez pas les droits pour créer ou modifier un événement.");
+    return;
+  }
   const start = startTime.value;
   const end = endTime.value;
   const room = roomSelect.value;
@@ -208,6 +198,11 @@ saveBtn.addEventListener("click", (e) => {
 
 // Suppression d'un événement existant
 deleteBtn.addEventListener("click", () => {
+  if (!canDelete) {
+    alert("Vous n'avez pas les droits pour supprimer cet événement.");
+    return;
+  }
+
   if (currentEvent) {
     currentEvent.remove();
     eventModal.hide();
