@@ -141,8 +141,12 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
       unset($_SESSION['message']);
   }
   ?>
-  <button id="exportBtn" type="button"<?php if (!$peutAfficher) echo 'style="display: none;"'; ?>><i class="fa-solid fa-file-excel"></i></button>
-  <button id="gcalExportBtn" type="button"<?php if (!$peutAfficher) echo 'style="display: none;"'; ?>><i class="fa-brands fa-google"></i></button>
+  <button id="exportBtn" type="button"<?php if (!$peutAfficher) echo 'style="display: none;"'; ?> style="background:#2b3d4f;border:2px solid #2b3d4f;color:#ffffff;border-radius:8px;padding:4px 12px;margin:0 8px;font-size:1.1rem;cursor:pointer;">
+  <i class="fa-solid fa-file-excel"></i>
+</button>
+<button id="gcalExportBtn" type="button"<?php if (!$peutAfficher) echo 'style="display: none;"'; ?> style="background:#2b3d4f;border:2px solid #2b3d4f;color:#ffffff;border-radius:8px;padding:4px 12px;margin:0 8px;font-size:1.1rem;cursor:pointer;">
+  <i class="fa-brands fa-google"></i>
+</button>
     <section id="calendar"></section>
   </main>
 
