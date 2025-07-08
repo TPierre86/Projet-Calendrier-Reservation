@@ -114,10 +114,15 @@ if ($startDate == $reservation["date_debut"] && $roomSelect == $reservation["sal
       } 
 }
 
+//bouton export cacher si pas connecté//
+$peutAfficher = false;
 
+if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
+            $peutAfficher = true;
+    }else{
+            $peutAfficher = false;
+    }
 ?>
-
-
   <main class="container mt-4">
   <?php
   if (isset($_SESSION['message'])) {
@@ -125,8 +130,8 @@ if ($startDate == $reservation["date_debut"] && $roomSelect == $reservation["sal
       unset($_SESSION['message']);
   }
   ?>
-  <button id="exportBtn" type="button"><i class="fa-solid fa-file-excel"></i></button>
-  <button id="gcalExportBtn" type="button"><i class="fa-brands fa-google"></i></button>
+  <button id="exportBtn" type="button"<?php if (!$peutAfficher) echo 'style="display: none;"'; ?>><i class="fa-solid fa-file-excel"></i></button>
+  <button id="gcalExportBtn" type="button"<?php if (!$peutAfficher) echo 'style="display: none;"'; ?>><i class="fa-brands fa-google"></i></button>
     <section id="calendar"></section>
   </main>
 
