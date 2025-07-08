@@ -13,6 +13,9 @@ const recurrenceOptions = document.getElementById("recurrenceOptions");
 const canCreate = window.canCreate;
 const canEdit = window.canEdit;
 const canDelete = window.canDelete;
+const canCreateAdmin = window.canCreateAdmin;
+const canEditAdmin = window.canEditAdmin;
+const canDeleteAdmin = window.canDeleteAdmin;
 const canComment = window.canComment;
 const associationColors = {
   1: '#e74c3c', // rouge

@@ -9,14 +9,29 @@ function canEdit() {
     return in_array($role, ['Gestionnaire', "Président d'association"]);
 }
 
+function canEditAdmin() {
+    $role = getUserRole();
+    return in_array($role, ['Gestionnaire']);
+}
+
 function canDelete() {
     $role = getUserRole();
     return in_array($role, ['Gestionnaire', "Président d'association"]);
 }
 
+function canDeleteAdmin() {
+    $role = getUserRole();
+    return in_array($role, ['Gestionnaire']);
+}
+
 function canCreate() {
     $role = getUserRole();
     return in_array($role, ['Gestionnaire', "Président d'association"]);
+}
+
+function canCreateAdmin() {
+    $role = getUserRole();
+    return in_array($role, ['Gestionnaire']);
 }
 
 function canComment() {
