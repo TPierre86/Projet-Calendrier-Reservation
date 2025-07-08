@@ -76,6 +76,8 @@ if (isset($_SESSION["connected_user"])) {
       unset($_SESSION['message']);
   }
   ?>
+  <button id="exportBtn" type="button"><i class="fa-solid fa-file-excel"></i></button>
+  <button id="gcalExportBtn" type="button"><i class="fa-brands fa-google"></i></button>
     <section id="calendar"></section>
   </main>
   <!-- Modal pour les réservations -->

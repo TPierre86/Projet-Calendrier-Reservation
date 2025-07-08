@@ -22,7 +22,7 @@ recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none";
 });
 
 // Initialisation du calendrier FullCalendar
-const calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage du calendrier lors du lancement de la page
+window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage du calendrier lors du lancement de la page
   initialView: "dayGridMonth", //vue par défault "grid" par mois
   locale: "fr", //configuer le calendrier en français
   firstDay : 1, // fais commencer le calendrier le lundi
@@ -82,7 +82,7 @@ selectedRangeEnd = formatDateLocal(endDate);    // Stocke la date de fin au mêm
 // Lorsqu'on clique sur un événement existant 
 /** 
  *? Fonction qui a pour but de modifier ou supprimer un événement existant*/
-calendar.on('eventClick', function (info) { //fonction qui sers d'EventListener dans calendar
+window.calendar.on('eventClick', function (info) { //fonction qui sers d'EventListener dans calendar
   currentEvent = info.event; // Objet événement FullCalendar correspondant à l'événement cliqué par l'utilisateur
   selectedRangeStart = currentEvent.startStr.substring(0, 10); //garde uniquement la date de début en format YYYY-MM-DD
   selectedRangeEnd = selectedRangeStart;
@@ -123,7 +123,7 @@ calendar.on('eventClick', function (info) { //fonction qui sers d'EventListener 
 });
 
 // Affiche le calendrier
-calendar.render();
+window.calendar.render();
 
 // Enregistrement d'un nouvel événement ou mise à jour
 saveBtn.addEventListener("click", (e) => {
@@ -165,7 +165,7 @@ saveBtn.addEventListener("click", (e) => {
   .then(response => response.json())
   .then(data => {
     if (data.success) {
-      calendar.refetchEvents();
+      window.calendar.refetchEvents();
       eventModal.hide();
     } else {
       alert("Erreur lors de l'enregistrement !");
@@ -176,27 +176,98 @@ saveBtn.addEventListener("click", (e) => {
 // Suppression d'un événement existant
 deleteBtn.addEventListener("click", () => {
   if (currentEvent) {
-    const eventId = currentEvent.id;
-
-    fetch('/Projet-Calendrier-Reservation/database/deleteEvents.php', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ id: eventId })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        currentEvent.remove(); // Supprime du calendrier
-        eventModal.hide();     // Ferme la modale
-      } else {
-        alert("Erreur lors de la suppression : " + (data.error || ""));
-      }
-    })
-    .catch(error => {
-      console.error("Erreur réseau :", error);
-      alert("Une erreur réseau s’est produite.");
-    });
+    currentEvent.remove();
+    eventModal.hide();
   }
+});
+
+//button pour exporter les réservations du calendrier en tableau Excell//
+document.addEventListener('DOMContentLoaded', function () {
+    const exportBtn = document.getElementById('exportBtn');
+    if (exportBtn) {
+        exportBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            if (!window.calendar) {
+                alert("Le calendrier n'est pas chargé !");
+                return;
+            }
+            const events = window.calendar.getEvents();
+            if (events.length === 0) {
+                alert("Aucune réservation à exporter !");
+                return;
+            }
+            const data = [
+                ["Début", "Fin", "Salle", "Commentaire"]
+            ];
+            events.forEach(ev => {
+                  const match = ev.title.match(/^\[(.*?)\]\s*(.*)$/);
+    const salle = match ? match[1] : "";
+    const commentaire = match ? match[2] : "";
+
+        const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit'
+    };
+
+    const startStr = new Date(ev.start).toLocaleString("fr-FR", options);
+    const endStr = new Date(ev.end).toLocaleString("fr-FR", options);
+                data.push([
+                    startStr,
+                    endStr,
+                    salle,
+                    commentaire,
+                ]);
+            });
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Réservations");
+    XLSX.writeFile(wb, "reservations.xlsx");
+        });
+    }
+})
+
+//button pour exporter les réservations du calendrier sur googleCalendar//
+document.addEventListener('DOMContentLoaded', function () {
+    const gcalExportBtn = document.getElementById('gcalExportBtn');
+
+    if (gcalExportBtn) {
+        gcalExportBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            if (!window.calendar) {
+                alert("Le calendrier n'est pas chargé !");
+                return;
+            }
+
+            const events = window.calendar.getEvents();
+
+            if (events.length === 0) {
+                alert("Aucune réservation à exporter !");
+                return;
+            }
+
+            events.forEach(ev => {
+                const match = ev.title.match(/^\[(.*?)\]\s*(.*)$/);
+                const salle = match ? match[1] : "";
+                const commentaire = match ? match[2] : "";
+
+                // Dates au format ISO pour Google Calendar (UTC, sans millisecondes)
+                const start = new Date(ev.start).toISOString().replace(/[-:]|\.\d{3}/g, '');
+                const end = new Date(ev.end).toISOString().replace(/[-:]|\.\d{3}/g, '');
+
+                // Générer le lien
+                const url = `https://calendar.google.com/calendar/render?action=TEMPLATE` +
+                    `&text=${encodeURIComponent('Réservation: ' + salle)}` +
+                    `&details=${encodeURIComponent(commentaire)}` +
+                    `&location=${encodeURIComponent(salle)}` +
+                    `&dates=${start}/${end}`;
+
+                // Ouvrir dans un nouvel onglet
+                window.open(url, '_blank');
+            });
+        });
+    }
 });

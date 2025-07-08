@@ -10,12 +10,9 @@ require_once('index.php');
         <li><a class="list-menu" href="/Projet-Calendrier-Reservation/models/panneauAdmin/gestionUtilisateurs.php">Gestion des Utilisateurs</a></li>
         <li><a class="list-menu" href="/Projet-Calendrier-Reservation/models/panneauAdmin/gestionAssociations.php">Gestion des Associations</a></li>
         <li><a class="list-menu" href="/Projet-Calendrier-Reservation/models/panneauAdmin/gestionSalles.php">Gestion des Salles</a></li>
-        <li><button id="exportBtn" class="list-menu" type="button">Export calendar</button></li>
         <?php elseif (isset($_SESSION['profil']) && $_SESSION['profil'] === "Président d'association"): ?>
         <li><a class="list-menu" href="/Projet-Calendrier-Reservation/models/panneauAdmin/listingMembres.php">Listing des membres</a></li>
-         <li><button id="exportBtn" class="list-menu" type="button">Export calendar</button></li>
         <?php elseif (isset($_SESSION['profil']) && $_SESSION['profil'] === "Membre d'association"): ?>
-        <li><button id="exportBtn" class="list-menu" type="button">Export calendar</button></li>
         <?php endif; ?>
     </ul>
 </nav>
