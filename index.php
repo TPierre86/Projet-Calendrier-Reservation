@@ -59,7 +59,7 @@ if ($startDate == $reservation["date_debut"] && $roomSelect == $reservation["sal
         ($endTime > $reservation["heure_debut"] && $endTime <= $reservation["heure_fin"]) ||
         ($startTime <= $reservation["heure_debut"] && $endTime >= $reservation["heure_fin"])
       )) {
-                    $reservationExist = true;
+            $reservationExist = true;
             break;
           }
         }

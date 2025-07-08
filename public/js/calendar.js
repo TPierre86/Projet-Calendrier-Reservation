@@ -100,15 +100,6 @@ window.calendar.on('eventClick', function (info) { //fonction qui sers d'EventLi
   document.getElementById('endTime').value = currentEvent.extendedProps.heure_fin;
   document.getElementById('roomSelect').value = currentEvent.extendedProps.salle_id;
 
-    // Affiche le bouton commentaire si id_reservation existe
-  const commentBtn = document.getElementById('commentWindow');
-  if (commentBtn) {
-    if (currentEvent.id) {
-      commentBtn.style.display = 'inline-block';
-    } else {
-      commentBtn.style.display = 'none';
-    }
-  }
   // selectedRangeStart = currentEvent.startStr.substring(0, 10); //garde uniquement la date de début en format YYYY-MM-DD
   // selectedRangeEnd = selectedRangeStart;
 
@@ -176,7 +167,6 @@ saveBtn.addEventListener("click", (e) => {
       endDate: selectedRangeEnd,
       startTime: start,
       endTime: end,
-      commentInput: comment,
       roomSelect: room,
       recurrence: recurrence,
       recurrenceWeeks: recurrenceWeeks
@@ -242,12 +232,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
             const data = [
-                ["Début", "Fin", "Salle", "Commentaire"]
+                ["Début", "Fin", "Salle"]
             ];
             events.forEach(ev => {
                   const match = ev.title.match(/^\[(.*?)\]\s*(.*)$/);
     const salle = match ? match[1] : "";
-    const commentaire = match ? match[2] : "";
 
         const options = {
         year: 'numeric',
@@ -263,7 +252,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     startStr,
                     endStr,
                     salle,
-                    commentaire,
                 ]);
             });
     const ws = XLSX.utils.aoa_to_sheet(data);
@@ -297,7 +285,6 @@ document.addEventListener('DOMContentLoaded', function () {
             events.forEach(ev => {
                 const match = ev.title.match(/^\[(.*?)\]\s*(.*)$/);
                 const salle = match ? match[1] : "";
-                const commentaire = match ? match[2] : "";
 
                 // Dates au format ISO pour Google Calendar (UTC, sans millisecondes)
                 const start = new Date(ev.start).toISOString().replace(/[-:]|\.\d{3}/g, '');
@@ -306,7 +293,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Générer le lien
                 const url = `https://calendar.google.com/calendar/render?action=TEMPLATE` +
                     `&text=${encodeURIComponent('Réservation: ' + salle)}` +
-                    `&details=${encodeURIComponent(commentaire)}` +
                     `&location=${encodeURIComponent(salle)}` +
                     `&dates=${start}/${end}`;
 
