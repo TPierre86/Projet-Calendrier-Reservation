@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once(__DIR__ . '/DAO.php');
+// require_once(__DIR__ . '/rights.php');
 header('Content-Type: application/json');
 
 // Récupération des données envoyées en JSON
