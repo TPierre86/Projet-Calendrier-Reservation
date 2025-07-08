@@ -5,7 +5,7 @@
     z-index: 1000;
     top: 200px;
     left: -250px;
-    background-color: rgb(247, 247, 238);
+    background-color: #2b3d4f;
     padding-top: 60px;
     transition: left 0.5s ease;
     box-shadow: 2px 0 8px rgba(0,0,0,0.1);
@@ -49,9 +49,26 @@
 }
 
 .list-menu {
-    text-decoration: none;
-    color: #333;
+    position: relative;
+    color: #ffffff;
     font-size: 1.2rem;
     display: block;
     padding: 10px 0;
+    text-decoration: none;
+    overflow: hidden;
+}
+
+.list-menu::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background: #ffffff;
+    transition: width 0.3s ease;
+}
+
+.list-menu:hover::after {
+    width: 100%;
 }
