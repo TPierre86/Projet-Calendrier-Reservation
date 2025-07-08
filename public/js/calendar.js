@@ -2,7 +2,6 @@ const calendarEl = document.getElementById("calendar");
 const eventModal = new bootstrap.Modal(document.getElementById("eventModal"));
 const startTime = document.getElementById("startTime");
 const endTime = document.getElementById("endTime");
-const commentInput = document.getElementById("commentInput");
 const roomSelect = document.getElementById("roomSelect");
 const saveBtn = document.getElementById("saveBtn");
 const deleteBtn = document.getElementById("deleteBtn");
@@ -25,7 +24,7 @@ recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none";
 const calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage du calendrier lors du lancement de la page
   initialView: "dayGridMonth", //vue par défault "grid" par mois
   locale: "fr", //configuer le calendrier en français
-  firstday : 1, // fais commencer le calendrier le lundi
+  firstDay : 1, // fais commencer le calendrier le lundi
   selectable: true, // permet la selection des cases du calendrier pour créer des évênements
   headerToolbar: { // partie au dessus du calendrier
     left: "prev,next today",
@@ -38,7 +37,16 @@ const calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage d
     week: "Semaine",
     day: "Jour",
   },
-
+  eventContent: function(arg) {
+    // Affiche le titre de l'événement avec la salle entre crochets
+    const title = arg.event.title;
+    const roomMatch = title.match(/\[(.*?)\]/);
+    if (roomMatch) {
+      const roomName = roomMatch[1];
+      return { html: `<strong>${roomName}</strong> - ${arg.timeText} <a href="http://www.afpa.fr">test</a>"` };
+    }
+    return { html: arg.timeText }; // Si pas de salle, affiche juste l'heure
+  },
   // Lorsqu'on sélectionne un créneau (plage horaire uniquement)
   select: function (info) {
     currentEvent = null; // On prépare la création d'un nouvel événement (pas d'édition)
@@ -53,7 +61,6 @@ const calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage d
     endTime.value = info.end.toISOString().substring(11, 16);     // Heure de fin (HH:MM)
 
     // Réinitialise les champs de la modale pour repartir d'un formulaire vierge
-    commentInput.value = "";           // Vide le commentaire
     roomSelect.selectedIndex = 0;      // Remet la sélection de salle à zéro
     recurrenceCheckbox.checked = false;// Décoche la récurrence
     recurrenceOptions.style.display = "none"; // Masque les options de récurrence
@@ -74,31 +81,45 @@ calendar.render();
  *? Fonction qui a pour but de modifier ou supprimer un événement existant*/
 calendar.on('eventClick', function (info) { //fonction qui sers d'EventListener dans calendar
   currentEvent = info.event; // Objet événement FullCalendar correspondant à l'événement cliqué par l'utilisateur
-  selectedRangeStart = currentEvent.startStr.substring(0, 10); //garde uniquement la date de début en format YYYY-MM-DD
-  selectedRangeEnd = selectedRangeStart;
+  document.querySelector('input[name="id_reservation"]').value = currentEvent.id;
+    // Utilise les propriétés étendues pour remplir les champs
+  document.getElementById('startDate').value = currentEvent.extendedProps.date_debut;
+  document.getElementById('endDate').value = currentEvent.extendedProps.date_fin;
+  document.getElementById('startTime').value = currentEvent.extendedProps.heure_debut;
+  document.getElementById('endTime').value = currentEvent.extendedProps.heure_fin;
+  document.getElementById('roomSelect').value = currentEvent.extendedProps.salle_id;
 
-  commentInput.value = currentEvent.title.replace(/\[.*?\]\s*/, "");// retire le nom de la salle du titre de l'évênement
-
-  // Remplit les heures
-  startTime.value = currentEvent.start.toISOString().substring(11, 16); // Récupère l'heure de début au format HH:MM
-  endTime.value = currentEvent.end
-  currentEvent.end.toISOString().substring(11, 16) // Récupère l'heure de fin au format HH:MM
-  // Active les champs horaires
-  startTime.disabled = false;
-  endTime.disabled = false;
-
-  /** Récupère la salle depuis le titre ([Salle])
-   *! fonction à modifier / supprimer à terme pour aller chercher directement dans la BdD le nom des salles  */ 
-  const roomMatch = currentEvent.title.match(/\[(.*?)\]/);
-  if (roomMatch) {
-    const roomName = roomMatch[1];
-    for (let i = 0; i < roomSelect.options.length; i++) {
-      if (roomSelect.options[i].text === roomName) {
-        roomSelect.selectedIndex = i;
-        break;
-      }
+    // Affiche le bouton commentaire si id_reservation existe
+  const commentBtn = document.getElementById('commentWindow');
+  if (commentBtn) {
+    if (currentEvent.id) {
+      commentBtn.style.display = 'inline-block';
+    } else {
+      commentBtn.style.display = 'none';
     }
   }
+  // selectedRangeStart = currentEvent.startStr.substring(0, 10); //garde uniquement la date de début en format YYYY-MM-DD
+  // selectedRangeEnd = selectedRangeStart;
+
+  // // Remplit les heures
+  // startTime.value = currentEvent.start.toISOString().substring(11, 16); // Récupère l'heure de début au format HH:MM
+  // endTime.value = currentEvent.end.toISOString().substring(11, 16) // Récupère l'heure de fin au format HH:MM
+  // // Active les champs horaires
+  // startTime.disabled = false;
+  // endTime.disabled = false;
+
+  // /** Récupère la salle depuis le titre ([Salle])
+  //  *! fonction à modifier / supprimer à terme pour aller chercher directement dans la BdD le nom des salles  */ 
+  // const roomMatch = currentEvent.title.match(/\[(.*?)\]/);
+  // if (roomMatch) {
+  //   const roomName = roomMatch[1];
+  //   for (let i = 0; i < roomSelect.options.length; i++) {
+  //     if (roomSelect.options[i].text === roomName) {
+  //       roomSelect.selectedIndex = i;
+  //       break;
+  //     }
+  //   }
+  // }
 
 
   // Masquer les options de récurrence lors d'une édition
@@ -119,11 +140,10 @@ calendar.render();
 saveBtn.addEventListener("click", () => {
   const start = startTime.value;
   const end = endTime.value;
-  const comment = commentInput.value.trim();
   const room = roomSelect.value;
 
   // Vérifie les champs obligatoires
-  if (!start || !end || !comment || !room) {
+  if (!start || !end || !room) {
     alert("Merci de remplir tous les champs.");
     return;
   }
@@ -145,7 +165,7 @@ saveBtn.addEventListener("click", () => {
 
   // Si on modifie un événement existant
   if (currentEvent) {
-    currentEvent.setProp("title", `[${room}] ${comment}`);
+    currentEvent.setProp("title", `[${room}]` );
     // Utilise la date d'origine de l'événement pour start et end
     const eventDate = currentEvent.startStr.substring(0, 10);
     currentEvent.setStart(eventDate + startTimeStr);
@@ -165,7 +185,7 @@ saveBtn.addEventListener("click", () => {
         d.setDate(d.getDate() + i * 14);
         const dStr = d.toISOString().slice(0, 10);
         calendar.addEvent({
-          title: `[${room}] ${comment}`,
+          title: `[${room}]`,
           start: dStr + startTimeStr,
           end: dStr + endTimeStr,
           allDay: false,
@@ -174,7 +194,7 @@ saveBtn.addEventListener("click", () => {
     } else {
       // Ajout d’un événement simple (pas récurrent)
       calendar.addEvent({
-        title: `[${room}] ${comment}`,
+        title: `[${room}]`,
         start: selectedRangeStart + startTimeStr,
         end: selectedRangeStart + endTimeStr,
         allDay: false,
@@ -191,4 +211,29 @@ deleteBtn.addEventListener("click", () => {
     currentEvent.remove();
     eventModal.hide();
   }
+});
+
+document.getElementById('envoyer').addEventListener('click', function(e) {
+  e.preventDefault();
+  const input = document.getElementById('newCommentInput');
+  const comment = input.value;
+  const reservation_id = document.querySelector('input[name="reservation_id"]').value;
+
+  if (comment.trim() === '') return;
+
+  const formData = new FormData();
+  formData.append('action', 'envoyer');
+  formData.append('newCommentInput', comment);
+  formData.append('reservation_id', reservation_id);
+
+  fetch('', {
+    method: 'POST',
+    body: formData
+  }).then(response => {
+    if (response.ok) {
+      location.reload(); // ou dynamiquement ajouter le commentaire
+    } else {
+      alert("Erreur lors de l'ajout du commentaire.");
+    }
+  });
 });

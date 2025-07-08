@@ -1,60 +1,125 @@
 <?php 
 require_once('database/DAO.php');
-
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  //Recuperer les données
-  $startDate = isset($_POST['startDate'])?($_POST['startDate']):"";
-  $endDate = isset($_POST['endDate'])?($_POST['endDate']):"";
-  $startTime =isset($_POST['startTime'])?($_POST['startTime']):"";
-  $endTime = isset($_POST['endTime'])?($_POST['endTime']):"";
-  $commentInput = isset($_POST['commentInput'])?($_POST['commentInput']):"";
-  $roomSelect = isset($_POST['roomSelect'])?($_POST['roomSelect']):"";
-
-  // Gérer la pièce jointe (si envoyée)
-    $attachments = null;
-    if (isset($_FILES['attachments']) && $_FILES['attachments']['error'] == UPLOAD_ERR_OK) {
-        $uploadDir = 'uploads/';
-        $fileName = basename($_FILES['attachments']['name']);
-        $targetPath = $uploadDir . time() . "_" . $fileName;
-
-        if (move_uploaded_file($_FILES['pieces_jointe']['tmp_name'], $targetPath)) {
-            $attachments = $targetPath; // Stocke le chemin pour la BDD
-        }
+        $dao = new DAOReservation();
+        $dao->connexion();
+    $reservation_id = $_POST['id_reservation'] ?? null;
+    $comments = [];
+    if (!empty($reservation_id)) {
+    $comments = $dao->getCommentsByReservation($reservation_id);
     }
-
-  // Gérer le utilisateur_id
-if (isset($_SESSION["connected_user"])) {
-    $utilisateur_id = $_SESSION["connected_user"];
-    //echo "Utilisateur connecté avec l'ID : " . $utilisateur_id;
+    //verification de l'id utilisateur connecté
+if (isset($_SESSION['connected_user'])) {
+    // L'utilisateur est connecté
+    $utilisateur_id = $_SESSION['connected_user'];
+    // Pour debug :
+    //echo "Utilisateur connecté : " . $utilisateur_id;
 } else {
-    //echo "Aucun utilisateur connecté.";
+    // L'utilisateur n'est pas connecté
+    // echo "Aucun utilisateur connecté.";
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    
+    $action = $_POST['action'];
+    
+    if($action === 'enregistrer') {
+          //Recuperer les données
+          $startDate = isset($_POST['startDate'])?($_POST['startDate']):"";
+          $endDate = isset($_POST['endDate'])?($_POST['endDate']):"";
+          $startTime =isset($_POST['startTime'])?($_POST['startTime']):"";
+          $endTime = isset($_POST['endTime'])?($_POST['endTime']):"";
+          $roomSelect = isset($_POST['roomSelect'])?($_POST['roomSelect']):"";
 
-// --------commande pour New Reservation--------------
-$dao = new DAOReservation();
-$dao->connexion();
-$reservationExist=false;
-$reservations = $dao->getReservation();
-foreach ($reservations as $reservation) {
-  if ($startDate == $reservation["date_debut"] && $startTime == $reservation["heure_debut"] && $roomSelect == $reservation["salle_id"] || $startDate == $reservation["date_debut"] && ($startTime < $reservation["heure_fin"]) && $roomSelect == $reservation["salle_id"]) {
-    $reservationExist = true;
-    break;
-  }
-}
+          // Gérer la pièce jointe (si envoyée)
+            $attachments = null;
+            if (isset($_FILES['attachments']) && $_FILES['attachments']['error'] == UPLOAD_ERR_OK) {
+                $uploadDir = 'uploads/';
+                $fileName = basename($_FILES['attachments']['name']);
+                $targetPath = $uploadDir . time() . "_" . $fileName;
 
-  if ($reservationExist) {
-      $_SESSION['message'] = "Reservation Impossible. Salle déjà occupée.";
-      header('Location: /Projet-Calendrier-Reservation/index.php');
-      exit;
-  } else {
-      $success = $dao->NewReservation(...);
-      if ($success) {
-          $_SESSION['message'] = "Reservation réussi";
-          header('Location: /Projet-Calendrier-Reservation/index.php');
+                if (move_uploaded_file($_FILES['attachments']['tmp_name'], $targetPath)) {
+                    $attachments = $targetPath; // Stocke le chemin pour la BDD
+                }
+            }
+
+          // Gérer le utilisateur_id
+        if (isset($_SESSION["connected_user"])) {
+            $utilisateur_id = $_SESSION["connected_user"];
+            //echo "Utilisateur connecté avec l'ID : " . $utilisateur_id;
+        } else {
+            //echo "Aucun utilisateur connecté.";
+        }
+
+        // --------commande pour New Reservation--------------
+        $reservationExist=false;
+        $reservations = $dao->getReservation();
+        foreach ($reservations as $reservation) {
+if ($startDate == $reservation["date_debut"] && $roomSelect == $reservation["salle_id"] &&
+      (
+        ($startTime >= $reservation["heure_debut"] && $startTime < $reservation["heure_fin"]) ||
+        ($endTime > $reservation["heure_debut"] && $endTime <= $reservation["heure_fin"]) ||
+        ($startTime <= $reservation["heure_debut"] && $endTime >= $reservation["heure_fin"])
+      )) {
+                    $reservationExist = true;
+            break;
+          }
+        }
+
+        if ($reservationExist) {
+            $_SESSION['message'] = "Reservation Impossible. Salle déjà occupée.";
+            header('Location: /Projet-Calendrier-Reservation/controllers.php');
+            exit;
+        } else {
+            $success = $dao->NewReservation($startDate,$endDate,$startTime,$endTime,$attachments,$roomSelect,$utilisateur_id);
+            if ($success) {
+                $_SESSION['message'] = "Reservation réussi";
+                header('Location: /Projet-Calendrier-Reservation/controllers.php');
+                exit;
+            }
+        }
+    } 
+    if ($action === 'supprimer') {
+        $id_reservation = $_POST['id_reservation'];
+        $dao->deleteReservation($id_reservation);
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit;
+    } 
+    if ($action === 'modifier') {
+        $id_reservation = $_POST['id_reservation'];
+        
+        $reservation= $dao->getReservation();
+            $startDate = isset($_POST['startDate'])?($_POST['startDate']):"";
+            $endDate = isset($_POST['endDate'])?($_POST['endDate']):"";
+            $startTime = isset($_POST['startTime'])?($_POST['startTime']):"";
+            $endTime = isset($_POST['endTime'])?($_POST['endTime']):"";
+            $commentInput = isset($_POST['commentInput'])?($_POST['commentInput']):"";
+            $attachments = isset($_POST['attachments'])?($_POST['attachments']):"";
+            $roomSelect = isset($_POST['roomSelect'])?($_POST['roomSelect']):"";    
+            $id_utilisateur = $_POST['id_utilisateur'];
+        $dao->updateReservation(
+            $id_reservation, 
+            $startDate, 
+            $endDate, 
+            $startTime, 
+            $endTime, 
+            $commentInput, 
+            $attachments, 
+            $roomSelect
+        );
+        // Redirection ou traitement du formulaire de modification
+        header("Location: controllers.php");
+        exit;    
+      } 
+      if ($action === 'envoyer') { //Création d'un nouveau commentaire
+          $comment = ($_POST['newCommentInput']);
+          $reservation_id = $_POST['reservation_id'];
+          $utilisateur_id = $_SESSION['connected_user'] ?? null;
+          if ($comment && $reservation_id && $utilisateur_id) {
+              $dao->NewComment($reservation_id, $utilisateur_id, $comment);
+          }
+          // Recharge la page pour afficher le nouveau commentaire
+          header("Location: ".$_SERVER['REQUEST_URI']);
           exit;
-      }
-  }
+        }
 }
 ?>
 
@@ -68,6 +133,7 @@ foreach ($reservations as $reservation) {
   ?>
     <section id="calendar"></section>
   </main>
+
   <!-- Modal pour les réservations -->
   <section class="modal fade" id="eventModal" tabindex="-1" aria-labelledby="eventModalLabel" aria-hidden="true">
     <article class="modal-dialog">
@@ -77,7 +143,8 @@ foreach ($reservations as $reservation) {
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
         </header>
         <section class="modal-body">
-          <form id="formulaire" method="POST">
+          <form id="formulaire" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="id_reservation" id="id_reservation" value="<?= htmlspecialchars($reservation_id) ?>">
           <section class="mb-3">
             <label for="startDate" class="form-label">Date de début</label>
             <input type="date" class="form-control" id="startDate" name="startDate">
@@ -95,8 +162,8 @@ foreach ($reservations as $reservation) {
             <input type="time" class="form-control" id="endTime" name="endTime"/>
           </section>
           <section class="mb-3">
-            <label for="commentInput" class="form-label">Commentaire</label>
-            <input type="text" class="form-control" id="commentInput" name="commentInput" />
+            <label for="commentWindow" class="form-label">Commentaire</label>
+            <button type="button" id="commentWindow"><i class="fa-solid fa-comments"></i></button>
           </section>
           <section class="mb-3">
             <label for="attachments">Fichier PDF:</label>
@@ -134,12 +201,30 @@ foreach ($reservations as $reservation) {
             </section>
           </section>
         </section>
-        <footer class="modal-footer">
-          <button id="deleteBtn" class="btn btn-danger me-auto" style="display: none;">Supprimer</button>
+        <section class="modal-footer">
+          <!-- modal commentaires -->
+          <section id="filComments" style="display: none;">
+                <article id="commentsData">
+                  <?php foreach($comments as $comment) {?>
+                    <article class="comment">
+                      <p><?= htmlspecialchars($comment['comment']) ?></p>
+                      <span class="comment-date"> <?= date('d/m/Y H:i', strtotime($comment['heure_comment'])) ?></span>
+                    </article>
+                  <?php } ?>
+                </article>
+                <form id="newComment" onsubmit="return false;">
+                  <input type="text" name="id_comment" value="<?= htmlspecialchars($comment['id_comment']) ?>" hidden>
+                  <input type="hidden" name="reservation_id" value="<?= htmlspecialchars($reservation_id) ?>">
+                  <input name="newCommentInput" type="text" id="newCommentInput" placeholder="Ajouter un commentaire..." required>
+                  <button id="envoyer" name="action" value="envoyer" type="submit"><i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+          </section>
+          <button name="action" value="supprimer" id="deleteBtn" class="btn btn-danger me-auto" style="display: none;">Supprimer</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-          <button type="submit" id="saveBtn" class="btn btn-primary">Enregistrer</button>
-        </footer>
+          <button name="action" value="enregistrer" type="submit" id="saveBtn" class="btn btn-primary">Enregistrer</button>
+        </section>
         </form>
+          
       </article>
     </article>
   </section>
