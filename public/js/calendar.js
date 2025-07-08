@@ -56,6 +56,7 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
     week: "Semaine",
     day: "Jour",
   },
+
   eventContent: function(arg) {
     // Crée un conteneur temporaire pour parser le HTML du title
         const container = document.createElement('span');
@@ -73,6 +74,34 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
       e.stopPropagation(); // Empêche l'ouverture de la modale
             // Récupère l'id de réservation
         const reservationId = link.getAttribute('data-id');
+        fetch(`/projet-calendrier-reservation/database/getComments.php?reservation_id=${reservationId}`)
+          .then(response => {
+              if (!response.ok) throw new Error('Réponse réseau incorrecte');
+              return response.json();
+            })
+          .then(comments => {
+            if (!Array.isArray(comments)) {
+            throw new Error('Données reçues non valides : pas un tableau');
+            }
+
+            const commentsData = document.getElementById('commentsData');
+            commentsData.innerHTML = '';
+            comments.forEach(comment => {
+              commentsData.innerHTML += `
+                <article class="comment">
+                  <section class="commentHeader">
+                    <strong class="commentAuthor">${comment.nom_utilisateur}:</strong>
+                    <p class="commentText">${comment.comment}</p>
+                  </section>
+                    <span class="commentDate">${comment.heure_comment}</span>
+                </article>
+                `;
+              });
+            })
+            .catch(error => {
+    console.error("Erreur lors du chargement des commentaires :", error);
+    alert("Erreur lors du chargement des commentaires.");
+  });
         // Met à jour un champ caché dans la modale commentaire si besoin
         const input = document.querySelector('#filComments input[name="reservation_id"]');
         if (input) input.value = reservationId;
@@ -166,35 +195,35 @@ window.calendar.on('eventClick', function (info) { //fonction qui sers d'EventLi
 
 
 
-document.getElementById('newComment').addEventListener('submit', function (e) {
-    e.preventDefault(); // Empêche le rechargement de la page
+// document.getElementById('newComment').addEventListener('submit', function (e) {
+//     e.preventDefault(); // Empêche le rechargement de la page
 
-  const form = e.target;
-  const reservationId = form.querySelector('input[name="reservation_id"]').value;
-  const commentInput = form.querySelector('textarea[name="newCommentInput"]');
+//   const form = e.target;
+//   const reservationId = form.querySelector('input[name="reservation_id"]').value;
+//   const commentInput = form.querySelector('textarea[name="newCommentInput"]');
 
-  fetch('/Projet-Calendrier-Reservation/database/addComment.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www_form-urlencoded',
-    },
-    body: new URLSearchParams({
-      reservation_id: reservationId,
-      comment: commentInput.value,
-    }),
-  })
-  .then(response => response.json())
-  .then(data => {
-    if (data.success) {
-      // Réinitialise le champ de commentaire
-      commentInput.value = '';
-        form.reset(); // Réinitialise le formulaire
-    } else {
-      alert("Erreur lors de l'ajout du commentaire !");
-    }
-  });
+//   fetch('/Projet-Calendrier-Reservation/database/addComment.php', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/x-www_form-urlencoded',
+//     },
+//     body: new URLSearchParams({
+//       reservation_id: reservationId,
+//       comment: commentInput.value,
+//     }),
+//   })
+//   .then(response => response.json())
+//   .then(data => {
+//     if (data.success) {
+//       // Réinitialise le champ de commentaire
+//       commentInput.value = '';
+//         form.reset(); // Réinitialise le formulaire
+//     } else {
+//       alert("Erreur lors de l'ajout du commentaire !");
+//     }
+//   });
 
-});
+// });
 
   // Masquer les options de récurrence lors d'une édition
   recurrenceCheckbox.checked = false;

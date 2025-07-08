@@ -1,6 +1,10 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require_once 'DAOReservation.php';
 session_start();
+header('Content-Type: application/json');
 
 if (!isset($_POST['reservation_id'], $_POST['comment']) || !isset($_SESSION['id_utilisateur'])) {
     echo json_encode(['success' => false]);
@@ -24,7 +28,10 @@ if ($success) {
         'nom_utilisateur' => htmlspecialchars($user['nom_utilisateur']),
         'heure_comment' => date('d/m/Y H:i')
     ]);
+    exit;
 } else {
     echo json_encode(['success' => false]);
+    exit;
 }
+
 ?>
