@@ -25,7 +25,6 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
   initialView: "dayGridMonth", //vue par défault "grid" par mois
   locale: "fr", //configuer le calendrier en français
   firstDay : 1, // fais commencer le calendrier le lundi
-  firstDay : 1, // fais commencer le calendrier le lundi
   selectable: true, // permet la selection des cases du calendrier pour créer des évênements
   headerToolbar: { // partie au dessus du calendrier
     left: "prev,next today",
@@ -210,6 +209,7 @@ deleteBtn.addEventListener("click", () => {
     eventModal.hide();
   }
 });
+
 
 //button pour exporter les réservations du calendrier en tableau Excell//
 document.addEventListener('DOMContentLoaded', function () {
