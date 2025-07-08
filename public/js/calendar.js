@@ -38,7 +38,6 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
     day: "Jour",
   },
   eventContent: function(arg) {
-    // Affiche le titre de l'événement avec la salle entre crochets
     // Crée un conteneur temporaire pour parser le HTML du title
         const container = document.createElement('span');
         container.innerHTML = arg.event.title; // Injecte le HTML du title (avec le <a>)
@@ -53,7 +52,14 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
 
         link.onclick = function(e) {
       e.stopPropagation(); // Empêche l'ouverture de la modale
-      alert('Lien cliqué !');
+            // Récupère l'id de réservation
+        const reservationId = link.getAttribute('data-id');
+        // Met à jour un champ caché dans la modale commentaire si besoin
+        const input = document.querySelector('#filComments input[name="reservation_id"]');
+        if (input) input.value = reservationId;
+        // Ouvre la modale commentaire (Bootstrap 5)
+        const filCommentsModal = new bootstrap.Modal(document.getElementById('filCommentsModal'));
+        filCommentsModal.show(); 
       return false;
     };
       // Ajoute le nom de la salle avant le lien
@@ -141,6 +147,35 @@ window.calendar.on('eventClick', function (info) { //fonction qui sers d'EventLi
   //   }
   // }
 
+document.getElementById('newComment').addEventListener('submit', function (e) {
+    e.preventDefault(); // Empêche le rechargement de la page
+
+  const form = e.target;
+  const reservationId = form.querySelector('input[name="reservation_id"]').value;
+  const commentInput = form.querySelector('textarea[name="newCommentInput"]');
+
+  fetch('/Projet-Calendrier-Reservation/database/addComment.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www_form-urlencoded',
+    },
+    body: new URLSearchParams({
+      reservation_id: reservationId,
+      comment: commentInput.value,
+    }),
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      // Réinitialise le champ de commentaire
+      commentInput.value = '';
+        form.reset(); // Réinitialise le formulaire
+    } else {
+      alert("Erreur lors de l'ajout du commentaire !");
+    }
+  });
+
+});
 
   // Masquer les options de récurrence lors d'une édition
   recurrenceCheckbox.checked = false;

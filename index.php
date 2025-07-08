@@ -190,8 +190,8 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
           <button name="action" value="enregistrer" type="submit" id="saveBtn" class="btn btn-primary">Enregistrer</button>
         </section>
-        </form>
-          
+        </form> 
       </article>
     </article>
   </section>
+  
