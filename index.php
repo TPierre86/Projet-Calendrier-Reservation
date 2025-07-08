@@ -221,9 +221,9 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
           <article id="commentsData">
           </article>
 
-              <form id="newComment" onsubmit="return false;">
+              <form id="newComment" >
                   <input type="hidden" name="reservation_id" id="reservation_id" value="">
-                  <input name="newCommentInput" type="text" id="newCommentInput" required></input>
+                  <input name="comment" type="text" id="comment" required></input>
                   <button id="envoyer" name="action" value="envoyer" type="submit"><i class="fa-solid fa-paper-plane"></i></button>
               </form>
         </section>

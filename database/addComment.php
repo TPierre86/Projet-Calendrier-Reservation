@@ -1,12 +1,11 @@
 <?php
 ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-require_once 'DAOReservation.php';
+require_once 'DAO.php';
 session_start();
 header('Content-Type: application/json');
 
-if (!isset($_POST['reservation_id'], $_POST['comment']) || !isset($_SESSION['id_utilisateur'])) {
+if (!isset($_GET['reservation_id'], $_POST['comment']) || !isset($_SESSION['connected_user'])) {
     echo json_encode(['success' => false]);
     exit;
 }
@@ -14,8 +13,8 @@ if (!isset($_POST['reservation_id'], $_POST['comment']) || !isset($_SESSION['id_
 $dao = new DAOReservation();
 $dao->connexion();
 
-$reservation_id = intval($_POST['reservation_id']);
-$utilisateur_id = $_SESSION['id_utilisateur'];
+$reservation_id = intval($_GET['reservation_id']);
+$utilisateur_id = $_SESSION['connected_user'];
 $comment = trim($_POST['comment']);
 
 $success = $dao->NewComment($reservation_id, $utilisateur_id, $comment);

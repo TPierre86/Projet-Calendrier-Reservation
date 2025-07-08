@@ -1,3 +1,4 @@
+
 const calendarEl = document.getElementById("calendar");
 const eventModal = new bootstrap.Modal(document.getElementById("eventModal"));
 const startTime = document.getElementById("startTime");
@@ -120,6 +121,7 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
   // Retourne le DOM custom à FullCalendar
   return { domNodes: [container] };
 },
+
   // Lorsqu'on sélectionne un créneau (plage horaire uniquement)
   select: function (info) {
     if (!canCreate) {
@@ -194,37 +196,6 @@ window.calendar.on('eventClick', function (info) { //fonction qui sers d'EventLi
   document.getElementById('roomSelect').value = currentEvent.extendedProps.salle_id;
 
 
-
-// document.getElementById('newComment').addEventListener('submit', function (e) {
-//     e.preventDefault(); // Empêche le rechargement de la page
-
-//   const form = e.target;
-//   const reservationId = form.querySelector('input[name="reservation_id"]').value;
-//   const commentInput = form.querySelector('textarea[name="newCommentInput"]');
-
-//   fetch('/Projet-Calendrier-Reservation/database/addComment.php', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/x-www_form-urlencoded',
-//     },
-//     body: new URLSearchParams({
-//       reservation_id: reservationId,
-//       comment: commentInput.value,
-//     }),
-//   })
-//   .then(response => response.json())
-//   .then(data => {
-//     if (data.success) {
-//       // Réinitialise le champ de commentaire
-//       commentInput.value = '';
-//         form.reset(); // Réinitialise le formulaire
-//     } else {
-//       alert("Erreur lors de l'ajout du commentaire !");
-//     }
-//   });
-
-// });
-
   // Masquer les options de récurrence lors d'une édition
   recurrenceCheckbox.checked = false;
   recurrenceOptions.style.display = "none";
@@ -240,6 +211,58 @@ window.calendar.on('eventClick', function (info) { //fonction qui sers d'EventLi
 
 // Affiche le calendrier
 window.calendar.render();
+
+
+// Ajouter un nouveau commentaire
+
+  document.getElementById('newComment').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const commentText = document.getElementById('comment').value.trim();
+    const reservationId = document.getElementById('reservation_id').value;
+
+    if (commentText === '') {
+        alert("Le commentaire est vide !");
+        return;
+    }
+
+    fetch('/projet-calendrier-reservation/database/addComment.php?reservation_id='+ reservationId, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: new URLSearchParams({
+            reservation_id: reservationId,
+            comment: commentText
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+
+      
+   
+        if (data.success) {
+            // Ajout du nouveau commentaire dans la liste
+            const commentsContainer = document.getElementById('commentsData');
+            const newComment = document.createElement('article');
+            newComment.innerHTML = `
+            <article class="comment">
+              <section class="commentHeader">
+                    <strong class="commentAuthor">${data.nom_utilisateur}</strong>
+                    <p class="commentText"> ${data.comment}</p>
+                </section>
+                    <span class="commentDate">${data.heure_comment}</span>
+                </article>
+            `;
+            commentsContainer.prepend(newComment);
+            document.getElementById('comment').value = '';
+        } else {
+            alert("Erreur : " + (data.error || 'Impossible d’ajouter le commentaire.'));
+        }
+    })
+    .catch(error => {
+        console.error('Erreur réseau :', error);
+        alert("Erreur réseau.");
+    });
+  }),
 
 // Enregistrement d'un nouvel événement ou mise à jour
 saveBtn.addEventListener("click", (e) => {
