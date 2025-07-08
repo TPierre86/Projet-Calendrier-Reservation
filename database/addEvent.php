@@ -18,7 +18,6 @@ $startDate = $data['startDate'];
 $endDate = $data['endDate'];
 $startTime = $data['startTime'];
 $endTime = $data['endTime'];
-$comment = $data['commentInput'];
 $room = $data['roomSelect'];
 $utilisateur_id = isset($_SESSION['connected_user']) ? $_SESSION['connected_user'] : null;
 
@@ -47,7 +46,6 @@ try {
                 $dateString, 
                 $startTime, 
                 $endTime, 
-                $comment, 
                 null, 
                 $room, 
                 $utilisateur_id
@@ -59,7 +57,6 @@ try {
             $endDate, 
             $startTime, 
             $endTime, 
-            $comment, 
             null, 
             $room, 
             $utilisateur_id

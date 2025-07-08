@@ -25,7 +25,6 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
   initialView: "dayGridMonth", //vue par défault "grid" par mois
   locale: "fr", //configuer le calendrier en français
   firstDay : 1, // fais commencer le calendrier le lundi
-  firstDay : 1, // fais commencer le calendrier le lundi
   selectable: true, // permet la selection des cases du calendrier pour créer des évênements
   headerToolbar: { // partie au dessus du calendrier
     left: "prev,next today",
@@ -192,30 +191,7 @@ deleteBtn.addEventListener("click", () => {
   }
 });
 
-document.getElementById('envoyer').addEventListener('click', function(e) {
-  e.preventDefault();
-  const input = document.getElementById('newCommentInput');
-  const comment = input.value;
-  const reservation_id = document.querySelector('input[name="reservation_id"]').value;
 
-  if (comment.trim() === '') return;
-
-  const formData = new FormData();
-  formData.append('action', 'envoyer');
-  formData.append('newCommentInput', comment);
-  formData.append('reservation_id', reservation_id);
-
-  fetch('', {
-    method: 'POST',
-    body: formData
-  }).then(response => {
-    if (response.ok) {
-      location.reload(); // ou dynamiquement ajouter le commentaire
-    } else {
-      alert("Erreur lors de l'ajout du commentaire.");
-    }
-  });
-});
 //button pour exporter les réservations du calendrier en tableau Excell//
 document.addEventListener('DOMContentLoaded', function () {
     const exportBtn = document.getElementById('exportBtn');

@@ -5,7 +5,6 @@ require_once('database/DAO.php');
     $reservation_id = $_POST['id_reservation'] ?? null;
     $comments = [];
     if (!empty($reservation_id)) {
-    $comments = $dao->getCommentsByReservation($reservation_id);
     }
     //verification de l'id utilisateur connecté
 if (isset($_SESSION['connected_user'])) {
@@ -105,8 +104,7 @@ if ($startDate == $reservation["date_debut"] && $roomSelect == $reservation["sal
             $startDate, 
             $endDate, 
             $startTime, 
-            $endTime, 
-            $commentInput, 
+            $endTime,  
             $attachments, 
             $roomSelect
         );
