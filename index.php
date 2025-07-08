@@ -121,6 +121,8 @@ if ($startDate == $reservation["date_debut"] && $roomSelect == $reservation["sal
           exit;
         }
 }
+
+
 ?>
 
 
@@ -131,6 +133,8 @@ if ($startDate == $reservation["date_debut"] && $roomSelect == $reservation["sal
       unset($_SESSION['message']);
   }
   ?>
+  <button id="exportBtn" type="button"><i class="fa-solid fa-file-excel"></i></button>
+  <button id="gcalExportBtn" type="button"><i class="fa-brands fa-google"></i></button>
     <section id="calendar"></section>
   </main>
 
@@ -172,34 +176,20 @@ if ($startDate == $reservation["date_debut"] && $roomSelect == $reservation["sal
           <section class="mb-3">
             <label for="roomSelect" class="form-label">Salle</label>
             <select class="form-select" id="roomSelect" name="roomSelect">
-              <option disabled>--</option>
+              <option value="" disabled>--</option>
               <option value="1">Salle de réunion</option>
               <option value="2">Bar</option>
               <option value="3">Réfectoire</option>
             </select>
-          </section>
           <section class="form-check mb-2">
-            <input type="checkbox" class="form-check-input" id="recurrenceCheckbox" />
+            <input type="checkbox" class="form-check-input" name ="recurrence" id="recurrenceCheckbox" />
             <label class="form-check-label" for="recurrenceCheckbox">Récurrence</label>
+          <section id="recurrenceOptions" style="display: none;" class="mb-3">
+            <label for="recurrenceWeeks">Nombre de réservations (toutes les 2 semaines) :</label>
+            <input type="number" name="recurrenceWeeks" id="recurrenceWeeks" value="3" min="1" max="52">
           </section>
-          <section id="recurrenceOptions" style="display: none;">
-            <section class="mb-2">
-              <label for="recurrenceWeeks" class="form-label">Nombre de semaines</label>
-              <input type="number" class="form-control" id="recurrenceWeeks" min="1" value="2" />
-            </section>
-            <section class="mb-2">
-              <label for="recurrenceDay" class="form-label">Jour de la semaine</label>
-              <select class="form-select" id="recurrenceDay">
-                <option value="1">Lundi</option>
-                <option value="2">Mardi</option>
-                <option value="3">Mercredi</option>
-                <option value="4">Jeudi</option>
-                <option value="5">Vendredi</option>
-                <option value="6">Samedi</option>
-                <option value="7">Dimanche</option>
-              </select>
-            </section>
           </section>
+        </section>
         </section>
         <section class="modal-footer">
           <!-- modal commentaires -->

@@ -12,6 +12,7 @@ require_once('index.php');
         <li><a class="list-menu" href="/Projet-Calendrier-Reservation/models/panneauAdmin/gestionSalles.php">Gestion des Salles</a></li>
         <?php elseif (isset($_SESSION['profil']) && $_SESSION['profil'] === "Président d'association"): ?>
         <li><a class="list-menu" href="/Projet-Calendrier-Reservation/models/panneauAdmin/listingMembres.php">Listing des membres</a></li>
+        <?php elseif (isset($_SESSION['profil']) && $_SESSION['profil'] === "Membre d'association"): ?>
         <?php endif; ?>
     </ul>
 </nav>

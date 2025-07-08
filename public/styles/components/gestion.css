@@ -44,6 +44,7 @@
   border: 1px solid #b2b2b2;
   width: 300px;
   box-sizing: border-box;
+  margin-top: -10px;
 }
 
 #formGestion {
@@ -60,6 +61,7 @@
 .txt {
   font-size: 20px;
   font-weight: bold;
+  margin-top: -20px;
 }
 #titreGestion {
   text-align: center;
