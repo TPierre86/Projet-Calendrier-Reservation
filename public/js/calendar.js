@@ -240,3 +240,46 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 })
+
+//button pour exporter les réservations du calendrier sur googleCalendar//
+document.addEventListener('DOMContentLoaded', function () {
+    const gcalExportBtn = document.getElementById('gcalExportBtn');
+
+    if (gcalExportBtn) {
+        gcalExportBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            if (!window.calendar) {
+                alert("Le calendrier n'est pas chargé !");
+                return;
+            }
+
+            const events = window.calendar.getEvents();
+
+            if (events.length === 0) {
+                alert("Aucune réservation à exporter !");
+                return;
+            }
+
+            events.forEach(ev => {
+                const match = ev.title.match(/^\[(.*?)\]\s*(.*)$/);
+                const salle = match ? match[1] : "";
+                const commentaire = match ? match[2] : "";
+
+                // Dates au format ISO pour Google Calendar (UTC, sans millisecondes)
+                const start = new Date(ev.start).toISOString().replace(/[-:]|\.\d{3}/g, '');
+                const end = new Date(ev.end).toISOString().replace(/[-:]|\.\d{3}/g, '');
+
+                // Générer le lien
+                const url = `https://calendar.google.com/calendar/render?action=TEMPLATE` +
+                    `&text=${encodeURIComponent('Réservation: ' + salle)}` +
+                    `&details=${encodeURIComponent(commentaire)}` +
+                    `&location=${encodeURIComponent(salle)}` +
+                    `&dates=${start}/${end}`;
+
+                // Ouvrir dans un nouvel onglet
+                window.open(url, '_blank');
+            });
+        });
+    }
+});

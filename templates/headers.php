@@ -8,6 +8,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Comité monestié</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
     <link rel="stylesheet" href="/Projet-Calendrier-Reservation/public/styles/components/calendar.css" />
     <link rel="stylesheet" href="/Projet-Calendrier-Reservation/public/styles/layout/headers&footers.css" />
     <link rel="stylesheet" href="/Projet-Calendrier-Reservation/public/styles/components/menuBurger.css">
