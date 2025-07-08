@@ -7,7 +7,7 @@ header('Content-Type: application/json');
 $pdo = new PDO('mysql:host=localhost;dbname=reservation-salles', 'root', '');
 
 $sql = "
-    SELECT r.id_reservation, r.commentaire, r.date_debut, r.date_fin, r.heure_debut, r.heur_fin,
+    SELECT r.id_reservation,r.salle_id, r.date_debut, r.date_fin, r.heure_debut, r.heure_fin,
         s.nom_salle
     FROM reservations r
     JOIN salles s ON r.salle_id = s.id_salle
@@ -16,14 +16,13 @@ $sql = "
 $stmt = $pdo->query($sql);
 
 // Récupération des réservations (remplace 'id' par 'id_reservation')
-$stmt = $pdo->query("SELECT id_reservation, salle_id, date_debut, date_fin, heure_debut, heure_fin FROM reservations");
 $events = [];
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $start = $row['date_debut'] . 'T' . $row['heure_debut'];
-    $end = $row['date_fin'] . 'T' . $row['heur_fin'];
+    $end = $row['date_fin'] . 'T' . $row['heure_fin'];
     $events[] = [
         'id' => $row['id_reservation'],
-        'title' => '[' . $row['nom_salle'] . '] <a href="">test</a>',
+        'title' => '[' . $row['nom_salle'] . '] <a href=""><i class="fa-solid fa-comments"></i></a>',
         'start' => $start,
         'end' => $end,
         'allDay' => false,

@@ -11,14 +11,13 @@ $data = json_decode($rawInput, true);
 if (!$data || !isset($data['startDate'], $data['startTime'], $data['endTime'], $data['roomSelect'])) {
     echo json_encode(["success" => false, "error" => "Requête invalide ou données manquantes."]);
     exit;
-    
+
 }
 
 $startDate = $data['startDate'];
 $endDate = $data['endDate'];
 $startTime = $data['startTime'];
 $endTime = $data['endTime'];
-$comment = $data['commentInput'];
 $room = $data['roomSelect'];
 $utilisateur_id = isset($_SESSION['connected_user']) ? $_SESSION['connected_user'] : null;
 
@@ -47,7 +46,6 @@ try {
                 $dateString, 
                 $startTime, 
                 $endTime, 
-                $comment, 
                 null, 
                 $room, 
                 $utilisateur_id
@@ -59,7 +57,6 @@ try {
             $endDate, 
             $startTime, 
             $endTime, 
-            $comment, 
             null, 
             $room, 
             $utilisateur_id

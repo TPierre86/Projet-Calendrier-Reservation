@@ -40,14 +40,33 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
   },
   eventContent: function(arg) {
     // Affiche le titre de l'événement avec la salle entre crochets
-    const title = arg.event.title;
-    const roomMatch = title.match(/\[(.*?)\]/);
-    if (roomMatch) {
-      const roomName = roomMatch[1];
-      return { html: `<strong>${roomName}</strong> - ${arg.timeText} <a href="http://www.afpa.fr">test</a>"` };
-    }
-    return { html: arg.timeText }; // Si pas de salle, affiche juste l'heure
-  },
+    // Crée un conteneur temporaire pour parser le HTML du title
+        const container = document.createElement('span');
+        container.innerHTML = arg.event.title; // Injecte le HTML du title (avec le <a>)
+    // Récupère le nom de la salle entre crochets
+        const title = arg.event.title;
+        const roomMatch = title.match(/\[(.*?)\]/);
+        const roomName = roomMatch ? roomMatch[1] : '';
+
+    // Récupère le lien <a> s'il existe
+      const link = container.querySelector('a');
+        if (link) {
+
+        link.onclick = function(e) {
+      e.stopPropagation(); // Empêche l'ouverture de la modale
+      alert('Lien cliqué !');
+      return false;
+    };
+      // Ajoute le nom de la salle avant le lien
+    container.innerHTML = `<strong>${roomName}</strong> `;
+    container.appendChild(link);
+  } else {
+    // Si pas de lien, affiche juste le nom de la salle
+    container.textContent = roomName;
+  }
+  // Retourne le DOM custom à FullCalendar
+  return { domNodes: [container] };
+},
   // Lorsqu'on sélectionne un créneau (plage horaire uniquement)
   select: function (info) {
     currentEvent = null; // On prépare la création d'un nouvel événement (pas d'édition)
@@ -192,30 +211,6 @@ deleteBtn.addEventListener("click", () => {
   }
 });
 
-document.getElementById('envoyer').addEventListener('click', function(e) {
-  e.preventDefault();
-  const input = document.getElementById('newCommentInput');
-  const comment = input.value;
-  const reservation_id = document.querySelector('input[name="reservation_id"]').value;
-
-  if (comment.trim() === '') return;
-
-  const formData = new FormData();
-  formData.append('action', 'envoyer');
-  formData.append('newCommentInput', comment);
-  formData.append('reservation_id', reservation_id);
-
-  fetch('', {
-    method: 'POST',
-    body: formData
-  }).then(response => {
-    if (response.ok) {
-      location.reload(); // ou dynamiquement ajouter le commentaire
-    } else {
-      alert("Erreur lors de l'ajout du commentaire.");
-    }
-  });
-});
 //button pour exporter les réservations du calendrier en tableau Excell//
 document.addEventListener('DOMContentLoaded', function () {
     const exportBtn = document.getElementById('exportBtn');
