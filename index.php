@@ -33,13 +33,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $attachments = null;
             if (isset($_FILES['attachments']) && $_FILES['attachments']['error'] == UPLOAD_ERR_OK) {
                 $uploadDir = 'uploads/';
+                if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0755, true);
+        }
                 $fileName = basename($_FILES['attachments']['name']);
                 $targetPath = $uploadDir . time() . "_" . $fileName;
 
-                if (move_uploaded_file($_FILES['attachments']['tmp_name'], $targetPath)) {
-                    $attachments = $targetPath; // Stocke le chemin pour la BDD
-                }
-            }
+        
+
+        if (move_uploaded_file($_FILES['attachments']['tmp_name'], $targetPath)) {
+            $attachments = $targetPath; // Stocke le chemin pour la BDD
+        }
+    }
 
           // Gérer le utilisateur_id
         if (isset($_SESSION["connected_user"])) {
