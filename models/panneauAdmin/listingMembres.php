@@ -28,6 +28,7 @@ require_once('../../templates/headers.php');
 
 <main id="mainGestion">
     <article id="formGestion">
+        
         <h2 id="titreliste">Liste des Membres</h2>
     <table id="tableListe">
         <thead>
@@ -56,6 +57,7 @@ require_once('../../templates/headers.php');
             <?php endif; ?>
             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                 <a href="?page=<?= $i ?>" <?= $i === $page ? 'style="font-weight:bold;text-decoration:underline;"' : '' ?>><?= $i ?></a>
+                <a href="../../controllers.php" class="btn-retour" style="font-weight:bold;text-decoration:underline;">Retour</a>
             <?php endfor; ?>
             <?php if ($page < $totalPages): ?>
                 <a href="?page=<?= $page + 1 ?>">Suivant &raquo;</a>

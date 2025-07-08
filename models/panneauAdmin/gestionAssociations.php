@@ -138,6 +138,7 @@ require_once('../../templates/headers.php');
                     <?php endfor; ?>
                     <?php if ($page < $totalPages): ?>
                         <a href="?page=<?= $page + 1 ?>">Suivant &raquo;</a>
+                        <a href="../../controllers.php" class="btn-retour" style="font-weight:bold;text-decoration:underline;">Retour</a>
                     <?php endif; ?>
                     </section>
             </section>
