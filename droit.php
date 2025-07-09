@@ -1,37 +1,44 @@
 <?php
 
 function getUserRole() {
-    return $_SESSION['profil'] ?? null;
+    return $_SESSION['profil'] ?? 'visitor';
 }
 
-function canEdit() {
+
+function canEdit($reservationAssociationId = null) {
     $role = getUserRole();
-    return in_array($role, ['Gestionnaire', "Président d'association"]);
+
+    if ($role === 'Gestionnaire') {
+        return true;
+    }
+
+    if ($role === "Président d'association") {
+        $userAssocId = $_SESSION['association_id'] ?? null;
+        return $userAssocId !== null && $reservationAssociationId !== null && $userAssocId == $reservationAssociationId;
+    }
+
+    return false;
 }
 
-function canEditAdmin() {
+function canDelete($reservationAssociationId = null) {
     $role = getUserRole();
-    return in_array($role, ['Gestionnaire']);
+
+    if ($role === 'Gestionnaire') {
+        return true;
+    }
+
+    if ($role === "Président d'association") {
+        $userAssocId = $_SESSION['association_id'] ?? null;
+        return $userAssocId !== null && $reservationAssociationId !== null && $userAssocId == $reservationAssociationId;
+    }
+
+    return false;
 }
 
-function canDelete() {
-    $role = getUserRole();
-    return in_array($role, ['Gestionnaire', "Président d'association"]);
-}
-
-function canDeleteAdmin() {
-    $role = getUserRole();
-    return in_array($role, ['Gestionnaire']);
-}
 
 function canCreate() {
     $role = getUserRole();
-    return in_array($role, ['Gestionnaire', "Président d'association"]);
-}
-
-function canCreateAdmin() {
-    $role = getUserRole();
-    return in_array($role, ['Gestionnaire']);
+    return $role === 'Gestionnaire' || $role === "Président d'association";
 }
 
 function canComment() {
