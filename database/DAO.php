@@ -54,7 +54,7 @@ public function getReservation() {
 }
 
 public function getReservationByAssociation($id_association) {
-    $reservation = $this->dbh->prepare("SELECT * FROM reservations INNER JOIN utilisateurs ON (utilisateurs.id_utilisateur=reservations.utilisateur_id) WHERE association_id=? ORDER BY date_debut, heure_debut");
+    $reservation = $this->dbh->prepare("SELECT * FROM reservations INNER JOIN utilisateurs ON (utilisateurs.id_utilisateur=reservations.utilisateur_id) INNER JOIN salles ON reservations.salle_id=salles.id_salle WHERE association_id=? ORDER BY date_debut, heure_debut");
     $reservation->execute([$id_association]);
     return $reservation->fetchAll(PDO::FETCH_ASSOC);
 }
@@ -97,9 +97,9 @@ public function getCommentsByReservationId($reservation_id) {
 
 /**Ajouter les donnees */
 
-public function NewReservation($startDate,$endDate,$startTime,$endTime,$attachments,$roomSelect,$utilisateur_id) {
-    $newReservation=$this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `pieces_jointe`, `salle_id`, `utilisateur_id`) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $newReservation->execute([$startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $utilisateur_id]);
+public function NewReservation($startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $utilisateur_id, $recurrent = 0) {
+    $newReservation = $this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `pieces_jointe`, `salle_id`, `utilisateur_id`, `recurrent`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $newReservation->execute([$startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $utilisateur_id, $recurrent]);
     return $newReservation;
 }
 
