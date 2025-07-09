@@ -9,6 +9,8 @@ const recurrenceCheckbox = document.getElementById("recurrenceCheckbox");
 const recurrenceWeeksInput = document.getElementById("recurrenceWeeks");
 const recurrenceDaySelect = document.getElementById("recurrenceDay");
 const recurrenceOptions = document.getElementById("recurrenceOptions");
+const menageOptions = document.getElementById("menageOptions");
+const recurrenceCheckboxSection = document.getElementById("recurrenceCheckboxSection");
 const canCreate = window.canCreate;
 const canEdit = window.canEdit;
 const canDelete = window.canDelete;
@@ -49,8 +51,9 @@ let selectedRangeEnd = null; // en cas de selection multiple enregistre la date 
 // Affiche/masque les options de récurrence
 if (recurrenceCheckbox) {
   recurrenceCheckbox.addEventListener("change", () => {
+  if (recurrenceOptions) {
     recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none";
-  });
+  }});
 }
 
 // Initialisation du calendrier FullCalendar
@@ -143,39 +146,55 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
 },
 
   // Lorsqu'on sélectionne un créneau (plage horaire uniquement)
-  select: function (info) {
-    if (!canCreate) {
-      alert("Vous n'avez pas les droits pour créer un événement.");
-      calendar.unselect();
-      return;
-    }
-    currentEvent = null; // On prépare la création d'un nouvel événement (pas d'édition)
-    let startDate = new Date(info.start); // Date de début sélectionnée
-    let endDate = new Date(info.end);     // Date de fin sélectionnée
+select: function (info) {
+  if (!canCreate) {
+    alert("Vous n'avez pas les droits pour créer un événement.");
+    calendar.unselect();
+    return;
+  }
+  currentEvent = null; // On prépare la création d'un nouvel événement (pas d'édition)
+  let startDate = new Date(info.start); // Date de début sélectionnée
+  let endDate = new Date(info.end);     // Date de fin sélectionnée
 
-function formatDateLocal(date) {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // mois de 0 à 11
-  const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
+  function formatDateLocal(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // mois de 0 à 11
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
 
-selectedRangeStart = formatDateLocal(startDate);
-selectedRangeEnd = formatDateLocal(new Date(endDate.getTime() - 24*60*60*1000));
+  selectedRangeStart = formatDateLocal(startDate);
+  selectedRangeEnd = formatDateLocal(new Date(endDate.getTime() - 24 * 60 * 60 * 1000));
 
-    // Remplit automatiquement les heures
-    startTime.value = info.start.toISOString().substring(11, 16); // Heure de début (HH:MM)
-    endTime.value = info.end.toISOString().substring(11, 16);     // Heure de fin (HH:MM)
+  // Remplit automatiquement les heures
+  startTime.value = info.start.toISOString().substring(11, 16); // Heure de début (HH:MM)
+  endTime.value = info.end.toISOString().substring(11, 16);     // Heure de fin (HH:MM)
 
-    // Réinitialise les champs de la modale pour repartir d'un formulaire vierge
-    roomSelect.selectedIndex = 0;      // Remet la sélection de salle à zéro
-    recurrenceCheckbox.checked = false;// Décoche la récurrence
-    recurrenceOptions.style.display = "none"; // Masque les options de récurrence
-    deleteBtn.style.display = "none";         // Cache le bouton de suppression (nouvel événement)
+  // Réinitialise les champs de la modale pour repartir d'un formulaire vierge
+  roomSelect.selectedIndex = 0;          // Remet la sélection de salle à zéro
+  recurrenceCheckbox.checked = false;    // Décoche la récurrence
+  recurrenceOptions.style.display = "none"; // Masque les options de récurrence
+  deleteBtn.style.display = "none";     // Cache le bouton de suppression (nouvel événement)
 
-    // Affiche la fenêtre modale pour permettre à l'utilisateur de saisir les détails de la réservation
-    eventModal.show();
-  },
+  // Gérer la visibilité des options selon le rôle
+  if (recurrenceCheckbox && recurrenceOptions && menageOptions) {
+    recurrenceCheckbox.style.display = (role === "Gestionnaire") ? "inline-block" : "none";
+    if (role !== "Gestionnaire") recurrenceCheckbox.checked = false;
+  }
+  if (recurrenceOptions) {
+    recurrenceOptions.style.display = (role === "Gestionnaire") ? "block" : "none";
+  }
+  if (menageOptions) {
+    menageOptions.style.display = "none";
+  }
+  if (deleteBtn) {
+    deleteBtn.style.display = "none";
+  }
+
+  // Affiche la fenêtre modale pour permettre à l'utilisateur de saisir les détails de la réservation
+  eventModal.show();
+},
+
 events: {
   url: '/Projet-Calendrier-Reservation/database/loadEvents.php',
   method: 'GET',
@@ -211,6 +230,7 @@ eventDidMount: function(info) {
    */
 });
 
+
 // Lorsqu'on clique sur un événement existant 
 /** 
  *? Fonction qui a pour but de modifier ou supprimer un événement existant*/
@@ -228,23 +248,41 @@ window.calendar.on('eventClick', function (info) {
   document.getElementById('endTime').value = currentEvent.extendedProps.heure_fin;
   document.getElementById('roomSelect').value = currentEvent.extendedProps.salle_id;
 
+  // Affiche uniquement si rôle = 'Gestionnaire'
+  if (role === "Gestionnaire") {
+    if (recurrenceOptions) {
+      recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none";
+    }
+    if (menageOptions) menageOptions.style.display = "block";
+    if (recurrenceCheckboxSection) recurrenceCheckboxSection.style.display = "block";
+  } else {
+    if (recurrenceCheckboxSection) recurrenceCheckboxSection.style.display = "none";
+    if (recurrenceOptions) recurrenceOptions.style.display = "none";
+    if (menageOptions) menageOptions.style.display = "none";
+    if (recurrenceCheckbox) recurrenceCheckbox.checked = false;
+  }
 
-  // Masquer les options de récurrence lors d'une édition
-  recurrenceCheckbox.checked = false;
-  recurrenceOptions.style.display = "none";
+  // Affiche ou cache le bouton supprimer selon droits
+  deleteBtn.style.display = canDeleteEvent(currentEvent) ? 'inline-block' : 'none';
 
-  // Affiche le bouton de suppression
-  deleteBtn.style.display = "inline-block";
-
-deleteBtn.style.display = canDeleteEvent(currentEvent) ? 'inline-block' : 'none';
-
-  // Affiche la modale
   eventModal.show();
 });
+
+
 
 // Affiche le calendrier
 window.calendar.render();
 
+document.addEventListener("DOMContentLoaded", function () {
+  const recurrenceCheckbox = document.getElementById("recurrenceCheckbox");
+  const recurrenceOptions = document.getElementById("recurrenceOptions");
+
+  if (recurrenceCheckbox && recurrenceOptions) {
+    recurrenceCheckbox.addEventListener("change", () => {
+      recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none";
+    });
+  }
+});
 
 // Ajouter un nouveau commentaire
 
@@ -271,7 +309,6 @@ window.calendar.render();
     .then(data => {
 
       
-   
         if (data.success) {
             // Ajout du nouveau commentaire dans la liste
             const commentsContainer = document.getElementById('commentsData');

@@ -188,7 +188,7 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
                 <option value="2">Bar</option>
                 <option value="3">Réfectoire</option>
               </select>
-            <section class="form-check mb-2">
+            <section id="recurrenceCheckboxSection" class="form-check mb-2">
               <input type="checkbox" class="form-check-input" name="recurrence" id="recurrenceCheckbox" />
               <label class="form-check-label" for="recurrenceCheckbox">Récurrence</label>
             </section>
@@ -196,7 +196,7 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
               <label for="recurrenceWeeks">Nombre de réservations (toutes les 2 semaines) :</label>
               <input type="number" name="recurrenceWeeks" id="recurrenceWeeks" value="3" min="1" max="52">
             </section>
-            <section class="form-check mb-2">
+            <section id="menageOptions" class="form-check mb-2">
               <input type="checkbox" class="form-check-input" name="menage" id="menageCheckbox" />
               <label class="form-check-label" for="menageCheckbox">Ménage</label>
             </section>
