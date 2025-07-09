@@ -29,7 +29,7 @@ try {
 
         $events[] = [
             'id' => $row['id_reservation'],
-            'title' => '[' . $row['nom_salle'] . '] <a href="#" class="comment-link" data-id="' . $row['id_reservation'] . '"><i class="fa-solid fa-comments"></i></a>',
+            'title' => '[' . $row['nom_salle'] . '] <a href="#" class="comment-link" data-id="' . $row['id_reservation'] . '"><i class="fa-solid fa-comments"></i></a> <a href="#" class="attachment-link" data-id="' . $row['id_reservation'] . '"><i class="fa-solid fa-file-arrow-up"></i></a>',
             'start' => $start,
             'end' => $end,
             'allDay' => false,

@@ -68,7 +68,8 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
         const roomName = roomMatch ? roomMatch[1] : '';
 
     // Récupère le lien <a> s'il existe
-      const link = container.querySelector('a');
+      const link = container.querySelector('.comment-link');
+      const attachment = container.querySelector('.attachment-link');
         if (link) {
 
         link.onclick = function(e) {
@@ -84,7 +85,7 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
             if (!Array.isArray(comments)) {
             throw new Error('Données reçues non valides : pas un tableau');
             }
-
+        
             const commentsData = document.getElementById('commentsData');
             commentsData.innerHTML = '';
             comments.forEach(comment => {
@@ -103,6 +104,9 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
     console.error("Erreur lors du chargement des commentaires :", error);
     alert("Erreur lors du chargement des commentaires.");
   });
+  
+
+
         // Met à jour un champ caché dans la modale commentaire si besoin
         const input = document.querySelector('#filComments input[name="reservation_id"]');
         if (input) input.value = reservationId;
@@ -114,6 +118,8 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
       // Ajoute le nom de la salle avant le lien
     container.innerHTML = `<strong>${roomName}</strong> `;
     container.appendChild(link);
+    container.appendChild(attachment);
+
   } else {
     // Si pas de lien, affiche juste le nom de la salle
     container.textContent = roomName;
