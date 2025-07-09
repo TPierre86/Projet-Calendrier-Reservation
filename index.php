@@ -167,52 +167,53 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
         </header>
         <section class="modal-body">
           <form id="formulaire" method="POST" enctype="multipart/form-data">
-<<<<<<< HEAD
-          <input type="hidden" name="id_reservation" id="id_reservation">
-          <section class="mb-3">
-            <label for="startDate" class="form-label">Date de début</label>
-            <input type="date" class="form-control" id="startDate" name="startDate">
-          </section>
-          <section class="mb-3">
-            <label for="endDate" class="form-label">Date de fin</label>
-            <input type="date" class="form-control" id="endDate" name="endDate">
-          </section>
-          <section class="mb-3">
-            <label for="startTime" class="form-label">Heure de début</label>
-            <input type="time" class="form-control" id="startTime" name="startTime" />
-          </section>
-          <section class="mb-3">
-            <label for="endTime" class="form-label">Heure de fin</label>
-            <input type="time" class="form-control" id="endTime" name="endTime"/>
-          </section>
-          <section class="mb-3">
-            <label for="attachments">Fichier PDF:</label>
-            <input type="file" id="attachments" name="attachments" accept=".pdf">
-          </section>
-          <section class="mb-3">
-            <label for="roomSelect" class="form-label">Salle</label>
-            <select class="form-select" id="roomSelect" name="roomSelect">
-              <option value="" disabled>--</option>
-              <option value="1">Salle de réunion</option>
-              <option value="2">Bar</option>
-              <option value="3">Réfectoire</option>
-            </select>
-          <section class="form-check mb-2">
-            <input type="checkbox" class="form-check-input" name ="recurrence" id="recurrenceCheckbox" />
-            <label class="form-check-label" for="recurrenceCheckbox">Récurrence</label>
-          <section id="recurrenceOptions" style="display: none;" class="mb-3">
-            <label for="recurrenceWeeks">Nombre de réservations (toutes les 2 semaines) :</label>
-            <input type="number" name="recurrenceWeeks" id="recurrenceWeeks" value="3" min="1" max="52">
-          </section>
-          </section>
-        </section>
-        </section>
-        
-        <section class="modal-footer">
-          <button name="action" value="supprimer" id="deleteBtn" class="btn btn-danger me-auto" style="display: none;">Supprimer</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-          <button name="action" value="enregistrer" id="saveBtn" class="btn btn-primary">Enregistrer</button>
-          <button name="action" value="enregistrerModif" id="saveModifBtn" class="btn btn-primary" style="display: none;">Enregistrer les modifications</button>
+            <input type="hidden" name="id_reservation" id="id_reservation" value="<?= htmlspecialchars($reservation_id) ?>">
+            <section class="mb-3">
+              <label for="startDate" class="form-label">Date de début</label>
+              <input type="date" class="form-control" id="startDate" name="startDate">
+            </section>
+            <section class="mb-3">
+              <label for="endDate" class="form-label">Date de fin</label>
+              <input type="date" class="form-control" id="endDate" name="endDate">
+            </section>
+            <section class="mb-3">
+              <label for="startTime" class="form-label">Heure de début</label>
+              <input type="time" class="form-control" id="startTime" name="startTime" />
+            </section>
+            <section class="mb-3">
+              <label for="endTime" class="form-label">Heure de fin</label>
+              <input type="time" class="form-control" id="endTime" name="endTime"/>
+            </section>
+            <section class="mb-3">
+              <label for="attachments">Fichier PDF:</label>
+              <input type="file" id="attachments" name="attachments" accept=".pdf">
+            </section>
+              <label for="roomSelect" class="form-label">Salle</label>
+              <select class="form-select" id="roomSelect" name="roomSelect">
+                <option value="" disabled>--</option>
+                <option value="1">Salle de réunion</option>
+                <option value="2">Bar</option>
+                <option value="3">Réfectoire</option>
+              </select>
+            <section id="recurrenceCheckboxSection" class="form-check mb-2">
+              <input type="checkbox" class="form-check-input" name="recurrence" id="recurrenceCheckbox" />
+              <label class="form-check-label" for="recurrenceCheckbox">Récurrence</label>
+            </section>
+            <section id="recurrenceOptions" style="display: none;" class="mb-3">
+              <label for="recurrenceWeeks">Nombre de réservations (toutes les 2 semaines) :</label>
+              <input type="number" name="recurrenceWeeks" id="recurrenceWeeks" value="3" min="1" max="52">
+            </section>
+            <section id="menageOptions" class="form-check mb-2">
+              <input type="checkbox" class="form-check-input" name="menage" id="menageCheckbox" />
+              <label class="form-check-label" for="menageCheckbox">Ménage</label>
+            </section>
+            <section class="modal-footer">
+              <button name="action" value="supprimer" id="deleteBtn" class="btn btn-danger me-auto" style="display: none;">Supprimer</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+              <button name="action" value="enregistrer" id="saveBtn" class="btn btn-primary">Enregistrer</button>
+              <button name="action" value="enregistrerModif" id="saveModifBtn" class="btn btn-primary" style="display: none;">Enregistrer les modifications</button>
+            </section>
+          </form> 
         </section>
         </form> 
       </article>
