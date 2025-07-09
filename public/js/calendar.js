@@ -330,7 +330,27 @@ saveBtn.addEventListener("click", (e) => {
   // Informations sur la récurrence
   const recurrence = recurrenceCheckbox.checked;
   const recurrenceWeeks = recurrenceWeeksInput.value;
+  const newStart = new Date(`${startDate}T${start}`);
+  const newEnd = new Date(`${endDate}T${end}`);
 
+  const conflicts = window.calendar.getEvents().some(ev => {
+    const evRoom = ev.extendedProps.salle_id;
+    if (parseInt(evRoom) !== parseInt(room)) return false;
+
+    const evStart = ev.start;
+    const evEnd = ev.end;
+
+    const overlap = newStart < evEnd && newEnd > evStart;
+    const isSameEvent = currentEvent && ev.id === currentEvent.id;
+
+    return overlap && !isSameEvent;
+  });
+
+  if (conflicts) {
+    alert("Cette salle est déjà réservée sur ce créneau.");
+    return;
+  }
+  
   fetch('/Projet-Calendrier-Reservation/database/addEvent.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
