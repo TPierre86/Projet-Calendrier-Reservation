@@ -479,7 +479,12 @@ if (saveModifBtn) {
   .then(response => response.json())
   .then(data => {
     if (data.success) {
-      console.log('ok');
+      alert('Réservation enregistrée');
+
+    // Optionnel : reset form
+    document.getElementById('formulaire').reset();
+    saveBtn.style.display = "inline-block"; // Affiche le bouton de création
+    saveModifBtn.style.display = "none"; // Cache le bouton de modification
       window.calendar.refetchEvents();
       eventModal.hide();
     } else {
