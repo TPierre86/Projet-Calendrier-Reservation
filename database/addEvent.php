@@ -51,7 +51,8 @@ try {
                 $endTime,
                 null,
                 $room,
-                $utilisateur_id
+                $utilisateur_id,
+                1 // recurrent = 1
             );
         }
     } else {
@@ -62,7 +63,8 @@ try {
             $endTime, 
             null, 
             $room, 
-            $utilisateur_id
+            $utilisateur_id,
+            0 // recurrent = 0
         );
     }
 

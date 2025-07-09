@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mar. 08 juil. 2025 à 10:47
+-- Généré le : mer. 09 juil. 2025 à 08:39
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -67,7 +67,8 @@ CREATE TABLE `commentaires` (
 --
 
 INSERT INTO `commentaires` (`id_comment`, `reservation_id`, `utilisateur_id`, `comment`, `heure_comment`) VALUES
-(1, 11, 2, 'test', '2025-07-08 09:03:17');
+(2, 49, 2, 'Coucou', '2025-07-08 17:30:07'),
+(3, 49, 2, 'hjkbhyuo', '2025-07-08 17:30:16');
 
 -- --------------------------------------------------------
 
@@ -83,16 +84,21 @@ CREATE TABLE `reservations` (
   `heure_fin` time NOT NULL,
   `pieces_jointe` text DEFAULT NULL,
   `salle_id` int(11) NOT NULL,
-  `utilisateur_id` int(11) NOT NULL
+  `utilisateur_id` int(11) NOT NULL,
+  `recurrent` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `reservations`
 --
 
-INSERT INTO `reservations` (`id_reservation`, `date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `pieces_jointe`, `salle_id`, `utilisateur_id`) VALUES
-(11, '2025-07-09', '2025-07-09', '20:00:00', '22:00:00', NULL, 3, 2),
-(12, '2025-07-09', '2025-07-10', '20:00:00', '22:00:00', NULL, 2, 2);
+INSERT INTO `reservations` (`id_reservation`, `date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `pieces_jointe`, `salle_id`, `utilisateur_id`, `recurrent`) VALUES
+(49, '2025-07-17', '2025-07-17', '10:00:00', '12:00:00', NULL, 2, 2, 0),
+(98, '2025-07-04', '2025-07-05', '10:00:00', '12:00:00', NULL, 1, 3, 0),
+(105, '2025-07-18', '2025-07-18', '10:00:00', '12:00:00', NULL, 1, 7, 0),
+(106, '2025-07-25', '2025-07-25', '10:00:00', '12:00:00', NULL, 1, 3, 0),
+(109, '2025-07-10', '2025-07-11', '10:00:00', '12:00:00', NULL, 1, 2, 0),
+(110, '2025-07-24', '2025-07-25', '10:00:00', '12:00:00', NULL, 1, 2, 0);
 
 -- --------------------------------------------------------
 
@@ -140,7 +146,7 @@ INSERT INTO `utilisateurs` (`id_utilisateur`, `nom_utilisateur`, `prenom_utilisa
 (3, 'prez', 'asso', '0613436135', 'prez@yahoo.fr', 'test', 'Président d\'association', 4),
 (5, 'marley', 'bob', '0644596832', 'marley@yahoo.fr', '$2y$10$YZcMRaydh9W1v42eVAnZVe0uDQUcxnbshTxh2pJcKFjWEgnE.LUM6', 'Membre', 4),
 (6, 'ferrari', 'lolo', '0643512563', 'ferrari@yahoo.fr', '$2y$10$G1r3f019KVgONi.UNiQczOj9inQH0oXiMdT//QmNoyV81XKiwK0GW', 'Ménage', 10),
-(7, 'bricoleur', 'bob', '0752324586', 'bob@yahoo.fr', '$2y$10$JnCcI14eckmDtmW.zKlUG.RKmkht7cX8uisCIZx2mjeW53ykXEIce', 'Membre', 5);
+(7, 'bricoleur', 'bob', '0752324586', 'bob@yahoo.fr', '$2y$10$JnCcI14eckmDtmW.zKlUG.RKmkht7cX8uisCIZx2mjeW53ykXEIce', 'Président d\'association', 5);
 
 --
 -- Index pour les tables déchargées
@@ -195,13 +201,13 @@ ALTER TABLE `associations`
 -- AUTO_INCREMENT pour la table `commentaires`
 --
 ALTER TABLE `commentaires`
-  MODIFY `id_comment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_comment` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id_reservation` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_reservation` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
 
 --
 -- AUTO_INCREMENT pour la table `salles`

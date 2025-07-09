@@ -1,4 +1,3 @@
-
 const calendarEl = document.getElementById("calendar");
 const eventModal = new bootstrap.Modal(document.getElementById("eventModal"));
 const startTime = document.getElementById("startTime");
@@ -178,7 +177,20 @@ eventDidMount: function(info) {
 
   // Facultatif : forcer la couleur du texte si besoin
   info.el.style.color = 'white';
+
+    if (info.event.extendedProps.recurrence) {
+    const icon = document.createElement('i');
+    icon.className = 'fa-solid fa-repeat'; // 📛 Icône FontAwesome "repeat"
+    icon.style.marginRight = '5px';
+    icon.title = 'Événement récurrent';
+
+    const titleElement = info.el.querySelector('.fc-event-title') || info.el;
+    if (titleElement) {
+      titleElement.prepend(icon);
+    }
+  }
 },
+
   /**
    * ! on aura surement un problème pour ajouter tel évênement à tel association
    */
