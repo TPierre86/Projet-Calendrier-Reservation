@@ -50,12 +50,13 @@
 
 .list-menu {
     position: relative;
-    color: #ffffff;
+    color: rgb(255, 255, 255, 0.8);
     font-size: 1.2rem;
     display: block;
     padding: 10px 0;
     text-decoration: none;
     overflow: hidden;
+    font-weight: 600;
 }
 
 .list-menu::after {
@@ -65,7 +66,7 @@
     bottom: 0;
     width: 0;
     height: 2px;
-    background: #ffffff;
+    background: rgb(255, 255, 255, 0.8);
     transition: width 0.3s ease;
 }
 

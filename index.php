@@ -205,7 +205,7 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
             </section>
               <label for="roomSelect" class="form-label">Salle</label>
               <select class="form-select" id="roomSelect" name="roomSelect">
-                <option value="" disabled>--</option>
+                <option selected disabled value="">--</option>
                 <option value="1">Salle de réunion</option>
                 <option value="2">Bar</option>
                 <option value="3">Réfectoire</option>
@@ -221,7 +221,7 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
             <section id="reservationAssociation" class="form-check mb-2">
               <label for="associations" class="form-label">Association</label>
               <select name="id_association" id="id_association" class="form-select">
-                <option value="0">--Choisir association--</option>
+                <option selected disabled value="0">--Choisir Association--</option>
                 <?php foreach ($associations as $association) { ?>
                   <option value="<?php print $association['id_association']; ?>"><?php print $association['nom_association']; ?></option>
                 <?php } ?>
