@@ -89,6 +89,11 @@ public function getMail($email) {
     return $getMail->fetchAll(PDO::FETCH_ASSOC);
 }
 
+public function setMenage($id_reservation, $checked) {
+    $stmt = $this->dbh->prepare("UPDATE reservations SET menage = ? WHERE id_reservation = ?");
+    return $stmt->execute([$checked, $id_reservation]);
+}
+
 public function getCommentsByReservationId($reservation_id) {
     $comments = $this->dbh->prepare("SELECT commentaires.id_comment, commentaires.comment, commentaires.heure_comment, utilisateurs.nom_utilisateur FROM commentaires INNER JOIN utilisateurs ON commentaires.utilisateur_id=utilisateurs.id_utilisateur WHERE reservation_id = ? ORDER BY heure_comment DESC;");
     $comments->execute([$reservation_id]);
@@ -97,9 +102,9 @@ public function getCommentsByReservationId($reservation_id) {
 
 /**Ajouter les donnees */
 
-public function NewReservation($startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $utilisateur_id, $recurrent = 0) {
-    $newReservation = $this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `pieces_jointe`, `salle_id`, `utilisateur_id`, `recurrent`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $newReservation->execute([$startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $utilisateur_id, $recurrent]);
+public function NewReservation($startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $utilisateur_id, $recurrent = 0, $menageCheckbox = 0, $menage = 0) {
+    $newReservation = $this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `pieces_jointe`, `salle_id`, `utilisateur_id`, `recurrent`, `menageCheckbox`, `menage`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $newReservation->execute([$startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $utilisateur_id, $recurrent, $menageCheckbox, $menage]);
     return $newReservation;
 }
 
@@ -186,7 +191,7 @@ public function updatePassword($id_utilisateur, $pwd) {
     return $stmt->execute([$pwd, $id_utilisateur]);
 }
 
-public function updateReservation($id_reservation, $startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $recurrent) {
+public function updateReservation($id_reservation, $startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $recurrent, $menageCheckbox) {
     $stmt = $this->dbh->prepare("
         UPDATE reservations SET 
         date_debut = ?, 
@@ -195,13 +200,11 @@ public function updateReservation($id_reservation, $startDate, $endDate, $startT
         heure_fin = ?,
         pieces_jointe = ?, 
         salle_id = ?,
-        recurrent = ?
+        recurrent = ?,
+        menageCheckbox = ?
         WHERE id_reservation = ?
     ");
-    
-    return $stmt->execute([$startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $recurrent, $id_reservation]);
-    
-    
+    return $stmt->execute([$startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $recurrent, $menageCheckbox, $id_reservation]);
 }
 }
 ?>

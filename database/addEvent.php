@@ -35,6 +35,10 @@ try {
     $dao = new DAOReservation();
     $dao->connexion();
 
+
+    $menageCheckbox = !empty($data['menageCheckbox']) ? 1 : 0;
+    $menage = !empty($data['menage']) ? 1 : 0;
+
     if ($recurrence && $weeks > 0) {
         $duration = (new DateTime($endDate))->diff(new DateTime($startDate))->days;
         $date = new DateTime($startDate, new DateTimeZone('Europe/Paris'));
@@ -52,7 +56,9 @@ try {
                 null,
                 $room,
                 $utilisateur_id,
-                1 // recurrent = 1
+                1, // recurrent = 1
+                $menageCheckbox,
+                $menage
             );
         }
     } else {
@@ -64,7 +70,9 @@ try {
             null, 
             $room, 
             $utilisateur_id,
-            0 // recurrent = 0
+            0, // recurrent = 0
+            $menageCheckbox,
+            $menage
         );
     }
 

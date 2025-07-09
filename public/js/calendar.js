@@ -134,7 +134,43 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
       // Ajoute le nom de la salle avant le lien
     container.innerHTML = `<strong>${roomName}</strong> `;
     container.appendChild(link);
+    // Ajoute un espace visuel entre les deux liens
+    const space = document.createElement('span');
+    space.style.display = 'inline-block';
+    space.style.width = '10px';
+    container.appendChild(space);
     container.appendChild(attachment);
+    // Dans eventContent, affiche la checkbox si menageCheckbox est vrai
+    if (arg.event.extendedProps.menageCheckbox) {
+      const menageCheckbox = document.createElement('input');
+      menageCheckbox.type = 'checkbox';
+      menageCheckbox.checked = !!arg.event.extendedProps.menage;
+      menageCheckbox.disabled = (role !== "Ménage");
+      menageCheckbox.style.marginLeft = '8px';
+      const menageLabel = document.createElement('label');
+      menageLabel.textContent = 'Ménage';
+      menageLabel.style.marginLeft = '4px';
+      container.appendChild(menageCheckbox);
+      container.appendChild(menageLabel);
+
+      if (role === "Ménage") {
+        menageCheckbox.addEventListener('change', function() {
+          fetch('/Projet-Calendrier-Reservation/models/setMenage.php', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: `id=${encodeURIComponent(arg.event.id)}&checked=${menageCheckbox.checked ? 1 : 0}`
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              window.calendar.refetchEvents();
+            } else {
+              alert('Erreur lors de la mise à jour du ménage');
+            }
+          });
+        });
+      }
+    }
 
   } else {
     // Si pas de lien, affiche juste le nom de la salle
@@ -183,7 +219,11 @@ select: function (info) {
   if (recurrenceOptions) {
     recurrenceOptions.style.display = (role === "Gestionnaire") ? "block" : "none";
   }
-  if (menageOptions) menageOptions.style.display = (role === "Gestionnaire") ? "block" : "none";
+  if (menageOptions) {
+    const menageCheckbox = document.getElementById('menageCheckbox');
+    if (menageCheckbox) menageCheckbox.checked = false;
+    menageOptions.style.display = (role === "Gestionnaire") ? "block" : "none";
+  }
   if (deleteBtn) {
     deleteBtn.style.display = "none";
   }
@@ -235,6 +275,9 @@ eventDidMount: function(info) {
 /** 
  *? Fonction qui a pour but de modifier ou supprimer un événement existant*/
 window.calendar.on('eventClick', function (info) {
+  if (role === "Ménage") {
+    return;
+  }
   if (!canEditEvent(info.event)) {
     alert("Vous n'avez pas le droit de modifier cette réservation.");
     return;
@@ -413,7 +456,8 @@ if (conflict) {
       endTime: end,
       roomSelect: room,
       recurrence: recurrence,
-      recurrenceWeeks: recurrenceWeeks
+      recurrenceWeeks: recurrenceWeeks,
+      menage: document.getElementById('menageCheckbox').checked
       // ajoute utilisateur_id si besoin
     })
   })

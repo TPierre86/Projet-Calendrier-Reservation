@@ -43,7 +43,7 @@ function canCreate() {
 
 function canComment() {
     $role = getUserRole();
-    return in_array($role, ['Membres', 'Gestionnaire', "Président d'association", 'Menage']);
+    return in_array($role, ['Membres', 'Gestionnaire', "Président d'association", 'Ménage']);
 }
 
 function canView() {
