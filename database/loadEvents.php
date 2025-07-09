@@ -10,8 +10,9 @@ try {
 
     $sql = "
         SELECT r.id_reservation, r.salle_id, r.date_debut, r.date_fin, r.heure_debut, r.heure_fin,
-               s.nom_salle,
-               u.association_id
+            r.recurrent,
+            s.nom_salle,
+            u.association_id
         FROM reservations r
         JOIN salles s ON r.salle_id = s.id_salle
         JOIN utilisateurs u ON r.utilisateur_id = u.id_utilisateur
@@ -41,7 +42,8 @@ try {
                 'heure_debut' => $row['heure_debut'],
                 'heure_fin' => $row['heure_fin'],
                 'attachments' => [],
-                'salle_id' => $row['salle_id']
+                'salle_id' => $row['salle_id'],
+                'recurrence' => isset($row['recurrent']) ? (bool)$row['recurrent'] : false,
             ]
         ];
     }

@@ -91,9 +91,9 @@ public function getCommentsByReservationId($reservation_id) {
 
 /**Ajouter les donnees */
 
-public function NewReservation($startDate,$endDate,$startTime,$endTime,$attachments,$roomSelect,$utilisateur_id) {
-    $newReservation=$this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `pieces_jointe`, `salle_id`, `utilisateur_id`) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $newReservation->execute([$startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $utilisateur_id]);
+public function NewReservation($startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $utilisateur_id, $recurrent = 0) {
+    $newReservation = $this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `pieces_jointe`, `salle_id`, `utilisateur_id`, `recurrent`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $newReservation->execute([$startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $utilisateur_id, $recurrent]);
     return $newReservation;
 }
 
