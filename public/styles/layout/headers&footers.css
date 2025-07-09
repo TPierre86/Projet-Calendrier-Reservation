@@ -18,13 +18,20 @@
 }
 
 #titreSite {
-  background-image: url("/Projet-Calendrier-Reservation/public/styles/img/pont.jfif");
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/Projet-Calendrier-Reservation/public/styles/img/pont.jfif");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
   image-rendering: auto;
   display: flex;
   height: 200px;
+  border-style: solid ;
+  border-color: rgb(28, 53, 69);
+  border-width: 0 0 3px 0;
+}
+
+#blason {
+  margin-left: 2rem;
 }
 
 #titre {
@@ -40,21 +47,23 @@
 #titre1 {
   font-size: 50px;
   margin-top: 15px;
-  color: rgba(250, 253, 247, 0.863);
+  color: rgb(255, 255, 255, 0.8);
 }
 #titre2 {
   font-size: 20px;
-  color: rgba(250, 253, 247, 0.863);
+  color: rgb(255, 255, 255, 0.8);
 }
 
 footer {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  gap: 300px;
-  border-top: solid 2px rgb(28, 53, 69);
+  justify-content: space-evenly;
+  background-color: rgb(28, 53, 69);
   margin-top: 25px;
+  color: rgb(255, 255, 255, 0.8);
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 #blason {
   margin: 0;
@@ -70,14 +79,14 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  color: rgb(28, 53, 69);
+  color: rgb(255, 255, 255, 0.8);
 }
 #edited {
   gap: 10px;
-  color: rgb(28, 53, 69);
+  color: rgb(255, 255, 255, 0.8);
 }
 #info {
-  color: rgb(28, 53, 69);
+  color: rgb(255, 255, 255, 0.8);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -88,14 +97,15 @@ footer {
   position: absolute;
   top: 15px;
   right: 30px;
-  color: rgba(250, 253, 247, 0.863);
+  color: rgb(255, 255, 255, 0.8);
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   z-index: 1000;
   gap: 15px;
   font-size: 22px;
 }
 .titreFooter {
-  color: rgba(0, 0, 0, 0.863);
+  font-size: 2em;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 #bienvenu {
@@ -103,7 +113,7 @@ footer {
 }
 
 #deco {
-  color: rgb(25, 36, 46);
+  color: rgba(255, 255, 255, 0.8);
   display: flex;
   justify-content: flex-end;
 }
