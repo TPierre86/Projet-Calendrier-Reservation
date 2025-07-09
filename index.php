@@ -10,11 +10,13 @@ require_once('database/DAO.php');
 if (isset($_SESSION['connected_user'])) {
     // L'utilisateur est connecté
     $utilisateur_id = $_SESSION['connected_user'];
+    $association_id = $_SESSION['association_id']; 
     // Pour debug :
-    //echo "Utilisateur connecté : " . $utilisateur_id;
+    echo "Utilisateur connecté : " . $utilisateur_id;
+    echo "association connecté : " . $association_id;
 } else {
     // L'utilisateur n'est pas connecté
-    // echo "Aucun utilisateur connecté.";
+    echo "Aucun utilisateur connecté.";
 }
 //========Gestion des droits========
 include 'droit.php';
@@ -23,12 +25,15 @@ $userRole = getUserRole();
 
 echo "<script>window.userRole = ".json_encode($userRole).";</script>";
 //==================================
+// appeler les associations pour le select
+$associations = $dao->getAssociations();
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     
     $action = $_POST['action'];
-    echo "Action reçue : " . $action . "<br>";
+
+
     if($action === 'enregistrer') {
           //Recuperer les données
           $startDate = isset($_POST['startDate'])?($_POST['startDate']):"";
@@ -58,6 +63,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         if (isset($_SESSION["connected_user"])) {
             $utilisateur_id = $_SESSION["connected_user"];
             //echo "Utilisateur connecté avec l'ID : " . $utilisateur_id;
+          if ($utilisateur_id === 2) { 
+             var_dump($_POST); // ← pour confirmer si "id_association" existe
+            $association_id = $_POST['id_association'] ?? null; // Récupérer l'association sélectionnée
+          echo "Association choisie : " . $association_id;
+          } else {
+          var_dump($_POST);
+          $association_id = $_SESSION["association_id"]; // Si l'utilisateur n'est pas connecté ou n'est pas un admin, on ne lie pas d'association
+          echo "Association choisie : " . $association_id;
+        }
+          
         } else {
             //echo "Aucun utilisateur connecté.";
         }
@@ -82,7 +97,7 @@ if ($startDate == $reservation["date_debut"] && $roomSelect == $reservation["sal
             header('Location: /Projet-Calendrier-Reservation/controllers.php');
             exit;
         } else {
-            $success = $dao->NewReservation($startDate,$endDate,$startTime,$endTime,$attachments,$roomSelect,$utilisateur_id);
+            $success = $dao->NewReservation($startDate,$endDate,$startTime,$endTime,$attachments,$roomSelect,$utilisateur_id,$association_id);
             if ($success) {
                 $_SESSION['message'] = "Reservation réussi";
                 header('Location: /Projet-Calendrier-Reservation/controllers.php');
@@ -200,8 +215,17 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
               <label class="form-check-label" for="recurrenceCheckbox">Récurrence</label>
             </section>
             <section id="recurrenceOptions" style="display: none;" class="mb-3">
-              <label for="recurrenceWeeks">Nombre de réservations (toutes les 2 semaines) :</label>
+              <label for="recurrenceWeeks"class="form-label">Nombre de réservations (toutes les 2 semaines) :</label>
               <input type="number" name="recurrenceWeeks" id="recurrenceWeeks" value="3" min="1" max="52">
+            </section>
+            <section id="reservationAssociation" class="form-check mb-2">
+              <label for="associations" class="form-label">Association</label>
+              <select name="id_association" id="id_association" class="form-select">
+                <option value="0">--Choisir association--</option>
+                <?php foreach ($associations as $association) { ?>
+                  <option value="<?php print $association['id_association']; ?>"><?php print $association['nom_association']; ?></option>
+                <?php } ?>
+              </select>
             </section>
             <section id="menageOptions" class="form-check mb-2">
               <input type="checkbox" class="form-check-input" name="menage" id="menageCheckbox" />
