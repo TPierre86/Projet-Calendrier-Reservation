@@ -12,6 +12,7 @@ const recurrenceDaySelect = document.getElementById("recurrenceDay");
 const recurrenceOptions = document.getElementById("recurrenceOptions");
 const menageOptions = document.getElementById("menageOptions");
 const recurrenceCheckboxSection = document.getElementById("recurrenceCheckboxSection");
+const reservationAssociation = document.getElementById("reservationAssociation");
 const canCreate = window.canCreate;
 const canEdit = window.canEdit;
 const canDelete = window.canDelete;
@@ -32,16 +33,16 @@ const associationColors = {
 
 function canEditEvent(event) {
 const eventAssocId = event.extendedProps.association_id;
-  return role === 'Gestionnaire' || (role === "Président d'association" && userAssocId && userAssocId == eventAssocId);
+    return role === 'Gestionnaire' || (role === "Président d'association" && userAssocId && userAssocId == eventAssocId);
 }
 
 function canDeleteEvent(event) {
 const eventAssocId = event.extendedProps.association_id;
-  return role === 'Gestionnaire' || (role === "Président d'association" && userAssocId && userAssocId == eventAssocId);
+    return role === 'Gestionnaire' || (role === "Président d'association" && userAssocId && userAssocId == eventAssocId);
 }
 
 function canCreateEventForAssoc(assocId) {
-  return role === 'Gestionnaire' || (role === "Président d'association" && userAssocId && userAssocId == assocId);
+    return role === 'Gestionnaire' || (role === "Président d'association" && userAssocId && userAssocId == assocId);
 }
 
 // Variables pour stocker l'événement sélectionné ou en cours de modification
@@ -51,10 +52,10 @@ let selectedRangeEnd = null; // en cas de selection multiple enregistre la date 
 
 // Affiche/masque les options de récurrence
 if (recurrenceCheckbox) {
-  recurrenceCheckbox.addEventListener("change", () => {
-  if (recurrenceOptions) {
+    recurrenceCheckbox.addEventListener("change", () => {
+    if (recurrenceOptions) {
     recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none";
-  }});
+    }});
 }
 
 // Initialisation du calendrier FullCalendar
@@ -67,16 +68,16 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
     left: "prev,next today",
     center: "title",
     right: "dayGridMonth,timeGridWeek,timeGridDay",
-  },
+    },
   buttonText: { //bouton au dessus du calendrier
     today: "Aujourd’hui",
     month: "Mois",
     week: "Semaine",
     day: "Jour",
-  },
-  
+    },
+    
 
-  eventContent: function(arg) {
+    eventContent: function(arg) {
     // Crée un conteneur temporaire pour parser le HTML du title
         const container = document.createElement('span');
         container.innerHTML = arg.event.title; // Injecte le HTML du title (avec le <a>)
@@ -86,8 +87,8 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
         const roomName = roomMatch ? roomMatch[1] : '';
 
     // Récupère le lien <a> s'il existe
-      const link = container.querySelector('.comment-link');
-      const attachment = container.querySelector('.attachment-link');
+        const link = container.querySelector('.comment-link');
+        const attachment = container.querySelector('.attachment-link');
         if (link) {
 
         link.onclick = function(e) {
@@ -95,11 +96,11 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
             // Récupère l'id de réservation
         const reservationId = link.getAttribute('data-id');
         fetch(`/projet-calendrier-reservation/database/getComments.php?reservation_id=${reservationId}`)
-          .then(response => {
-              if (!response.ok) throw new Error('Réponse réseau incorrecte');
-              return response.json();
+            .then(response => {
+                if (!response.ok) throw new Error('Réponse réseau incorrecte');
+                return response.json();
             })
-          .then(comments => {
+            .then(comments => {
             if (!Array.isArray(comments)) {
             throw new Error('Données reçues non valides : pas un tableau');
             }
@@ -107,21 +108,21 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
             const commentsData = document.getElementById('commentsData');
             commentsData.innerHTML = '';
             comments.forEach(comment => {
-              commentsData.innerHTML += `
+            commentsData.innerHTML += `
                 <article class="comment">
-                  <section class="commentHeader">
+                    <section class="commentHeader">
                     <strong class="commentAuthor">${comment.nom_utilisateur}:</strong>
                     <p class="commentText">${comment.comment}</p>
-                  </section>
+                    </section>
                     <span class="commentDate">${comment.heure_comment}</span>
                 </article>
                 `;
-              });
+                });
             })
             .catch(error => {
     console.error("Erreur lors du chargement des commentaires :", error);
     alert("Erreur lors du chargement des commentaires.");
-  });
+    });
 
         // Met à jour un champ caché dans la modale commentaire si besoin
         const input = document.querySelector('#filComments input[name="reservation_id"]');
@@ -129,7 +130,7 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
         // Ouvre la modale commentaire (Bootstrap 5)
         const filCommentsModal = new bootstrap.Modal(document.getElementById('filCommentsModal'));
         filCommentsModal.show(); 
-      return false;
+    return false;
     };
       // Ajoute le nom de la salle avant le lien
     container.innerHTML = `<strong>${roomName}</strong> `;
@@ -142,115 +143,116 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
     container.appendChild(attachment);
     // Dans eventContent, affiche la checkbox si menageCheckbox est vrai
     if (arg.event.extendedProps.menageCheckbox) {
-      const menageCheckbox = document.createElement('input');
-      menageCheckbox.type = 'checkbox';
-      menageCheckbox.checked = !!arg.event.extendedProps.menage;
-      menageCheckbox.disabled = (role !== "Ménage");
-      menageCheckbox.style.marginLeft = '8px';
-      const menageLabel = document.createElement('label');
-      menageLabel.textContent = 'Ménage';
-      menageLabel.style.marginLeft = '4px';
-      container.appendChild(menageCheckbox);
-      container.appendChild(menageLabel);
+        const menageCheckbox = document.createElement('input');
+        menageCheckbox.type = 'checkbox';
+        menageCheckbox.checked = !!arg.event.extendedProps.menage;
+        menageCheckbox.disabled = (role !== "Ménage");
+        menageCheckbox.style.marginLeft = '8px';
+        const menageLabel = document.createElement('label');
+        menageLabel.textContent = 'Ménage';
+        menageLabel.style.marginLeft = '4px';
+        container.appendChild(menageCheckbox);
+        container.appendChild(menageLabel);
 
-      if (role === "Ménage") {
+        if (role === "Ménage") {
         menageCheckbox.addEventListener('change', function() {
-          fetch('/Projet-Calendrier-Reservation/models/setMenage.php', {
+            fetch('/Projet-Calendrier-Reservation/models/setMenage.php', {
             method: 'POST',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             body: `id=${encodeURIComponent(arg.event.id)}&checked=${menageCheckbox.checked ? 1 : 0}`
-          })
-          .then(res => res.json())
-          .then(data => {
+            })
+            .then(res => res.json())
+            .then(data => {
             if (data.success) {
-              window.calendar.refetchEvents();
+                window.calendar.refetchEvents();
             } else {
-              alert('Erreur lors de la mise à jour du ménage');
+                alert('Erreur lors de la mise à jour du ménage');
             }
-          });
+            });
         });
-      }
+        }
     }
 
-  } else {
+    } else {
     // Si pas de lien, affiche juste le nom de la salle
     container.textContent = roomName;
-  }
+    }
   // Retourne le DOM custom à FullCalendar
-  return { domNodes: [container] };
+    return { domNodes: [container] };
 },
 
   // Lorsqu'on sélectionne un créneau (plage horaire uniquement)
 select: function (info) {
-  if (!canCreate) {
+    if (!canCreate) {
     alert("Vous n'avez pas les droits pour créer un événement.");
     calendar.unselect();
     return;
-  }
+    }
   currentEvent = null; // On prépare la création d'un nouvel événement (pas d'édition)
   let startDate = new Date(info.start); // Date de début sélectionnée
   let endDate = new Date(info.end);     // Date de fin sélectionnée
 
-  function formatDateLocal(date) {
+    function formatDateLocal(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // mois de 0 à 11
     const day = String(date.getDate()).padStart(2, '0');
     return `${year}-${month}-${day}`;
-  }
+    }
 
-  selectedRangeStart = formatDateLocal(startDate);
-  selectedRangeEnd = formatDateLocal(new Date(endDate.getTime() - 24 * 60 * 60 * 1000));
+    selectedRangeStart = formatDateLocal(startDate);
+    selectedRangeEnd = formatDateLocal(new Date(endDate.getTime() - 24 * 60 * 60 * 1000));
 
   // Remplit automatiquement les heures
-  startTime.value = info.start.toISOString().substring(11, 16); // Heure de début (HH:MM)
-  endTime.value = info.end.toISOString().substring(11, 16);     // Heure de fin (HH:MM)
+    startTime.value = info.start.toISOString().substring(11, 16); // Heure de début (HH:MM)
+    endTime.value = info.end.toISOString().substring(11, 16);     // Heure de fin (HH:MM)
 
   // Réinitialise les champs de la modale pour repartir d'un formulaire vierge
-  roomSelect.selectedIndex = 0;          // Remet la sélection de salle à zéro
-  recurrenceCheckbox.checked = false;    // Décoche la récurrence
-  recurrenceOptions.style.display = "none"; // Masque les options de récurrence
-  deleteBtn.style.display = "none";     // Cache le bouton de suppression (nouvel événement)
+    roomSelect.selectedIndex = 0;          // Remet la sélection de salle à zéro
+    recurrenceCheckbox.checked = false;    // Décoche la récurrence
+    recurrenceOptions.style.display = "none"; // Masque les options de récurrence
+    deleteBtn.style.display = "none";     // Cache le bouton de suppression (nouvel événement)
 
   // Gérer la visibilité des options selon le rôle
-  if (recurrenceCheckbox && recurrenceOptions && menageOptions) {
+    if (recurrenceCheckbox && recurrenceOptions && menageOptions) {
     recurrenceCheckbox.style.display = (role === "Gestionnaire") ? "inline-block" : "none";
     if (role !== "Gestionnaire") recurrenceCheckbox.checked = false;
-  }
-  if (recurrenceOptions) {
+    }
+    if (recurrenceOptions) {
     recurrenceOptions.style.display = (role === "Gestionnaire") ? "block" : "none";
-  }
-  if (menageOptions) {
+    }
+    if (menageOptions) {
     const menageCheckbox = document.getElementById('menageCheckbox');
     if (menageCheckbox) menageCheckbox.checked = false;
     menageOptions.style.display = (role === "Gestionnaire") ? "block" : "none";
-  }
-  if (deleteBtn) {
+    } 
+    if (deleteBtn) {
     deleteBtn.style.display = "none";
-  }
-  if (recurrenceCheckboxSection) recurrenceCheckboxSection.style.display = (role === "Gestionnaire") ? "block" : "none";
-  if (recurrenceOptions) recurrenceOptions.style.display = (role === "Gestionnaire") ? "block" : "none";
-  if (menageOptions) menageOptions.style.display = (role === "Gestionnaire") ? "block" : "none";
+    }
+    if (recurrenceCheckboxSection) recurrenceCheckboxSection.style.display = (role === "Gestionnaire") ? "block" : "none";
+    if (reservationAssociation) reservationAssociation.style.display = (role === "Gestionnaire") ? "block" : "none";
+    if (recurrenceOptions) recurrenceOptions.style.display = (role === "Gestionnaire") ? "block" : "none";
+    if (menageOptions) menageOptions.style.display = (role === "Gestionnaire") ? "block" : "none";
 
   // Affiche la fenêtre modale pour permettre à l'utilisateur de saisir les détails de la réservation
-  eventModal.show();
+    eventModal.show();
 },
 
 events: {
-  url: '/Projet-Calendrier-Reservation/database/loadEvents.php',
-  method: 'GET',
-  failure: function() { alert('Erreur de chargement !'); },
+    url: '/Projet-Calendrier-Reservation/database/loadEvents.php',
+    method: 'GET',
+    failure: function() { alert('Erreur de chargement !'); },
   // eventDataTransform ici tu peux ajouter d'autres props si besoin, mais ce n'est pas obligatoire
 },
 eventDidMount: function(info) {
-  let assocId = info.event.extendedProps.association_id;
-  let color = associationColors[assocId] || '#607d8b'; // gris par défaut
+    let assocId = info.event.extendedProps.association_id;
+    let color = associationColors[assocId] || '#607d8b'; // gris par défaut
 
   // Appliquer la couleur au style CSS de l'événement
-  info.el.style.backgroundColor = color;
-  info.el.style.borderColor = color;
+    info.el.style.backgroundColor = color;
+    info.el.style.borderColor = color;
 
   // Facultatif : forcer la couleur du texte si besoin
-  info.el.style.color = 'white';
+    info.el.style.color = 'white';
 
     if (info.event.extendedProps.recurrence) {
     const icon = document.createElement('i');
@@ -260,12 +262,12 @@ eventDidMount: function(info) {
 
     const titleElement = info.el.querySelector('.fc-event-title') || info.el;
     if (titleElement) {
-      titleElement.prepend(icon);
+        titleElement.prepend(icon);
     }
-  }
+    }
 },
 
-  /**
+    /**
    * ! on aura surement un problème pour ajouter tel évênement à tel association
    */
 });
@@ -275,51 +277,52 @@ eventDidMount: function(info) {
 /** 
  *? Fonction qui a pour but de modifier ou supprimer un événement existant*/
 window.calendar.on('eventClick', function (info) {
-  if (role === "Ménage") {
+    if (role === "Ménage") {
     return;
-  }
-  if (!canEditEvent(info.event)) {
+    }
+    if (!canEditEvent(info.event)) {
     alert("Vous n'avez pas le droit de modifier cette réservation.");
     return;
-  }
+    }
   currentEvent = info.event; // Objet événement FullCalendar correspondant à l'événement cliqué par l'utilisateur
   // Récupère les infos de l'événement
-  const props = currentEvent.extendedProps;
-  document.getElementById("id_reservation").value = currentEvent.id;
-  console.log("ID de réservation sélectionné :", currentEvent.id);
+    const props = currentEvent.extendedProps;
+    document.getElementById("id_reservation").value = currentEvent.id;
+    console.log("ID de réservation sélectionné :", currentEvent.id);
     // Utilise les propriétés étendues pour remplir les champs
-  document.getElementById('startDate').value = currentEvent.extendedProps.date_debut;
-  document.getElementById('endDate').value = currentEvent.extendedProps.date_fin;
-  document.getElementById('startTime').value = currentEvent.extendedProps.heure_debut;
-  document.getElementById('endTime').value = currentEvent.extendedProps.heure_fin;
-  document.getElementById('roomSelect').value = currentEvent.extendedProps.salle_id;
+    document.getElementById('startDate').value = currentEvent.extendedProps.date_debut;
+    document.getElementById('endDate').value = currentEvent.extendedProps.date_fin;
+    document.getElementById('startTime').value = currentEvent.extendedProps.heure_debut;
+    document.getElementById('endTime').value = currentEvent.extendedProps.heure_fin;
+    document.getElementById('roomSelect').value = currentEvent.extendedProps.salle_id;
 
   // Affiche uniquement si rôle = 'Gestionnaire'
-  if (role === "Gestionnaire") {
-    if (recurrenceOptions) {
-      recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none";
-    }
-    if (recurrenceCheckboxSection) recurrenceCheckboxSection.style.display = "block";
-  } else {
-    if (recurrenceCheckboxSection) recurrenceCheckboxSection.style.display = "none";
-    if (recurrenceOptions) recurrenceOptions.style.display = "none";
-    if (recurrenceCheckbox) recurrenceCheckbox.checked = false;
-  }
-  if (menageOptions) menageOptions.style.display = "none";
+    if (role === "Gestionnaire") {
+        if (recurrenceOptions) {
+            recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none";
+        }
+        if (recurrenceCheckboxSection) recurrenceCheckboxSection.style.display = "block";
+        } else {
+        if (recurrenceCheckboxSection) recurrenceCheckboxSection.style.display = "none";
+        if (recurrenceOptions) recurrenceOptions.style.display = "none";
+        if (recurrenceCheckbox) recurrenceCheckbox.checked = false;
+        }
+        if (menageOptions) menageOptions.style.display = "none";
+        if (reservationAssociation) reservationAssociation.style.display = "none";
 
   // Affiche ou cache le bouton supprimer selon droits
-  deleteBtn.style.display = canDeleteEvent(currentEvent) ? 'inline-block' : 'none';
+    deleteBtn.style.display = canDeleteEvent(currentEvent) ? 'inline-block' : 'none';
 
   //Afficher bouton enregistrer les modification
 
-  saveBtn.style.display = "none";
+    saveBtn.style.display = "none";
   saveModifBtn.style.display = "inline-block"; // Affiche le bouton de modification
-  
+
   // Affiche le bouton de suppression
 
 deleteBtn.style.display = canDeleteEvent(currentEvent) ? 'inline-block' : 'none';
 
-  eventModal.show();
+    eventModal.show();
 });
 
 
@@ -328,19 +331,19 @@ deleteBtn.style.display = canDeleteEvent(currentEvent) ? 'inline-block' : 'none'
 window.calendar.render();
 
 document.addEventListener("DOMContentLoaded", function () {
-  const recurrenceCheckbox = document.getElementById("recurrenceCheckbox");
-  const recurrenceOptions = document.getElementById("recurrenceOptions");
+    const recurrenceCheckbox = document.getElementById("recurrenceCheckbox");
+    const recurrenceOptions = document.getElementById("recurrenceOptions");
 
-  if (recurrenceCheckbox && recurrenceOptions) {
+    if (recurrenceCheckbox && recurrenceOptions) {
     recurrenceCheckbox.addEventListener("change", () => {
-      recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none";
+        recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none";
     });
-  }
+    }
 });
 
 // Ajouter un nouveau commentaire
 
-  document.getElementById('newComment').addEventListener('submit', function (e) {
+    document.getElementById('newComment').addEventListener('submit', function (e) {
     e.preventDefault();
 
     const commentText = document.getElementById('comment').value.trim();
@@ -361,15 +364,13 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .then(response => response.json())
     .then(data => {
-
-      
         if (data.success) {
             // Ajout du nouveau commentaire dans la liste
             const commentsContainer = document.getElementById('commentsData');
             const newComment = document.createElement('article');
             newComment.innerHTML = `
             <article class="comment">
-              <section class="commentHeader">
+                <section class="commentHeader">
                     <strong class="commentAuthor">${data.nom_utilisateur}</strong>
                     <p class="commentText"> ${data.comment}</p>
                 </section>
@@ -386,42 +387,42 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error('Erreur réseau :', error);
         alert("Erreur réseau.");
     });
-  }),
+    }),
 
 // Enregistrement d'un nouvel événement
 saveBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  if (currentEvent && !canEditEvent(currentEvent)) {
+    e.preventDefault();
+    if (currentEvent && !canEditEvent(currentEvent)) {
     alert("Vous n'avez pas les droits pour modifier cet événement.");
     return;
-  }
+    }
 
-  if (!currentEvent && !canCreate) {
+    if (!currentEvent && !canCreate) {
     alert("Vous n'avez pas les droits pour créer un événement.");
     return;
-  }
-  if (saveBtn) {
-  const start = startTime.value;
-  const end = endTime.value;
-  const room = roomSelect.value;
+    }
+    if (saveBtn) {
+    const start = startTime.value;
+    const end = endTime.value;
+    const room = roomSelect.value;
 
   // *! Récupère les dates depuis les inputs de la modale (toujours prioritaire)
-  const startDate = document.getElementById('startDate').value;
-  const endDate = document.getElementById('endDate').value;
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
 
   // Vérifie les champs obligatoires
-  if (!start || !end || !room || !startDate || !endDate) {
+    if (!start || !end || !room || !startDate || !endDate) {
     alert("Merci de remplir tous les champs.");
     return;
-  }
-  if (start >= end) {
+    }
+    if (start >= end) {
     alert("L'heure de fin doit être après l'heure de début.");
     return;
-  }
+    }
 
   // Informations sur la récurrence
-  const recurrence = recurrenceCheckbox.checked;
-  const recurrenceWeeks = recurrenceWeeksInput.value;
+    const recurrence = recurrenceCheckbox.checked;
+    const recurrenceWeeks = recurrenceWeeksInput.value;
   // const newStart = new Date(`${startDate}T${start}`);
   // const newEnd = new Date(`${endDate}T${end}`);
 
@@ -432,122 +433,122 @@ const newEnd = new Date(`${endDate}T${end}`);
 
 const conflict = events.some(ev => {
   // Si on édite un événement, on ne le compare pas à lui-même
-  if (currentEvent && ev === currentEvent) return false;
+    if (currentEvent && ev === currentEvent) return false;
 
-  const sameRoom = ev.extendedProps.salle_id == room;
-  const evStart = new Date(ev.start);
-  const evEnd = new Date(ev.end);
+    const sameRoom = ev.extendedProps.salle_id == room;
+    const evStart = new Date(ev.start);
+    const evEnd = new Date(ev.end);
 
-  return sameRoom && newStart < evEnd && newEnd > evStart;
+    return sameRoom && newStart < evEnd && newEnd > evStart;
 });
 
 if (conflict) {
-  alert("Il existe déjà une réservation sur ce créneau et cette salle.");
-  return;
+    alert("Il existe déjà une réservation sur ce créneau et cette salle.");
+    return;
 }
-  
-  fetch('/Projet-Calendrier-Reservation/database/addEvent.php', {
+    
+    fetch('/Projet-Calendrier-Reservation/database/addEvent.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      startDate: startDate,
-      endDate: endDate,
-      startTime: start,
-      endTime: end,
-      roomSelect: room,
-      recurrence: recurrence,
-      recurrenceWeeks: recurrenceWeeks,
-      menage: document.getElementById('menageCheckbox').checked
+        startDate: startDate,
+        endDate: endDate,
+        startTime: start,
+        endTime: end,
+        roomSelect: room,
+        recurrence: recurrence,
+        recurrenceWeeks: recurrenceWeeks,
+        menage: document.getElementById('menageCheckbox').checked
       // ajoute utilisateur_id si besoin
     })
-  })
+    })
 
-  .then(response => response.json())
-  .then(data => {
+    .then(response => response.json())
+    .then(data => {
     if (data.success) {
-      window.calendar.refetchEvents();
-      eventModal.hide();
+        window.calendar.refetchEvents();
+        eventModal.hide();
       saveBtn.value = "enregistrer"; // Réinitialise le bouton pour une nouvelle création
     } else {
-      alert("Erreur lors de l'enregistrement !");
+        alert("Erreur lors de l'enregistrement !");
     }
-  });
+    });
 }
 });
 // Enregistrement d'une modification d'événement
 saveModifBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-  if (!canCreate && !canEdit) {
+    e.preventDefault();
+    if (!canCreate && !canEdit) {
     alert("Vous n'avez pas les droits pour créer ou modifier un événement.");
     return;
-  }
+    }
 if (saveModifBtn) {
   // Modification d'un événement existant
-  const start = startTime.value;
-  const end = endTime.value;
-  const room = roomSelect.value;
+    const start = startTime.value;
+    const end = endTime.value;
+    const room = roomSelect.value;
 
   // *! Récupère les dates depuis les inputs de la modale (toujours prioritaire)
-  const startDate = document.getElementById('startDate').value;
-  const endDate = document.getElementById('endDate').value;
+    const startDate = document.getElementById('startDate').value;
+    const endDate = document.getElementById('endDate').value;
 
   // Vérifie les champs obligatoires
-  if (!start || !end || !room || !startDate || !endDate) {
+    if (!start || !end || !room || !startDate || !endDate) {
     alert("Merci de remplir tous les champs.");
     return;
-  }
-  if (start >= end) {
+    }
+    if (start >= end) {
     alert("L'heure de fin doit être après l'heure de début.");
     return;
-  }
+    }
 
   // Informations sur la récurrence
-  const recurrence = recurrenceCheckbox.checked;
-  const recurrenceWeeks = recurrenceWeeksInput.value;
-  const id_reservation = document.getElementById("id_reservation").value;
+    const recurrence = recurrenceCheckbox.checked;
+    const recurrenceWeeks = recurrenceWeeksInput.value;
+    const id_reservation = document.getElementById("id_reservation").value;
 
-  fetch('/Projet-Calendrier-Reservation/database/updateEvent.php', {
+    fetch('/Projet-Calendrier-Reservation/database/updateEvent.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      id_reservation: id_reservation,
-      startDate: startDate,
-      endDate: endDate,
-      startTime: start,
-      endTime: end,
+        id_reservation: id_reservation,
+        startDate: startDate,
+        endDate: endDate,
+        startTime: start,
+        endTime: end,
       attachments: null, // Conserver l'attachment si nécessaire
-      roomSelect: room,
-      recurrent: recurrence,
+        roomSelect: room,
+        recurrent: recurrence,
     })
-  })
-  .then(response => response.json())
-  .then(data => {
+    })
+    .then(response => response.json())
+    .then(data => {
     if (data.success) {
-      alert('Réservation enregistrée');
+        alert('Réservation enregistrée');
 
     // Optionnel : reset form
     document.getElementById('formulaire').reset();
     saveBtn.style.display = "inline-block"; // Affiche le bouton de création
     saveModifBtn.style.display = "none"; // Cache le bouton de modification
-      window.calendar.refetchEvents();
-      eventModal.hide();
+        window.calendar.refetchEvents();
+        eventModal.hide();
     } else {
-      alert("Erreur lors de la modification !");
+        alert("Erreur lors de la modification !");
     }
-  });
-  }
+    });
+    }
 });
 // Suppression d'un événement existant
 deleteBtn.addEventListener("click", () => {
-  if (!currentEvent || !canDeleteEvent(currentEvent)) {
+    if (!currentEvent || !canDeleteEvent(currentEvent)) {
     alert("Vous n'avez pas les droits pour supprimer cet événement.");
     return;
-  }
+    }
 
-  if (currentEvent) {
-    currentEvent.remove();
-    eventModal.hide();
-  }
+    if (currentEvent) {
+        currentEvent.remove();
+        eventModal.hide();
+    }
 });
 
 
@@ -570,7 +571,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 ["Début", "Fin", "Salle"]
             ];
             events.forEach(ev => {
-                  const match = ev.title.match(/^\[(.*?)\]\s*(.*)$/);
+                    const match = ev.title.match(/^\[(.*?)\]\s*(.*)$/);
     const salle = match ? match[1] : "";
 
         const options = {

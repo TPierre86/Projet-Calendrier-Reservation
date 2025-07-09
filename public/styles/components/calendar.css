@@ -83,3 +83,11 @@
   --bs-link-color-rgb: #2b3d4f;        /* Exemple : rouge */
   --bs-heading-color: #2b3d4f;           /* Exemple : rouge */
 }
+
+#reservationAssociation{
+  padding-left: 0;
+}
+
+#roomSelect {
+  margin-bottom: 1rem;
+}
