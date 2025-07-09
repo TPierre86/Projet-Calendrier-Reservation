@@ -408,7 +408,6 @@ saveBtn.addEventListener("click", (e) => {
   // *! Récupère les dates depuis les inputs de la modale (toujours prioritaire)
   const startDate = document.getElementById('startDate').value;
   const endDate = document.getElementById('endDate').value;
-
   // Vérifie les champs obligatoires
   if (!start || !end || !room || !startDate || !endDate) {
     alert("Merci de remplir tous les champs.");
@@ -445,6 +444,12 @@ if (conflict) {
   alert("Il existe déjà une réservation sur ce créneau et cette salle.");
   return;
 }
+
+if(role === 'Gestionnaire'){
+  association_id = document.getElementById("id_association").value;
+} else {
+  association_id = userAssocId; // Utilise l'association de l'utilisateur connecté
+}
   
   fetch('/Projet-Calendrier-Reservation/database/addEvent.php', {
     method: 'POST',
@@ -457,8 +462,8 @@ if (conflict) {
       roomSelect: room,
       recurrence: recurrence,
       recurrenceWeeks: recurrenceWeeks,
-      menage: document.getElementById('menageCheckbox').checked
-      // ajoute utilisateur_id si besoin
+      menage: document.getElementById('menageCheckbox').checked,
+      association_id: association_id
     })
   })
 
@@ -506,6 +511,11 @@ if (saveModifBtn) {
   const recurrenceWeeks = recurrenceWeeksInput.value;
   const id_reservation = document.getElementById("id_reservation").value;
 
+  if(role === 'Gestionnaire'){
+  association_id = document.getElementById("id_association").value;
+} else {
+  association_id = userAssocId; // Utilise l'association de l'utilisateur connecté
+}
   fetch('/Projet-Calendrier-Reservation/database/updateEvent.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -518,6 +528,7 @@ if (saveModifBtn) {
       attachments: null, // Conserver l'attachment si nécessaire
       roomSelect: room,
       recurrent: recurrence,
+      association_id: association_id,
     })
   })
   .then(response => response.json())

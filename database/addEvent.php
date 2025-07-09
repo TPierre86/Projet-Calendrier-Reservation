@@ -21,6 +21,11 @@ $startTime = $data['startTime'];
 $endTime = $data['endTime'];
 $room = $data['roomSelect'];
 $utilisateur_id = isset($_SESSION['connected_user']) ? $_SESSION['connected_user'] : null;
+if ($utilisateur_id == 2 && isset($data['association_id'])) {
+    $association_id = $data['association_id'];
+} else {
+    $association_id = isset($_SESSION['association_id']) ? $_SESSION['association_id'] : null;
+}
 
 $recurrence = !empty($data['recurrence']);
 $weeks = isset($data['recurrenceWeeks']) ? (int)$data['recurrenceWeeks'] : 0;
@@ -56,6 +61,7 @@ try {
                 null,
                 $room,
                 $utilisateur_id,
+                $association_id, // association_id
                 1, // recurrent = 1
                 $menageCheckbox,
                 $menage
@@ -70,6 +76,7 @@ try {
             null, 
             $room, 
             $utilisateur_id,
+            $association_id, // association_id
             0, // recurrent = 0
             $menageCheckbox,
             $menage

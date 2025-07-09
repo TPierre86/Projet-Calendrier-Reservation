@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         if (isset($_SESSION["connected_user"])) {
             $utilisateur_id = $_SESSION["connected_user"];
             //echo "Utilisateur connecté avec l'ID : " . $utilisateur_id;
-          if ($utilisateur_id === 2) { 
+          if ($_SESSION['profil'] === 'Gestionnaire') { 
              var_dump($_POST); // ← pour confirmer si "id_association" existe
             $association_id = $_POST['id_association'] ?? null; // Récupérer l'association sélectionnée
           echo "Association choisie : " . $association_id;
