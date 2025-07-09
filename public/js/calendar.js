@@ -183,12 +183,13 @@ select: function (info) {
   if (recurrenceOptions) {
     recurrenceOptions.style.display = (role === "Gestionnaire") ? "block" : "none";
   }
-  if (menageOptions) {
-    menageOptions.style.display = "none";
-  }
+  if (menageOptions) menageOptions.style.display = (role === "Gestionnaire") ? "block" : "none";
   if (deleteBtn) {
     deleteBtn.style.display = "none";
   }
+  if (recurrenceCheckboxSection) recurrenceCheckboxSection.style.display = (role === "Gestionnaire") ? "block" : "none";
+  if (recurrenceOptions) recurrenceOptions.style.display = (role === "Gestionnaire") ? "block" : "none";
+  if (menageOptions) menageOptions.style.display = (role === "Gestionnaire") ? "block" : "none";
 
   // Affiche la fenêtre modale pour permettre à l'utilisateur de saisir les détails de la réservation
   eventModal.show();
@@ -255,14 +256,13 @@ window.calendar.on('eventClick', function (info) {
     if (recurrenceOptions) {
       recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none";
     }
-    if (menageOptions) menageOptions.style.display = "block";
     if (recurrenceCheckboxSection) recurrenceCheckboxSection.style.display = "block";
   } else {
     if (recurrenceCheckboxSection) recurrenceCheckboxSection.style.display = "none";
     if (recurrenceOptions) recurrenceOptions.style.display = "none";
-    if (menageOptions) menageOptions.style.display = "none";
     if (recurrenceCheckbox) recurrenceCheckbox.checked = false;
   }
+  if (menageOptions) menageOptions.style.display = "none";
 
   // Affiche ou cache le bouton supprimer selon droits
   deleteBtn.style.display = canDeleteEvent(currentEvent) ? 'inline-block' : 'none';
@@ -588,4 +588,3 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
-
