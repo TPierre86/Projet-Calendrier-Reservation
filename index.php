@@ -181,7 +181,6 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
             <label for="attachments">Fichier PDF:</label>
             <input type="file" id="attachments" name="attachments" accept=".pdf">
           </section>
-          <section class="mb-3">
             <label for="roomSelect" class="form-label">Salle</label>
             <select class="form-select" id="roomSelect" name="roomSelect">
               <option value="" disabled>--</option>
@@ -189,7 +188,7 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
               <option value="2">Bar</option>
               <option value="3">Réfectoire</option>
             </select>
-              <?php if (getUserRole() === 'Gestionnaire'): ?>
+
                 <section class="form-check mb-2">
                   <input type="checkbox" class="form-check-input" name="recurrence" id="recurrenceCheckbox" />
                   <label class="form-check-label" for="recurrenceCheckbox">Récurrence</label>
@@ -204,7 +203,7 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
                   <input type="checkbox" class="form-check-input" name="menage" id="menageCheckbox" />
                   <label class="form-check-label" for="menageCheckbox">Ménage</label>
                 </section>
-              <?php endif; ?>
+
           </section>
         </section>
         
@@ -239,14 +238,11 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
     </article>
   </section>
 <script>
-  window.userRole = <?= json_encode(getUserRole()) ?>;
-  window.canEdit = <?php echo json_encode(canEdit()); ?>;
-  window.canDelete = <?php echo json_encode(canDelete()); ?>;
-  window.canCreate = <?php echo json_encode(canCreate()); ?>;
-  window.canComment = <?php echo json_encode(canComment()); ?>;
-  window.canView = true; 
-    window.currentUser = {
+  window.currentUser = {
     role: <?= json_encode($_SESSION['profil'] ?? 'visitor') ?>,
     associationId: <?= json_encode($_SESSION['association_id'] ?? null) ?>
   };
+  window.canCreate = <?php echo json_encode(canCreate()); ?>;
+  window.canComment = <?php echo json_encode(canComment()); ?>;
+  window.canView = true; 
 </script>

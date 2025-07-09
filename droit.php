@@ -36,20 +36,11 @@ function canDelete($reservationAssociationId = null) {
 }
 
 
-function canCreate($reservationAssociationId = null) {
+function canCreate() {
     $role = getUserRole();
-
-    if ($role === 'Gestionnaire') {
-        return true;
-    }
-
-    if ($role === "Président d'association") {
-        $userAssocId = $_SESSION['association_id'] ?? null;
-        return $userAssocId !== null && $reservationAssociationId !== null && $userAssocId == $reservationAssociationId;
-    }
-
-    return false;
+    return $role === 'Gestionnaire' || $role === "Président d'association";
 }
+
 function canComment() {
     $role = getUserRole();
     return in_array($role, ['Membres', 'Gestionnaire', "Président d'association", 'Menage']);
