@@ -12,7 +12,7 @@ if (isset($_SESSION["association_id"])) {
 } else {
     echo "Aucune association connectée.";
 }
-$reservations =$dao->getReservationByAssociation($id_association);
+$reservations = $dao->getReservationByAssociation($id_association);
 
 // Pagination
 $parPage = 5; // Nombre de lignes par page

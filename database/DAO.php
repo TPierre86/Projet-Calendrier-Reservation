@@ -54,7 +54,7 @@ public function getReservation() {
 }
 
 public function getReservationByAssociation($id_association) {
-    $reservation = $this->dbh->prepare("SELECT *, nom_association FROM reservations INNER JOIN associations ON associations.id_association=reservations.association_id INNER JOIN utilisateurs ON (utilisateurs.id_utilisateur=reservations.utilisateur_id) INNER JOIN salles ON reservations.salle_id=salles.id_salle WHERE association_id=? ORDER BY date_debut, heure_debut");
+    $reservation = $this->dbh->prepare("SELECT * FROM reservations INNER JOIN utilisateurs ON (utilisateurs.id_utilisateur=reservations.utilisateur_id) INNER JOIN salles ON reservations.salle_id=salles.id_salle WHERE reservations.association_id = ? ORDER BY date_debut, heure_debut");
     $reservation->execute([$id_association]);
     return $reservation->fetchAll(PDO::FETCH_ASSOC);
 }
