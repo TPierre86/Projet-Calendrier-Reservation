@@ -28,7 +28,7 @@ echo "<script>window.userRole = ".json_encode($userRole).";</script>";
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     
     $action = $_POST['action'];
-    
+    echo "Action reçue : " . $action . "<br>";
     if($action === 'enregistrer') {
           //Recuperer les données
           $startDate = isset($_POST['startDate'])?($_POST['startDate']):"";
@@ -62,8 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             //echo "Aucun utilisateur connecté.";
         }
 
-
-
         // --------commande pour New Reservation--------------
         $reservationExist=false;
         $reservations = $dao->getReservation();
@@ -92,13 +90,17 @@ if ($startDate == $reservation["date_debut"] && $roomSelect == $reservation["sal
             }
         }
     } 
-    if ($action === 'supprimer') {
+    if ($action === 'supprimer') { //Supprimer une reservation
         $id_reservation = $_POST['id_reservation'];
         $dao->deleteReservation($id_reservation);
         header("Location: " . $_SERVER['PHP_SELF']);
         exit;
-    } 
-    if ($action === 'modifier') {
+    }
+
+    if($action === 'enregistrerModif') { //Modifier une reservation
+      echo "ID reçu: " . $_POST['id_reservation'];
+        exit;
+        // Récupération des données du formulaire
         $id_reservation = $_POST['id_reservation'];
         
         $reservation= $dao->getReservation();
@@ -108,20 +110,25 @@ if ($startDate == $reservation["date_debut"] && $roomSelect == $reservation["sal
             $endTime = isset($_POST['endTime'])?($_POST['endTime']):"";
             $commentInput = isset($_POST['commentInput'])?($_POST['commentInput']):"";
             $attachments = isset($_POST['attachments'])?($_POST['attachments']):"";
-            $roomSelect = isset($_POST['roomSelect'])?($_POST['roomSelect']):"";    
+            $roomSelect = isset($_POST['roomSelect'])?($_POST['roomSelect']):"";
+            $recurrent = isset($_POST['recurrence']) ? 1 : 0; // Vérifie si la case à cocher de récurrence est cochée  
             $id_utilisateur = $_POST['id_utilisateur'];
-        $dao->updateReservation(
+
+          $success= $dao->updateReservation(
             $id_reservation, 
             $startDate, 
             $endDate, 
             $startTime, 
             $endTime,  
             $attachments, 
-            $roomSelect
-        );
-        // Redirection ou traitement du formulaire de modification
-        header("Location: controllers.php");
-        exit;    
+            $roomSelect,
+            $recurrent);
+        // Redirection ou traitement du formulaire de modification   
+        if ($success) {
+                $_SESSION['message'] = "Modification réussi";
+                header('Location: /Projet-Calendrier-Reservation/controllers.php');
+                exit;
+            }
       } 
 }
 
@@ -160,7 +167,7 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
         </header>
         <section class="modal-body">
           <form id="formulaire" method="POST" enctype="multipart/form-data">
-          <input type="hidden" name="id_reservation" id="id_reservation" value="<?= htmlspecialchars($reservation_id) ?>">
+          <input type="hidden" name="id_reservation" id="id_reservation">
           <section class="mb-3">
             <label for="startDate" class="form-label">Date de début</label>
             <input type="date" class="form-control" id="startDate" name="startDate">
@@ -204,6 +211,7 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
           <button name="action" value="supprimer" id="deleteBtn" class="btn btn-danger me-auto" style="display: none;">Supprimer</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
           <button name="action" value="enregistrer" id="saveBtn" class="btn btn-primary">Enregistrer</button>
+          <button name="action" value="enregistrerModif" id="saveModifBtn" class="btn btn-primary" style="display: none;">Enregistrer les modifications</button>
         </section>
         </form> 
       </article>

@@ -180,7 +180,7 @@ public function updatePassword($id_utilisateur, $pwd) {
     return $stmt->execute([$pwd, $id_utilisateur]);
 }
 
-public function updateReservation($id_reservation, $startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect) {
+public function updateReservation($id_reservation, $startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $recurrent) {
     $stmt = $this->dbh->prepare("
         UPDATE reservations SET 
         date_debut = ?, 
@@ -188,10 +188,14 @@ public function updateReservation($id_reservation, $startDate, $endDate, $startT
         heure_debut = ?, 
         heure_fin = ?,
         pieces_jointe = ?, 
-        salle_id = ?
+        salle_id = ?,
+        recurrent = ?
         WHERE id_reservation = ?
     ");
-    return $stmt->execute([$startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $id_reservation]);
+    
+    return $stmt->execute([$startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $recurrent, $id_reservation]);
+    
+    
 }
 }
 ?>

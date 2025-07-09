@@ -4,6 +4,7 @@ const startTime = document.getElementById("startTime");
 const endTime = document.getElementById("endTime");
 const roomSelect = document.getElementById("roomSelect");
 const saveBtn = document.getElementById("saveBtn");
+const saveModifBtn = document.getElementById("saveModifBtn");
 const deleteBtn = document.getElementById("deleteBtn");
 const recurrenceCheckbox = document.getElementById("recurrenceCheckbox");
 const recurrenceWeeksInput = document.getElementById("recurrenceWeeks");
@@ -103,8 +104,6 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
     console.error("Erreur lors du chargement des commentaires :", error);
     alert("Erreur lors du chargement des commentaires.");
   });
-  
-
 
         // Met à jour un champ caché dans la modale commentaire si besoin
         const input = document.querySelector('#filComments input[name="reservation_id"]');
@@ -205,7 +204,10 @@ window.calendar.on('eventClick', function (info) { //fonction qui sers d'EventLi
     return;
   }
   currentEvent = info.event; // Objet événement FullCalendar correspondant à l'événement cliqué par l'utilisateur
-  document.querySelector('input[name="id_reservation"]').value = currentEvent.id;
+  // Récupère les infos de l'événement
+  const props = currentEvent.extendedProps;
+  document.getElementById("id_reservation").value = currentEvent.id;
+  console.log("ID de réservation sélectionné :", currentEvent.id);
     // Utilise les propriétés étendues pour remplir les champs
   document.getElementById('startDate').value = currentEvent.extendedProps.date_debut;
   document.getElementById('endDate').value = currentEvent.extendedProps.date_fin;
@@ -218,6 +220,11 @@ window.calendar.on('eventClick', function (info) { //fonction qui sers d'EventLi
   recurrenceCheckbox.checked = false;
   recurrenceOptions.style.display = "none";
 
+  //Afficher bouton enregistrer les modification
+
+  saveBtn.style.display = "none";
+  saveModifBtn.style.display = "inline-block"; // Affiche le bouton de modification
+  
   // Affiche le bouton de suppression
   deleteBtn.style.display = "inline-block";
 
@@ -282,13 +289,14 @@ window.calendar.render();
     });
   }),
 
-// Enregistrement d'un nouvel événement ou mise à jour
+// Enregistrement d'un nouvel événement
 saveBtn.addEventListener("click", (e) => {
   e.preventDefault();
   if (!canCreate && !canEdit) {
     alert("Vous n'avez pas les droits pour créer ou modifier un événement.");
     return;
   }
+  if (saveBtn) {
   const start = startTime.value;
   const end = endTime.value;
   const room = roomSelect.value;
@@ -325,17 +333,77 @@ saveBtn.addEventListener("click", (e) => {
       // ajoute utilisateur_id si besoin
     })
   })
+
   .then(response => response.json())
   .then(data => {
     if (data.success) {
       window.calendar.refetchEvents();
       eventModal.hide();
+      saveBtn.value = "enregistrer"; // Réinitialise le bouton pour une nouvelle création
     } else {
       alert("Erreur lors de l'enregistrement !");
     }
   });
+}
 });
+// Enregistrement d'une modification d'événement
+saveModifBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (!canCreate && !canEdit) {
+    alert("Vous n'avez pas les droits pour créer ou modifier un événement.");
+    return;
+  }
+if (saveModifBtn) {
+  // Modification d'un événement existant
+  const start = startTime.value;
+  const end = endTime.value;
+  const room = roomSelect.value;
 
+  // *! Récupère les dates depuis les inputs de la modale (toujours prioritaire)
+  const startDate = document.getElementById('startDate').value;
+  const endDate = document.getElementById('endDate').value;
+
+  // Vérifie les champs obligatoires
+  if (!start || !end || !room || !startDate || !endDate) {
+    alert("Merci de remplir tous les champs.");
+    return;
+  }
+  if (start >= end) {
+    alert("L'heure de fin doit être après l'heure de début.");
+    return;
+  }
+
+  // Informations sur la récurrence
+  const recurrence = recurrenceCheckbox.checked;
+  const recurrenceWeeks = recurrenceWeeksInput.value;
+  const id_reservation = document.getElementById("id_reservation").value;
+
+  fetch('/Projet-Calendrier-Reservation/database/updateEvent.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      id_reservation: id_reservation,
+      startDate: startDate,
+      endDate: endDate,
+      startTime: start,
+      endTime: end,
+      attachments: null, // Conserver l'attachment si nécessaire
+      roomSelect: room,
+      recurrent: recurrence,
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      console.log('ok');
+      window.calendar.refetchEvents();
+      eventModal.hide();
+    } else {
+      alert("Erreur lors de la modification !");
+    }
+  });
+  }
+});
 // Suppression d'un événement existant
 deleteBtn.addEventListener("click", () => {
   if (!canDelete) {
