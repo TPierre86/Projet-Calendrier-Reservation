@@ -330,26 +330,29 @@ saveBtn.addEventListener("click", (e) => {
   // Informations sur la récurrence
   const recurrence = recurrenceCheckbox.checked;
   const recurrenceWeeks = recurrenceWeeksInput.value;
-  const newStart = new Date(`${startDate}T${start}`);
-  const newEnd = new Date(`${endDate}T${end}`);
+  // const newStart = new Date(`${startDate}T${start}`);
+  // const newEnd = new Date(`${endDate}T${end}`);
 
-  const conflicts = window.calendar.getEvents().some(ev => {
-    const evRoom = ev.extendedProps.salle_id;
-    if (parseInt(evRoom) !== parseInt(room)) return false;
+const events = window.calendar.getEvents();
 
-    const evStart = ev.start;
-    const evEnd = ev.end;
+const newStart = new Date(`${startDate}T${start}`);
+const newEnd = new Date(`${endDate}T${end}`);
 
-    const overlap = newStart < evEnd && newEnd > evStart;
-    const isSameEvent = currentEvent && ev.id === currentEvent.id;
+const conflict = events.some(ev => {
+  // Si on édite un événement, on ne le compare pas à lui-même
+  if (currentEvent && ev === currentEvent) return false;
 
-    return overlap && !isSameEvent;
-  });
+  const sameRoom = ev.extendedProps.salle_id == room;
+  const evStart = new Date(ev.start);
+  const evEnd = new Date(ev.end);
 
-  if (conflicts) {
-    alert("Cette salle est déjà réservée sur ce créneau.");
-    return;
-  }
+  return sameRoom && newStart < evEnd && newEnd > evStart;
+});
+
+if (conflict) {
+  alert("Il existe déjà une réservation sur ce créneau et cette salle.");
+  return;
+}
   
   fetch('/Projet-Calendrier-Reservation/database/addEvent.php', {
     method: 'POST',
