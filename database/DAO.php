@@ -35,6 +35,12 @@ $associations->execute();
 return $associations->fetchAll(PDO::FETCH_ASSOC);
 }
 
+public function getReservationById($id_reservation) {
+    $stmt = $this->dbh->prepare("SELECT * FROM reservations WHERE id = ?");
+    $stmt->execute([$id_reservation]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
 public function getMembresByAssociation($id_association) {
     $membres = $this->dbh->prepare("SELECT * FROM utilisateurs WHERE association_id=?");
     $membres->execute([$id_association]);

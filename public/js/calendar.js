@@ -13,10 +13,9 @@ const recurrenceOptions = document.getElementById("recurrenceOptions");
 const canCreate = window.canCreate;
 const canEdit = window.canEdit;
 const canDelete = window.canDelete;
-const canCreateAdmin = window.canCreateAdmin;
-const canEditAdmin = window.canEditAdmin;
-const canDeleteAdmin = window.canDeleteAdmin;
 const canComment = window.canComment;
+const role = window.currentUser.role;
+const userAssocId = window.currentUser.associationId;
 const associationColors = {
   1: '#e74c3c', // rouge
   2: '#3498db', // bleu
@@ -29,6 +28,19 @@ const associationColors = {
   9: '#c0392b'  // rouge foncé
 };
 
+function canEditEvent(event) {
+const eventAssocId = event.extendedProps.association_id;
+  return role === 'Gestionnaire' || (role === "Président d'association" && userAssocId && userAssocId == eventAssocId);
+}
+
+function canDeleteEvent(event) {
+const eventAssocId = event.extendedProps.association_id;
+  return role === 'Gestionnaire' || (role === "Président d'association" && userAssocId && userAssocId == eventAssocId);
+}
+
+function canCreateEventForAssoc(assocId) {
+  return role === 'Gestionnaire' || (role === "Président d'association" && userAssocId && userAssocId == assocId);
+}
 
 // Variables pour stocker l'événement sélectionné ou en cours de modification
 let currentEvent = null; //enregistre la selection fait par l'utilisateur
@@ -36,16 +48,18 @@ let selectedRangeStart = null; // en cas de selection multiple enregistre la dat
 let selectedRangeEnd = null; // en cas de selection multiple enregistre la date de fin de l'évênement
 
 // Affiche/masque les options de récurrence
-recurrenceCheckbox.addEventListener("change", () => { // fonction qui modifie le "display :none" dans la partie récurrence du form
-recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none"; 
-});
+if (recurrenceCheckbox) {
+  recurrenceCheckbox.addEventListener("change", () => {
+    recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none";
+  });
+}
 
 // Initialisation du calendrier FullCalendar
 window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage du calendrier lors du lancement de la page
   initialView: "dayGridMonth", //vue par défault "grid" par mois
   locale: "fr", //configuer le calendrier en français
   firstDay : 1, // fais commencer le calendrier le lundi
-  selectable: canCreate, // permet la selection des cases du calendrier pour créer des évênements
+  selectable: window.canCreate, // permet la selection des cases du calendrier pour créer des évênements
   headerToolbar: { // partie au dessus du calendrier
     left: "prev,next today",
     center: "title",
@@ -57,6 +71,7 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
     week: "Semaine",
     day: "Jour",
   },
+  
 
   eventContent: function(arg) {
     // Crée un conteneur temporaire pour parser le HTML du title
@@ -181,9 +196,9 @@ eventDidMount: function(info) {
 // Lorsqu'on clique sur un événement existant 
 /** 
  *? Fonction qui a pour but de modifier ou supprimer un événement existant*/
-window.calendar.on('eventClick', function (info) { //fonction qui sers d'EventListener dans calendar
-  if (!canEdit) {
-    alert("vous n'avez pas le droit de modifier cette réservation.");
+window.calendar.on('eventClick', function (info) {
+  if (!canEditEvent(info.event)) {
+    alert("Vous n'avez pas le droit de modifier cette réservation.");
     return;
   }
   currentEvent = info.event; // Objet événement FullCalendar correspondant à l'événement cliqué par l'utilisateur
@@ -203,7 +218,7 @@ window.calendar.on('eventClick', function (info) { //fonction qui sers d'EventLi
   // Affiche le bouton de suppression
   deleteBtn.style.display = "inline-block";
 
-  deleteBtn.style.display = canDelete ? 'inline-block' : 'none';
+deleteBtn.style.display = canDeleteEvent(currentEvent) ? 'inline-block' : 'none';
 
   // Affiche la modale
   eventModal.show();
@@ -267,8 +282,13 @@ window.calendar.render();
 // Enregistrement d'un nouvel événement ou mise à jour
 saveBtn.addEventListener("click", (e) => {
   e.preventDefault();
-  if (!canCreate && !canEdit) {
-    alert("Vous n'avez pas les droits pour créer ou modifier un événement.");
+  if (currentEvent && !canEditEvent(currentEvent)) {
+    alert("Vous n'avez pas les droits pour modifier cet événement.");
+    return;
+  }
+
+  if (!currentEvent && !canCreate) {
+    alert("Vous n'avez pas les droits pour créer un événement.");
     return;
   }
   const start = startTime.value;
@@ -320,7 +340,7 @@ saveBtn.addEventListener("click", (e) => {
 
 // Suppression d'un événement existant
 deleteBtn.addEventListener("click", () => {
-  if (!canDelete) {
+  if (!currentEvent || !canDeleteEvent(currentEvent)) {
     alert("Vous n'avez pas les droits pour supprimer cet événement.");
     return;
   }

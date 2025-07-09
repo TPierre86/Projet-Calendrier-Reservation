@@ -189,15 +189,23 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
               <option value="2">Bar</option>
               <option value="3">Réfectoire</option>
             </select>
-          <section class="form-check mb-2">
-            <input type="checkbox" class="form-check-input" name ="recurrence" id="recurrenceCheckbox" />
-            <label class="form-check-label" for="recurrenceCheckbox">Récurrence</label>
-          <section id="recurrenceOptions" style="display: none;" class="mb-3">
-            <label for="recurrenceWeeks">Nombre de réservations (toutes les 2 semaines) :</label>
-            <input type="number" name="recurrenceWeeks" id="recurrenceWeeks" value="3" min="1" max="52">
+              <?php if (getUserRole() === 'Gestionnaire'): ?>
+                <section class="form-check mb-2">
+                  <input type="checkbox" class="form-check-input" name="recurrence" id="recurrenceCheckbox" />
+                  <label class="form-check-label" for="recurrenceCheckbox">Récurrence</label>
+                </section>
+
+                <section id="recurrenceOptions" style="display: none;" class="mb-3">
+                  <label for="recurrenceWeeks">Nombre de réservations (toutes les 2 semaines) :</label>
+                  <input type="number" name="recurrenceWeeks" id="recurrenceWeeks" value="3" min="1" max="52">
+                </section>
+
+                <section class="form-check mb-2">
+                  <input type="checkbox" class="form-check-input" name="menage" id="menageCheckbox" />
+                  <label class="form-check-label" for="menageCheckbox">Ménage</label>
+                </section>
+              <?php endif; ?>
           </section>
-          </section>
-        </section>
         </section>
         
         <section class="modal-footer">
@@ -210,7 +218,7 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
     </article>
   </section>
   <!-- //modal pour les commentaires -->
-  <section class="modal fade" id="filCommentsModal" tabindex="-1" aria-labelledby="filCommentsLabel" aria-hidden="true" style="display = none;">
+  <section class="modal fade" id="filCommentsModal" tabindex="-1" aria-labelledby="filCommentsLabel" aria-hidden="true" style="display : none;">
     <article class="modal-dialog">
       <article class="modal-content bg-dark text-white">
         <header class="modal-header">
@@ -231,13 +239,14 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
     </article>
   </section>
 <script>
-  window.userRole = <?php echo json_encode($_SESSION["profil"] ?? null); ?>;
+  window.userRole = <?= json_encode(getUserRole()) ?>;
   window.canEdit = <?php echo json_encode(canEdit()); ?>;
   window.canDelete = <?php echo json_encode(canDelete()); ?>;
   window.canCreate = <?php echo json_encode(canCreate()); ?>;
-  window.canEdit = <?php echo json_encode(canEditAdmin()); ?>;
-  window.canDelete = <?php echo json_encode(canDeleteAdmin()); ?>;
-  window.canCreate = <?php echo json_encode(canCreateAdmin()); ?>;
   window.canComment = <?php echo json_encode(canComment()); ?>;
   window.canView = true; 
+    window.currentUser = {
+    role: <?= json_encode($_SESSION['profil'] ?? 'visitor') ?>,
+    associationId: <?= json_encode($_SESSION['association_id'] ?? null) ?>
+  };
 </script>
