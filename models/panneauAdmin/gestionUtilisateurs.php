@@ -192,14 +192,15 @@ require_once('../../templates/headers.php');
             </table>
             <section class="pagination">
                     <?php if ($page > 1): ?>
+                        <a href="../../controllers.php" class="btn-retour" style="font-weight:bold;text-decoration:underline;">Retour</a>
                         <a href="?page=<?= $page - 1 ?>">&laquo; Précédent</a>
                     <?php endif; ?>
                     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                         <a href="?page=<?= $i ?>" <?= $i === $page ? 'style="font-weight:bold;text-decoration:underline;"' : '' ?>><?= $i ?></a>
-                        <a href="../../controllers.php" class="btn-retour" style="font-weight:bold;text-decoration:underline;">Retour</a>
                     <?php endfor; ?>
                     <?php if ($page < $totalPages): ?>
                         <a href="?page=<?= $page + 1 ?>">Suivant &raquo;</a>
+                        <a href="../../controllers.php" class="btn-retour" style="font-weight:bold;text-decoration:underline;">Retour</a>
                     <?php endif; ?>
                     </section>
         </section>
@@ -224,7 +225,12 @@ require_once('../../templates/headers.php');
             <input class="form1" type="password" name="pwd" value="" placeholder="Laissez vide pour ne pas changer">
 
             <label for="profil" class="txt">Profil</label>
-            <input class="form1" type="text" name="profil" value="">
+            <select name="profil" id="profil" class="form1">
+                <option value="Gestionnaire">Gestionnaire</option>
+                <option value="Président d'association">Président d'association</option>
+                <option value="Ménage">Ménage</option>
+                <option value="Membre">Membre</option>
+            </select>
 
         <label for="association_id" class="txt">Association</label>
             <select class="form1" name="association_id" id="modifier-association" required>

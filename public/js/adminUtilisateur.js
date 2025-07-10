@@ -33,7 +33,20 @@ document.addEventListener('DOMContentLoaded', () => {
         formModifier.querySelector("input[name='firstName']").value = button.dataset.firstname;
         formModifier.querySelector("input[name='mail']").value = button.dataset.email;
         formModifier.querySelector("input[name='tel']").value = button.dataset.tel;
-        formModifier.querySelector("input[name='profil']").value = button.dataset.profil;
+        const profilSelect = formModifier.querySelector("select[name='profil']");
+        const profilValue = button.dataset.profil;
+
+        // Debug : afficher la valeur et les options
+        console.log('Valeur profil à sélectionner:', profilValue);
+        console.log('Options disponibles:', Array.from(profilSelect.options).map(o => o.value));
+
+        // Forcer la sélection directement
+        profilSelect.value = profilValue;
+        // Si la valeur n'est pas trouvée, on sélectionne la première option valide
+        if (profilSelect.value !== profilValue) {
+            profilSelect.selectedIndex = 0;
+        }
+        
         const associationSelect = formModifier.querySelector("select[name='association_id']");
         const associationValue = button.dataset.associationId;
         
