@@ -13,7 +13,7 @@ if (isset($_SESSION['connected_user'])) {
     $association_id = $_SESSION['association_id']; 
 } else {
     // L'utilisateur n'est pas connecté
-    echo "Aucun utilisateur connecté.";
+    //echo "Aucun utilisateur connecté.";
 }
 //========Gestion des droits========
 include 'droit.php';
@@ -60,12 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         if (isset($_SESSION["connected_user"])) {
             $utilisateur_id = $_SESSION["connected_user"];
             //echo "Utilisateur connecté avec l'ID : " . $utilisateur_id;
-          if ($_SESSION['profil'] === 'Gestionnaire') { 
-             var_dump($_POST); // ← pour confirmer si "id_association" existe
+          if ($_SESSION['profil'] === 'Gestionnaire') { // ← pour confirmer si "id_association" existe
             $association_id = $_POST['id_association'] ?? null; // Récupérer l'association sélectionnée
           echo "Association choisie : " . $association_id;
           } else {
-          var_dump($_POST);
           $association_id = $_SESSION["association_id"]; // Si l'utilisateur n'est pas connecté ou n'est pas un admin, on ne lie pas d'association
           echo "Association choisie : " . $association_id;
         }
