@@ -45,6 +45,27 @@ const eventAssocId = event.extendedProps.association_id;
 function canCreateEventForAssoc(assocId) {
     return role === 'Gestionnaire' || (role === "Président d'association" && userAssocId && userAssocId == assocId);
 }
+function resetReservationForm() {
+  const form = document.getElementById('formulaire');
+  form.reset();                        // Réinitialise les champs "standards"
+
+  // Date / time pickers (ex. Flatpickr)
+  if (window.startPicker)  startPicker.clear();
+  if (window.endPicker)    endPicker.clear();
+
+  // Pièce jointe & variables globales
+  window.uploadedFilePath = null;
+  document.getElementById('attachments').value = '';
+
+  // Champs cachés ou JS globals
+  document.getElementById('id_reservation').value = '';
+  recurrenceCheckbox.checked   = false;
+  recurrenceWeeksInput.value   = '';
+
+  // Boutons
+  saveBtn.style.display        = 'inline-block';
+  saveModifBtn.style.display   = 'none';
+}
 
 // Variables pour stocker l'événement sélectionné ou en cours de modification
 let currentEvent = null; //enregistre la selection fait par l'utilisateur
@@ -511,6 +532,7 @@ if(role === 'Gestionnaire'){
     .then(response => response.json())
     .then(data => {
     if (data.success) {
+      resetReservationForm();
         window.calendar.refetchEvents();
         eventModal.hide();
       saveBtn.value = "enregistrer"; // Réinitialise le bouton pour une nouvelle création
@@ -585,10 +607,7 @@ if (saveModifBtn) {
     if (data.success) {
         alert('Réservation enregistrée');
 
-    // Optionnel : reset form
-    document.getElementById('formulaire').reset();
-    saveBtn.style.display = "inline-block"; // Affiche le bouton de création
-    saveModifBtn.style.display = "none"; // Cache le bouton de modification
+        resetReservationForm();
         window.calendar.refetchEvents();
         eventModal.hide();
     } else {
