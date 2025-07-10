@@ -7,7 +7,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Comité monestié</title>
+    <title>Comité monestiés</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.3.3/dist/cerulean/bootstrap.min.css" />
     <link rel="stylesheet" href="/Projet-Calendrier-Reservation/public/styles/components/calendar.css" />

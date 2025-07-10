@@ -39,9 +39,12 @@ try {
     if ($connectedUser == 2) {
         // Gestionnaire : récupère les infos de la requête
         $association_id = $data['association_id'] ?? null;
+    }else{
+        $utilisateur_id = $connectedUser;
+        $association_id = $_SESSION['association_id'] ?? null;
     }
         // Utilisateur classique : utilise la session
-        $utilisateur_id = $connectedUser;
+
 
 
     if (!$id_reservation || !$utilisateur_id) {
@@ -50,7 +53,7 @@ try {
 
 
     // Pour cette version, pas de gestion de pièce jointe
-    $attachments = null;
+    $attachments = isset($data['attachments']) ? $data['attachments'] : null;
 
     $success= $dao->updateReservation(
             $id_reservation, 

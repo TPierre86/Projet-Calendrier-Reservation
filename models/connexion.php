@@ -34,7 +34,7 @@ echo "<script type='text/javascript'>alert('$message');</script>";
     <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inscription</title>
+    <title>Comité monestiés</title>
     <link rel="stylesheet" href="/Projet-Calendrier-Reservation/public/styles/components/inscription.css" />
     </head>
     <body id="bodyFormInscription">
