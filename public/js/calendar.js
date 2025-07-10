@@ -318,13 +318,23 @@ window.calendar.on('eventClick', function (info) {
             recurrenceOptions.style.display = recurrenceCheckbox.checked ? "block" : "none";
         }
         if (recurrenceCheckboxSection) recurrenceCheckboxSection.style.display = "block";
-        } else {
+        if (reservationAssociation) {
+            reservationAssociation.style.display = "block";
+            // Sélectionne la première association si aucune n'est sélectionnée
+            const select = document.getElementById("id_association");
+            if (select && (!select.value || select.value === "0")) {
+                if (select.options.length > 1) {
+                    select.selectedIndex = 1; // saute l'option --Choisir Association--
+                }
+            }
+        }
+    } else {
         if (recurrenceCheckboxSection) recurrenceCheckboxSection.style.display = "none";
         if (recurrenceOptions) recurrenceOptions.style.display = "none";
         if (recurrenceCheckbox) recurrenceCheckbox.checked = false;
-        }
-        if (menageOptions) menageOptions.style.display = "none";
-        if (reservationAssociation) reservationAssociation.style.display = (role === "Gestionnaire") ? "block" : "none";
+        if (reservationAssociation) reservationAssociation.style.display = "none";
+    }
+    if (menageOptions) menageOptions.style.display = "none";
 
   // Affiche ou cache le bouton supprimer selon droits
     deleteBtn.style.display = canDeleteEvent(currentEvent) ? 'inline-block' : 'none';
@@ -481,8 +491,7 @@ if(role === 'Gestionnaire'){
       recurrence: recurrence,
       recurrenceWeeks: recurrenceWeeks,
       menage: document.getElementById('menageCheckbox').checked,
-      association_id: association_id,
-      attachments: window.uploadedFilePath || null
+      association_id: association_id
     })
     })
 
@@ -530,21 +539,25 @@ if (saveModifBtn) {
     const recurrenceWeeks = recurrenceWeeksInput.value;
     const id_reservation = document.getElementById("id_reservation").value;
 
-  if(role === 'Gestionnaire'){
-  association_id = document.getElementById("id_association").value;
-} else {
-  association_id = userAssocId; // Utilise l'association de l'utilisateur connecté
-}
+    if(role === 'Gestionnaire') {
+      association_id = document.getElementById("id_association").value;
+      if (!association_id || association_id === '0') {
+        alert("Merci de sélectionner une association.");
+        return;
+      }
+    } else {
+      association_id = userAssocId; // Utilise l'association de l'utilisateur connecté
+    }
   fetch('/Projet-Calendrier-Reservation/database/updateEvent.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      id_reservation: id_reservation,
-      startDate: startDate,
-      endDate: endDate,
-      startTime: start,
-      endTime: end,
-      attachments: window.uploadedFilePath || null, // Conserver l'attachment si nécessaire
+        id_reservation: id_reservation,
+        startDate: startDate,
+        endDate: endDate,
+        startTime: start,
+        endTime: end,
+      attachments: null, // Conserver l'attachment si nécessaire
       roomSelect: room,
       recurrent: recurrence,
       association_id: association_id,
@@ -667,30 +680,3 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
-
-document.getElementById('attachments').addEventListener('change', function(e) {
-
-  const file = e.target.files[0];
-  if (!file) return;
-  const formData = new FormData();
-  
-  
-  
-  formData.append('file', file);
-  console.log(formData);
-  fetch('/Projet-Calendrier-Reservation/uploads/uploads.php', {
-    method: 'POST',
-    body: formData
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      // Stocke le chemin pour l'utiliser lors de la création de l'événement
-      window.uploadedFilePath = data.filePath;
-      alert('Fichier uploadé avec succès !');
-    } else {
-      alert('Erreur upload : ' + data.error);
-    }
-  });
-});
-

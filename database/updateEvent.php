@@ -10,13 +10,10 @@ $dao = new DAOReservation();
 $dao->connexion();
 
 try {
-      // Lire le corps JSON de la requête
     $data = json_decode(file_get_contents('php://input'), true);
-
     if (!$data) {
         throw new Exception("Données JSON invalides.");
     }
-    // Extraire les champs attendus
 
     $id_reservation = $data['id_reservation'] ?? null;
     $startDate = $data['startDate'] ?? '';
@@ -28,52 +25,49 @@ try {
     $menageCheckbox = !empty($data['menageCheckbox']) ? 1 : 0;
     $menage = !empty($data['menage']) ? 1 : 0;
 
-
-        // Récupération du user connecté
     $connectedUser = $_SESSION['connected_user'] ?? null;
-
     if (!$connectedUser) {
         throw new Exception("Utilisateur non connecté.");
     }
 
+    // On garde la logique correcte : l'utilisateur d'origine ne change pas
+    $resa = $dao->getReservationById($id_reservation);
+    if (!$resa) {
+        throw new Exception("Réservation introuvable.");
+    }
+    $utilisateur_id = $resa['utilisateur_id'];
+
+    // Association id
     if ($connectedUser == 2) {
-        // Gestionnaire : récupère les infos de la requête
         $association_id = $data['association_id'] ?? null;
-    }else{
-        $utilisateur_id = $connectedUser;
+    } else {
         $association_id = $_SESSION['association_id'] ?? null;
     }
-        // Utilisateur classique : utilise la session
-
-
 
     if (!$id_reservation || !$utilisateur_id) {
         throw new Exception("ID de réservation ou utilisateur manquant.");
     }
 
-
-    // Pour cette version, pas de gestion de pièce jointe
     $attachments = isset($data['attachments']) ? $data['attachments'] : null;
 
     $success= $dao->updateReservation(
-            $id_reservation, 
-            $startDate, 
-            $endDate, 
-            $startTime, 
-            $endTime,  
-            $attachments, 
-            $roomSelect,
-            $utilisateur_id,
-            $association_id,
-            $recurrent,
-            $menageCheckbox,
-            $menage
-        );
-        
+        $id_reservation, 
+        $startDate, 
+        $endDate, 
+        $startTime, 
+        $endTime,  
+        $attachments, 
+        $roomSelect,
+        $utilisateur_id,
+        $association_id,
+        $recurrent,
+        $menageCheckbox,
+        $menage
+    );
+    
     if (!$success) {
         throw new Exception("Échec de la mise à jour.");
     }
-    // Réponse JSON simplifiée (à adapter selon tes besoins)
     echo json_encode([
         'success' => true,
         'message' => 'Réservation mise à jour',

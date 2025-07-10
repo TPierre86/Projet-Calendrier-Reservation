@@ -34,7 +34,7 @@ return $associations->fetchAll(PDO::FETCH_ASSOC);
 }
 
 public function getReservationById($id_reservation) {
-    $stmt = $this->dbh->prepare("SELECT * FROM reservations WHERE id = ?");
+    $stmt = $this->dbh->prepare("SELECT * FROM reservations WHERE id_reservation = ?");
     $stmt->execute([$id_reservation]);
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
@@ -205,7 +205,20 @@ public function updateReservation($id_reservation, $startDate, $endDate, $startT
         Menage = ?
         WHERE id_reservation = ?
     ");
-    return $stmt->execute([$startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $utilisateur_id, $association_id, $recurrent, $menageCheckbox, $menage, $id_reservation]);
+    return $stmt->execute([
+        $startDate,      // date_debut
+        $endDate,        // date_fin
+        $startTime,      // heure_debut
+        $endTime,        // heure_fin
+        $attachments,    // pieces_jointe
+        $roomSelect,     // salle_id
+        $recurrent,      // recurrent
+        $utilisateur_id, // utilisateur_id
+        $association_id, // association_id
+        $menageCheckbox, // menageCheckbox
+        $menage,         // Menage
+        $id_reservation  // WHERE id_reservation = ?
+    ]);
 }
 }
 ?>
