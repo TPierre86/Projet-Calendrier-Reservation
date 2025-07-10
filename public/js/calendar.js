@@ -90,11 +90,6 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
     // Récupère le lien <a> s'il existe
         const link = container.querySelector('.comment-link');
         const attachment = container.querySelector('.attachment-link');
-        const hasAttachment = arg.event.extendedProps.attachments;
-
-    if (!hasAttachment) {
-    if (attachment) attachment.style.display = "none";
-  }
         if (link) {
 
         link.onclick = function(e) {
@@ -496,7 +491,7 @@ if(role === 'Gestionnaire'){
       endDate: endDate,
       startTime: start,
       endTime: end,
-      attachments: window.uploadedFilePath || null,
+      attachments: window.uploadedFilePath || "null",
       roomSelect: room,
       recurrence: recurrence,
       recurrenceWeeks: recurrenceWeeks,
@@ -571,7 +566,7 @@ if (saveModifBtn) {
         endDate: endDate,
         startTime: start,
         endTime: end,
-        attachments: window.uploadedFilePath || null, // Conserver l'attachment si nécessaire
+        attachments: window.uploadedFilePath || "null", // Conserver l'attachment si nécessaire
       roomSelect: room,
       recurrent: recurrence,
       association_id: association_id,
@@ -698,26 +693,13 @@ document.getElementById('attachments').addEventListener('change', function(e) {
 
   const file = e.target.files[0];
   if (!file) return;
-    // Renommer le fichier pour qu'il n'ait pas d'espaces ou de caractères spéciaux
-  const fileName = file.name
-    .replace(/\s+/g, '_')         // Remplace les espaces par des underscores
-    .replace(/[^a-zA-Z0-9._-]/g, '');  // Supprime tous les caractères spéciaux
-  // Créer un nouvel objet `File` avec le nom modifié
-  const renamedFile = new File([file], fileName, { type: file.type });
+  const formData = new FormData();
+  
+  
+  
+  formData.append('file', file);
+  console.log(formData);
+ file.type });
   const formData = new FormData();
     formData.append('file', renamedFile);
-  fetch('/Projet-Calendrier-Reservation/uploads/uploads.php', {
-    method: 'POST',
-    body: formData
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      // Stocke le chemin pour l'utiliser lors de la création de l'événement
-      window.uploadedFilePath = data.filePath;
-      alert('Fichier uploadé avec succès !');
-    } else {
-      alert('Erreur upload : ' + data.error);
-    }
-  });
-});
+    formData.append('file', renamedFile);
