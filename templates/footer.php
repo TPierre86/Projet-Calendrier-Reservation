@@ -15,7 +15,7 @@
         <span>Monestiés</span>
       </article>
       <article id="info">
-        <span>https://www.monesties.fr/</span>
+        <span><a href="https://www.monesties.fr/">https://www.monesties.fr/</a></span>
         <span>05.63.80.14.00</span>
       </article>
       <article id="edited">
