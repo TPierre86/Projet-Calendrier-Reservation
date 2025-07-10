@@ -7,8 +7,6 @@ private $username="root";
 private $password="";
 private $dbh;
 
-
-
 public function __construct() {
 
 }
