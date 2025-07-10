@@ -9,7 +9,7 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $sql = "
-        SELECT r.id_reservation, r.salle_id, r.date_debut, r.date_fin, r.heure_debut, r.heure_fin,
+        SELECT r.id_reservation, r.salle_id, r.date_debut, r.date_fin, r.heure_debut, r.heure_fin,r.pieces_jointe,
             r.association_id, r.recurrent, r.menageCheckbox, r.menage,
             s.nom_salle,
             u.association_id
@@ -30,8 +30,8 @@ try {
 
         $events[] = [
             'id' => $row['id_reservation'],
-            'title' => '[' . $row['nom_salle'] . '] <a href="#" class="comment-link" data-id="' . $row['id_reservation'] . '"><i class="fa-solid fa-comments"></i></a> &nbsp; 
-            <a href="#" class="attachment-link" data-id="' . $row['id_reservation'] . '"><i class="fa-solid fa-file-arrow-up"></i></a>',
+            'title' => '[' . $row['nom_salle'] . '] <a href="" class="comment-link" data-id="' . $row['id_reservation'] . '"><i class="fa-solid fa-comments"></i></a> &nbsp; 
+    <a href="http://localhost/Projet-Calendrier-Reservation/' . $row['pieces_jointe'] . '" class="attachment-link" target="_blank" data-id="' . $row['id_reservation'] . '"><i class="fa-solid fa-file-arrow-up"></i></a>',
             'start' => $start,
             'end' => $end,
             'allDay' => false,
@@ -42,7 +42,7 @@ try {
                 'date_fin' => $row['date_fin'],
                 'heure_debut' => $row['heure_debut'],
                 'heure_fin' => $row['heure_fin'],
-                'attachments' => $rpw['pieces-jointe'],
+                'attachments' => $row['pieces_jointe'],
                 'salle_id' => $row['salle_id'],
                 'association_id' => $row['association_id'],
                 'recurrence' => isset($row['recurrent']) ? (bool)$row['recurrent'] : false,

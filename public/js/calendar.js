@@ -90,6 +90,11 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
     // Récupère le lien <a> s'il existe
         const link = container.querySelector('.comment-link');
         const attachment = container.querySelector('.attachment-link');
+        const hasAttachment = arg.event.extendedProps.attachments;
+
+    if (!hasAttachment) {
+    if (attachment) attachment.style.display = "none";
+  }
         if (link) {
 
         link.onclick = function(e) {
