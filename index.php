@@ -271,5 +271,6 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
   };
   window.canCreate = <?php echo json_encode(canCreate()); ?>;
   window.canComment = <?php echo json_encode(canComment()); ?>;
-  window.canView = true; 
+  window.canDownload = <?php echo json_encode(canDownload()); ?>; 
+  window.canView = <?php echo json_encode(canView()); ?>; 
 </script>

@@ -60,9 +60,9 @@ try {
             $endTime,  
             $attachments, 
             $roomSelect,
-            $recurrent,
             $utilisateur_id,
             $association_id,
+            $recurrent,
             $menageCheckbox,
             $menage
         );
