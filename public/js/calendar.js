@@ -320,12 +320,11 @@ window.calendar.on('eventClick', function (info) {
         if (recurrenceCheckboxSection) recurrenceCheckboxSection.style.display = "block";
         if (reservationAssociation) {
             reservationAssociation.style.display = "block";
-            // Sélectionne la première association si aucune n'est sélectionnée
+            // Sélectionne l'association correspondant à la réservation
             const select = document.getElementById("id_association");
-            if (select && (!select.value || select.value === "0")) {
-                if (select.options.length > 1) {
-                    select.selectedIndex = 1; // saute l'option --Choisir Association--
-                }
+            const eventAssocId = currentEvent.extendedProps.association_id;
+            if (select && eventAssocId) {
+                select.value = eventAssocId;
             }
         }
     } else {

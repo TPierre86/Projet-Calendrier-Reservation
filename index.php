@@ -153,6 +153,7 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
             $peutAfficher = false;
     }
 ?>
+<?php include 'templates/headers.php'; ?>
   <main class="container mt-4">
   <?php
   if (isset($_SESSION['message'])) {
