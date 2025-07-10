@@ -487,6 +487,7 @@ if(role === 'Gestionnaire'){
       endDate: endDate,
       startTime: start,
       endTime: end,
+      attachments: window.uploadedFilePath || null,
       roomSelect: room,
       recurrence: recurrence,
       recurrenceWeeks: recurrenceWeeks,
@@ -557,7 +558,7 @@ if (saveModifBtn) {
         endDate: endDate,
         startTime: start,
         endTime: end,
-      attachments: null, // Conserver l'attachment si nécessaire
+        attachments: window.uploadedFilePath || null, // Conserver l'attachment si nécessaire
       roomSelect: room,
       recurrent: recurrence,
       association_id: association_id,
@@ -679,4 +680,29 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
+});
+document.getElementById('attachments').addEventListener('change', function(e) {
+
+  const file = e.target.files[0];
+  if (!file) return;
+  const formData = new FormData();
+  
+  
+  
+  formData.append('file', file);
+  console.log(formData);
+  fetch('/Projet-Calendrier-Reservation/uploads/uploads.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      // Stocke le chemin pour l'utiliser lors de la création de l'événement
+      window.uploadedFilePath = data.filePath;
+      alert('Fichier uploadé avec succès !');
+    } else {
+      alert('Erreur upload : ' + data.error);
+    }
+  });
 });
