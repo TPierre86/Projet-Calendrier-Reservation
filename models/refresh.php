@@ -20,7 +20,7 @@
     <script>
       setTimeout(() => {
         window.location.href = "connexion.php";
-      }, 2000); // 2 secondes
+      }, 3000); // 3 secondes
     </script>
   </body>
 </html>
