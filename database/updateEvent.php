@@ -50,7 +50,7 @@ try {
 
 
     // Pour cette version, pas de gestion de pièce jointe
-    $attachments = null;
+    $attachments = isset($data['attachments']) ? $data['attachments'] : null;
 
     $success= $dao->updateReservation(
             $id_reservation, 

@@ -9,7 +9,7 @@ $rawInput = file_get_contents('php://input');
 $data = json_decode($rawInput, true);
 
 // Validation des données
-if (!$data || !isset($data['startDate'], $data['startTime'], $data['endTime'], $data['roomSelect'])) {
+if (!$data || !isset($data['startDate'], $data['startTime'], $data['endTime'], $data['roomSelect'],$data['attachments'])) {
     echo json_encode(["success" => false, "error" => "Requête invalide ou données manquantes."]);
     exit;
 
@@ -29,6 +29,7 @@ if ($utilisateur_id == 2 && isset($data['association_id'])) {
 
 $recurrence = !empty($data['recurrence']);
 $weeks = isset($data['recurrenceWeeks']) ? (int)$data['recurrenceWeeks'] : 0;
+$attachments = isset($data['attachments']) ? $data['attachments'] : null;
 
 
 if (!$utilisateur_id) {
@@ -58,7 +59,7 @@ try {
                 $dateFin,
                 $startTime,
                 $endTime,
-                null,
+                $attachments,
                 $room,
                 $utilisateur_id,
                 $association_id, // association_id
@@ -73,7 +74,7 @@ try {
             $endDate, 
             $startTime, 
             $endTime, 
-            null, 
+            $attachments,
             $room, 
             $utilisateur_id,
             $association_id, // association_id
