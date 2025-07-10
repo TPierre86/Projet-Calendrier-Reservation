@@ -483,6 +483,10 @@ if (conflict) {
 
 if(role === 'Gestionnaire'){
   association_id = document.getElementById("id_association").value;
+  if (!association_id || association_id === "0") {
+    alert("Merci de sélectionner une association.");
+    return;
+  }
 } else {
   association_id = userAssocId; // Utilise l'association de l'utilisateur connecté
 }

@@ -218,7 +218,7 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
               <input type="number" name="recurrenceWeeks" id="recurrenceWeeks" value="3" min="1" max="52">
             </section>
             <section id="reservationAssociation" class="form-check mb-2">
-              <label for="associations" class="form-label">Association</label>
+              <label for="id_association" class="form-label">Association</label>
               <select name="id_association" id="id_association" class="form-select">
                 <option selected disabled value="0">--Choisir Association--</option>
                 <?php foreach ($associations as $association) { ?>

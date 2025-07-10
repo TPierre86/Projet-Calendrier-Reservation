@@ -34,7 +34,7 @@ try {
             'end' => $end,
             'allDay' => false,
             // Utilise l'association de la réservation pour la couleur
-            'association_id' => (int)$row['reservation_association_id'],
+            'association_id' => (int)$row['association_id'],
             'extendedProps' => [
                 'id_reservation' => $row['id_reservation'],
                 'date_debut' => $row['date_debut'],
@@ -44,7 +44,7 @@ try {
                 'attachments' => $row['pieces_jointe'],
                 'salle_id' => $row['salle_id'],
                 // Utilise l'association de la réservation pour les droits/couleur
-                'association_id' => $row['reservation_association_id'],
+                'association_id' => $row['association_id'],
                 'recurrence' => isset($row['recurrent']) ? (bool)$row['recurrent'] : false,
                 'menageCheckbox' => isset($row['menageCheckbox']) ? (bool)$row['menageCheckbox'] : false,
                 'menage' => isset($row['menage']) ? (bool)$row['menage'] : false,
