@@ -685,12 +685,14 @@ document.getElementById('attachments').addEventListener('change', function(e) {
 
   const file = e.target.files[0];
   if (!file) return;
+    // Renommer le fichier pour qu'il n'ait pas d'espaces ou de caractères spéciaux
+  const fileName = file.name
+    .replace(/\s+/g, '_')         // Remplace les espaces par des underscores
+    .replace(/[^a-zA-Z0-9._-]/g, '');  // Supprime tous les caractères spéciaux
+  // Créer un nouvel objet `File` avec le nom modifié
+  const renamedFile = new File([file], fileName, { type: file.type });
   const formData = new FormData();
-  
-  
-  
-  formData.append('file', file);
-  console.log(formData);
+    formData.append('file', renamedFile);
   fetch('/Projet-Calendrier-Reservation/uploads/uploads.php', {
     method: 'POST',
     body: formData

@@ -42,7 +42,7 @@ try {
                 'date_fin' => $row['date_fin'],
                 'heure_debut' => $row['heure_debut'],
                 'heure_fin' => $row['heure_fin'],
-                'attachments' => [],
+                'attachments' => $rpw['pieces-jointe'],
                 'salle_id' => $row['salle_id'],
                 'association_id' => $row['association_id'],
                 'recurrence' => isset($row['recurrent']) ? (bool)$row['recurrent'] : false,
