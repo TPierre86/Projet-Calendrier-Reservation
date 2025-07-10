@@ -13,10 +13,6 @@
   height: auto;
 }
 
-.bienvenue{
-  color:red;
-}
-
 #titreSite {
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("/Projet-Calendrier-Reservation/public/styles/img/pont.jfif");
   background-size: cover;
@@ -113,12 +109,12 @@ footer {
 }
 
 #deco {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgb(25, 36, 46);
   display: flex;
   justify-content: flex-end;
 }
 
 .co {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgb(25, 36, 46);
 }
 /*FIN HEADER/FOOTER*/
