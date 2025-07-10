@@ -29,7 +29,17 @@ const associationColors = {
   6: '#1abc9c', // turquoise
   7: '#34495e', // gris foncé
   8: '#e67e22', // orange foncé
-  9: '#c0392b'  // rouge foncé
+  9: '#c0392b',  // rouge foncé
+  10: '#ff00ff', // magenta
+  11: '#00ffff', // cyan
+  12: '#ffff00', // jaune
+  13: '#00ff00', // vert
+  14: '#0000ff', // bleu
+  15: '#ffff00', // jaune
+  16: '#ff00ff', // magenta
+  17: '#00ffff', // cyan
+  18: '#808080', // gris
+  19: '#c0c0c0', // gris clair
 };
 
 function canEditEvent(event) {
@@ -247,7 +257,7 @@ select: function (info) {
   document.getElementById("endDate").value = formatDateLocal(startDate);
   // Réinitialise les champs de la modale pour repartir d'un formulaire vierge
     roomSelect.selectedIndex = 0;          // Remet la sélection de salle à zéro
-    recurrenceCheckbox.checked = false;    // Décoche la récurrence
+    recurrenceCheckbox.checked = true;    // Décoche la récurrence
     recurrenceOptions.style.display = "none"; // Masque les options de récurrence
     deleteBtn.style.display = "none";     // Cache le bouton de suppression (nouvel événement)
 
