@@ -151,7 +151,7 @@ button:hover span:not(:nth-child(6)) {
   transition: 1.5s ease;
 }
 
-h2 {
+#titreListe {
   margin-bottom: 10%;
   text-align: center;
   border-bottom: 1px solid #000000;
