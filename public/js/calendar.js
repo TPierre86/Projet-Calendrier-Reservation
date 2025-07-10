@@ -17,6 +17,7 @@ const canCreate = window.canCreate;
 const canEdit = window.canEdit;
 const canDelete = window.canDelete;
 const canComment = window.canComment;
+const canDownload = window.canDownload;
 const role = window.currentUser.role;
 const userAssocId = window.currentUser.associationId;
 const associationColors = {
@@ -93,6 +94,23 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
 
         link.onclick = function(e) {
       e.stopPropagation(); // Empêche l'ouverture de la modale
+            // DROITS COMMENTAIRE
+            // 1. Interdire aux visiteurs
+            if (role === 'visitor') {
+              alert("Vous devez être connecté pour voir ou ajouter des commentaires.");
+              return false;
+            }
+            // 2. Interdire aux membres d'association d'accéder aux commentaires d'une autre association
+            const eventAssocId = arg.event.extendedProps.association_id;
+            if (
+              role === 'Membre' &&
+              userAssocId &&
+              eventAssocId &&
+              userAssocId != eventAssocId
+            ) {
+              alert("Vous ne pouvez commenter que les réservations de votre association.");
+              return false;
+            }
             // Récupère l'id de réservation
         const reservationId = link.getAttribute('data-id');
         fetch(`/projet-calendrier-reservation/database/getComments.php?reservation_id=${reservationId}`)
@@ -267,9 +285,7 @@ eventDidMount: function(info) {
     }
 },
 
-    /**
-   * ! on aura surement un problème pour ajouter tel évênement à tel association
-   */
+
 });
 
 
@@ -308,7 +324,7 @@ window.calendar.on('eventClick', function (info) {
         if (recurrenceCheckbox) recurrenceCheckbox.checked = false;
         }
         if (menageOptions) menageOptions.style.display = "none";
-        if (reservationAssociation) reservationAssociation.style.display = "none";
+        if (reservationAssociation) reservationAssociation.style.display = (role === "Gestionnaire") ? "block" : "none";
 
   // Affiche ou cache le bouton supprimer selon droits
     deleteBtn.style.display = canDeleteEvent(currentEvent) ? 'inline-block' : 'none';
@@ -380,7 +396,7 @@ document.addEventListener("DOMContentLoaded", function () {
             commentsContainer.prepend(newComment);
             document.getElementById('comment').value = '';
         } else {
-            alert("Erreur : " + (data.error || 'Impossible d’ajouter le commentaire.'));
+            alert("Erreur : " + (data.error || 'Impossible d’ajouter le commentaire, veuillez vous connecter.'));
         }
     })
     .catch(error => {

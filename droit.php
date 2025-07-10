@@ -43,8 +43,28 @@ function canCreate() {
 
 function canComment() {
     $role = getUserRole();
-    return in_array($role, ['Membres', 'Gestionnaire', "Président d'association", 'Ménage']);
+    if ($role === 'Gestionnaire' || $role === 'Ménage') {
+        return true;
+    }
+    if ($role === "Président d'association" || $role === 'Membres') {
+        $userAssocId = $_SESSION['association_id'] ?? null;
+        return $userAssocId !== null;
+    }
+    return false;
 }
+
+function canDownload()  {
+    $role = getUserRole();
+    if ($role === 'Gestionnaire' || $role === 'Ménage' || $role === "Président d'association") {
+        return true;
+    }
+    if ( $role === 'Membres') {
+        $userAssocId = $_SESSION['association_id'] ?? null;
+        return $userAssocId !== null;
+    }
+    return false;
+}
+
 
 function canView() {
     return true;

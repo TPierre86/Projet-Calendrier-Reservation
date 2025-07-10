@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 09 juil. 2025 à 16:05
+-- Généré le : jeu. 10 juil. 2025 à 08:58
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -62,14 +62,6 @@ CREATE TABLE `commentaires` (
   `heure_comment` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Déchargement des données de la table `commentaires`
---
-
-INSERT INTO `commentaires` (`id_comment`, `reservation_id`, `utilisateur_id`, `comment`, `heure_comment`) VALUES
-(2, 49, 2, 'Coucou', '2025-07-08 17:30:07'),
-(3, 49, 2, 'hjkbhyuo', '2025-07-08 17:30:16');
-
 -- --------------------------------------------------------
 
 --
@@ -85,6 +77,7 @@ CREATE TABLE `reservations` (
   `pieces_jointe` text DEFAULT NULL,
   `salle_id` int(11) NOT NULL,
   `utilisateur_id` int(11) NOT NULL,
+  `association_id` int(11) NOT NULL,
   `recurrent` tinyint(1) NOT NULL,
   `menageCheckbox` tinyint(1) NOT NULL,
   `Menage` tinyint(1) NOT NULL
@@ -94,15 +87,17 @@ CREATE TABLE `reservations` (
 -- Déchargement des données de la table `reservations`
 --
 
-INSERT INTO `reservations` (`id_reservation`, `date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `pieces_jointe`, `salle_id`, `utilisateur_id`, `recurrent`, `menageCheckbox`, `Menage`) VALUES
-(49, '2025-07-17', '2025-07-17', '10:00:00', '12:00:00', NULL, 2, 2, 0, 0, 0),
-(98, '2025-07-06', '2025-07-06', '20:00:00', '22:00:00', NULL, 2, 3, 0, 0, 0),
-(105, '2025-07-18', '2025-07-18', '10:00:00', '12:00:00', NULL, 1, 7, 0, 0, 0),
-(106, '2025-07-25', '2025-07-25', '10:00:00', '12:00:00', NULL, 1, 3, 0, 0, 0),
-(109, '2025-07-10', '2025-07-11', '10:00:00', '12:00:00', NULL, 1, 2, 0, 0, 0),
-(110, '2025-07-24', '2025-07-25', '10:00:00', '12:00:00', NULL, 1, 2, 0, 0, 0),
-(115, '2025-07-16', '2025-07-16', '20:00:00', '22:00:00', NULL, 2, 3, 0, 0, 0),
-(118, '2025-07-09', '2025-07-09', '20:00:00', '22:00:00', NULL, 2, 2, 0, 1, 1);
+INSERT INTO `reservations` (`id_reservation`, `date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `pieces_jointe`, `salle_id`, `utilisateur_id`, `association_id`, `recurrent`, `menageCheckbox`, `Menage`) VALUES
+(119, '2025-07-11', '2025-07-11', '20:00:00', '22:00:00', NULL, 2, 2, 10, 1, 0, 0),
+(120, '2025-07-25', '2025-07-25', '20:00:00', '22:00:00', NULL, 2, 2, 10, 1, 0, 0),
+(121, '2025-08-08', '2025-08-08', '20:00:00', '22:00:00', NULL, 2, 2, 10, 1, 0, 0),
+(122, '2025-07-10', '2025-07-10', '20:00:00', '22:00:00', NULL, 2, 2, 10, 1, 0, 0),
+(123, '2025-07-24', '2025-07-24', '20:00:00', '22:00:00', NULL, 2, 2, 10, 1, 0, 0),
+(124, '2025-08-07', '2025-08-07', '20:00:00', '22:00:00', NULL, 2, 2, 10, 1, 0, 0),
+(126, '2025-07-30', '2025-07-30', '20:00:00', '22:00:00', NULL, 1, 2, 8, 1, 0, 0),
+(127, '2025-08-13', '2025-08-13', '20:00:00', '22:00:00', NULL, 1, 2, 8, 1, 0, 0),
+(128, '2025-07-11', '2025-07-11', '20:00:00', '22:00:00', NULL, 1, 2, 8, 0, 0, 0),
+(129, '2025-07-17', '2025-07-17', '20:00:00', '22:00:00', NULL, 2, 2, 7, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -147,7 +142,7 @@ CREATE TABLE `utilisateurs` (
 
 INSERT INTO `utilisateurs` (`id_utilisateur`, `nom_utilisateur`, `prenom_utilisateur`, `telephone`, `email`, `password`, `profil`, `association_id`) VALUES
 (2, 'Admin', 'Mairie', '0618698068', 'mairie@yahoo.fr', 'admin', 'Gestionnaire', 10),
-(3, 'prez', 'asso', '0613436135', 'prez@yahoo.fr', 'test', 'Président d\'association', 4),
+(3, 'prez', 'asso', '0613436135', 'prez@yahoo.fr', 'test', 'Président d\'association', 8),
 (5, 'marley', 'bob', '0644596832', 'marley@yahoo.fr', '$2y$10$YZcMRaydh9W1v42eVAnZVe0uDQUcxnbshTxh2pJcKFjWEgnE.LUM6', 'Membre', 4),
 (6, 'ferrari', 'lolo', '0643512563', 'ferrari@yahoo.fr', '$2y$10$G1r3f019KVgONi.UNiQczOj9inQH0oXiMdT//QmNoyV81XKiwK0GW', 'Ménage', 10),
 (7, 'bricoleur', 'bob', '0752324586', 'bob@yahoo.fr', '$2y$10$JnCcI14eckmDtmW.zKlUG.RKmkht7cX8uisCIZx2mjeW53ykXEIce', 'Président d\'association', 5);
@@ -176,7 +171,8 @@ ALTER TABLE `commentaires`
 ALTER TABLE `reservations`
   ADD PRIMARY KEY (`id_reservation`),
   ADD KEY `salle_id` (`salle_id`),
-  ADD KEY `utilisateur_id` (`utilisateur_id`);
+  ADD KEY `utilisateur_id` (`utilisateur_id`),
+  ADD KEY `association_id` (`association_id`);
 
 --
 -- Index pour la table `salles`
@@ -211,7 +207,7 @@ ALTER TABLE `commentaires`
 -- AUTO_INCREMENT pour la table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id_reservation` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
+  MODIFY `id_reservation` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
 -- AUTO_INCREMENT pour la table `salles`
@@ -241,7 +237,8 @@ ALTER TABLE `commentaires`
 --
 ALTER TABLE `reservations`
   ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`salle_id`) REFERENCES `salles` (`id_salle`) ON DELETE CASCADE,
-  ADD CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`utilisateur_id`) REFERENCES `utilisateurs` (`id_utilisateur`) ON DELETE CASCADE;
+  ADD CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`utilisateur_id`) REFERENCES `utilisateurs` (`id_utilisateur`) ON DELETE CASCADE,
+  ADD CONSTRAINT `reservations_ibfk_3` FOREIGN KEY (`association_id`) REFERENCES `associations` (`id_association`);
 
 --
 -- Contraintes pour la table `utilisateurs`

@@ -11,9 +11,6 @@ if (isset($_SESSION['connected_user'])) {
     // L'utilisateur est connecté
     $utilisateur_id = $_SESSION['connected_user'];
     $association_id = $_SESSION['association_id']; 
-    // Pour debug :
-    echo "Utilisateur connecté : " . $utilisateur_id;
-    echo "association connecté : " . $association_id;
 } else {
     // L'utilisateur n'est pas connecté
     echo "Aucun utilisateur connecté.";
@@ -271,5 +268,6 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
   };
   window.canCreate = <?php echo json_encode(canCreate()); ?>;
   window.canComment = <?php echo json_encode(canComment()); ?>;
-  window.canView = true; 
+  window.canDownload = <?php echo json_encode(canDownload()); ?>; 
+  window.canView = <?php echo json_encode(canView()); ?>; 
 </script>

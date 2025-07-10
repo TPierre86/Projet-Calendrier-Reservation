@@ -91,3 +91,19 @@
 #roomSelect {
   margin-bottom: 1rem;
 }
+
+.comment-link i {
+  color: #ffffff; /* bleu pour commentaire */
+  transition: color 0.2s;
+}
+.comment-link:hover i {
+  color: #0056b3; /* bleu foncé au survol */
+}
+
+.attachment-link i {
+  color: #ffffff; /* vert pour download */
+  transition: color 0.2s;
+}
+.attachment-link:hover i {
+  color: #941515; /* vert foncé au survol */
+}
