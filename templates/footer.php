@@ -6,7 +6,7 @@
 <body id="bodyFooter">
     <footer>
       <article id="blason">
-        <img src="/Projet-Calendrier-Reservation/public/styles/img/blason.png">
+        <img src="/Projet-Calendrier-Reservation/public/styles/img/blason.png" alt="Blason de la commune de Monestiés">
       </article>
       <article id="infoCommune">
         <h1 class="titreFooter">Commune de Monestiés</h1>
@@ -20,9 +20,7 @@
       </article>
       <article id="edited">
         <h1 class="titreFooter">Site édité par :</h1>
-        <div>
         <span>Marion , Romain , Thibault et Antony</span>
-        </div>
       </article>
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>

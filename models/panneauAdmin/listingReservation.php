@@ -12,7 +12,7 @@ if (isset($_SESSION["association_id"])) {
 } else {
     echo "Aucune association connectée.";
 }
-$reservations =$dao->getReservationByAssociation($id_association);
+$reservations = $dao->getReservationByAssociation($id_association);
 
 // Pagination
 $parPage = 5; // Nombre de lignes par page
@@ -44,10 +44,10 @@ require_once('../../templates/headers.php');
         <tbody>
             <?php foreach ($reservationsPage as $reservation) { ?> 
             <tr>
-                <td><?php print $reservation['date_debut'] ?></td>
-                <td><?php print $reservation['date_fin'] ?></td>
-                <td><?php print $reservation['heure_debut'] ?></td>
-                <td><?php print $reservation['heure_fin'] ?></td>
+                <td><?php print date('d/m/Y', strtotime($reservation['date_debut'])) ?></td>
+                <td><?php print date('d/m/Y', strtotime($reservation['date_fin'])) ?></td>
+                <td><?php print date('H\hi', strtotime($reservation['heure_debut'])) ?></td>
+                <td><?php print date('H\hi', strtotime($reservation['heure_fin'])) ?></td>
                 <td><?php print $reservation['pieces_jointe'] ?></td>
                 <td><?php print $reservation['nom_salle'] ?></td>
             </tr>

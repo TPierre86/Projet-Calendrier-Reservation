@@ -10,7 +10,7 @@ try {
 
     $sql = "
         SELECT r.id_reservation, r.salle_id, r.date_debut, r.date_fin, r.heure_debut, r.heure_fin,
-            r.recurrent,
+            r.association_id, r.recurrent, r.menageCheckbox, r.menage,
             s.nom_salle,
             u.association_id
         FROM reservations r
@@ -30,7 +30,8 @@ try {
 
         $events[] = [
             'id' => $row['id_reservation'],
-            'title' => '[' . $row['nom_salle'] . '] <a href="#" class="comment-link" data-id="' . $row['id_reservation'] . '"><i class="fa-solid fa-comments"></i></a> <a href="#" class="attachment-link" data-id="' . $row['id_reservation'] . '"><i class="fa-solid fa-file-arrow-up"></i></a>',
+            'title' => '[' . $row['nom_salle'] . '] <a href="#" class="comment-link" data-id="' . $row['id_reservation'] . '"><i class="fa-solid fa-comments"></i></a> &nbsp; 
+            <a href="#" class="attachment-link" data-id="' . $row['id_reservation'] . '"><i class="fa-solid fa-file-arrow-up"></i></a>',
             'start' => $start,
             'end' => $end,
             'allDay' => false,
@@ -43,7 +44,10 @@ try {
                 'heure_fin' => $row['heure_fin'],
                 'attachments' => [],
                 'salle_id' => $row['salle_id'],
+                'association_id' => $row['association_id'],
                 'recurrence' => isset($row['recurrent']) ? (bool)$row['recurrent'] : false,
+                'menageCheckbox' => isset($row['menageCheckbox']) ? (bool)$row['menageCheckbox'] : false,
+                'menage' => isset($row['menage']) ? (bool)$row['menage'] : false,
             ]
         ];
     }

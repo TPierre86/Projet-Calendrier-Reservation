@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 09 juil. 2025 à 08:39
+-- Généré le : mer. 09 juil. 2025 à 16:05
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -85,20 +85,24 @@ CREATE TABLE `reservations` (
   `pieces_jointe` text DEFAULT NULL,
   `salle_id` int(11) NOT NULL,
   `utilisateur_id` int(11) NOT NULL,
-  `recurrent` tinyint(1) NOT NULL
+  `recurrent` tinyint(1) NOT NULL,
+  `menageCheckbox` tinyint(1) NOT NULL,
+  `Menage` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Déchargement des données de la table `reservations`
 --
 
-INSERT INTO `reservations` (`id_reservation`, `date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `pieces_jointe`, `salle_id`, `utilisateur_id`, `recurrent`) VALUES
-(49, '2025-07-17', '2025-07-17', '10:00:00', '12:00:00', NULL, 2, 2, 0),
-(98, '2025-07-04', '2025-07-05', '10:00:00', '12:00:00', NULL, 1, 3, 0),
-(105, '2025-07-18', '2025-07-18', '10:00:00', '12:00:00', NULL, 1, 7, 0),
-(106, '2025-07-25', '2025-07-25', '10:00:00', '12:00:00', NULL, 1, 3, 0),
-(109, '2025-07-10', '2025-07-11', '10:00:00', '12:00:00', NULL, 1, 2, 0),
-(110, '2025-07-24', '2025-07-25', '10:00:00', '12:00:00', NULL, 1, 2, 0);
+INSERT INTO `reservations` (`id_reservation`, `date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `pieces_jointe`, `salle_id`, `utilisateur_id`, `recurrent`, `menageCheckbox`, `Menage`) VALUES
+(49, '2025-07-17', '2025-07-17', '10:00:00', '12:00:00', NULL, 2, 2, 0, 0, 0),
+(98, '2025-07-06', '2025-07-06', '20:00:00', '22:00:00', NULL, 2, 3, 0, 0, 0),
+(105, '2025-07-18', '2025-07-18', '10:00:00', '12:00:00', NULL, 1, 7, 0, 0, 0),
+(106, '2025-07-25', '2025-07-25', '10:00:00', '12:00:00', NULL, 1, 3, 0, 0, 0),
+(109, '2025-07-10', '2025-07-11', '10:00:00', '12:00:00', NULL, 1, 2, 0, 0, 0),
+(110, '2025-07-24', '2025-07-25', '10:00:00', '12:00:00', NULL, 1, 2, 0, 0, 0),
+(115, '2025-07-16', '2025-07-16', '20:00:00', '22:00:00', NULL, 2, 3, 0, 0, 0),
+(118, '2025-07-09', '2025-07-09', '20:00:00', '22:00:00', NULL, 2, 2, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -207,7 +211,7 @@ ALTER TABLE `commentaires`
 -- AUTO_INCREMENT pour la table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `id_reservation` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=111;
+  MODIFY `id_reservation` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
 
 --
 -- AUTO_INCREMENT pour la table `salles`

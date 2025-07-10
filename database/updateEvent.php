@@ -1,4 +1,5 @@
 <?php
+session_start();
 header('Content-Type: application/json');
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -24,10 +25,29 @@ try {
     $endTime = $data['endTime'] ?? '';
     $roomSelect = $data['roomSelect'] ?? '';
     $recurrent = !empty($data['recurrence']) ? 1 : 0;
+    $menageCheckbox = !empty($data['menageCheckbox']) ? 1 : 0;
+    $menage = !empty($data['menage']) ? 1 : 0;
 
-    if (!$id_reservation) {
-        throw new Exception("ID de réservation manquant.");
+
+        // Récupération du user connecté
+    $connectedUser = $_SESSION['connected_user'] ?? null;
+
+    if (!$connectedUser) {
+        throw new Exception("Utilisateur non connecté.");
     }
+
+    if ($connectedUser == 2) {
+        // Gestionnaire : récupère les infos de la requête
+        $association_id = $data['association_id'] ?? null;
+    }
+        // Utilisateur classique : utilise la session
+        $utilisateur_id = $connectedUser;
+
+
+    if (!$id_reservation || !$utilisateur_id) {
+        throw new Exception("ID de réservation ou utilisateur manquant.");
+    }
+
 
     // Pour cette version, pas de gestion de pièce jointe
     $attachments = isset($data['attachments']) ? $data['attachments'] : null;
@@ -40,7 +60,12 @@ try {
             $endTime,  
             $attachments, 
             $roomSelect,
-            $recurrent);
+            $recurrent,
+            $utilisateur_id,
+            $association_id,
+            $menageCheckbox,
+            $menage
+        );
         
     if (!$success) {
         throw new Exception("Échec de la mise à jour.");
