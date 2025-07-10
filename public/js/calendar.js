@@ -324,6 +324,11 @@ eventDidMount: function(info) {
 /** 
  *? Fonction qui a pour but de modifier ou supprimer un événement existant*/
 window.calendar.on('eventClick', function (info) {
+  //si click sur le lien alors ne prends pas en compte la modale modif reservation//
+    if(info.jsEvent.target.closest('.attachment-link')){
+      return
+    }
+    info.jsEvent.preventDefault();
     if (role === "Ménage") {
     return;
     }
@@ -565,7 +570,7 @@ if (saveModifBtn) {
     const endDate = document.getElementById('endDate').value;
 
   // Récupère les dates et heures depuis les inputs
-    const startDateTime = new Date(`${startDate}T${start}`);
+    const startDateTime = new Date(`${startDate}T${start}`);comment
     const endDateTime = new Date(`${endDate}T${end}`);
 
   // Vérifie les champs obligatoires
