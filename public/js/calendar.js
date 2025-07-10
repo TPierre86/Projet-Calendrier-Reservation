@@ -651,11 +651,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
             const data = [
-                ["Début", "Fin", "Salle"]
+                ["Association", "Début", "Fin", "Salle"]
             ];
             events.forEach(ev => {
-                    const match = ev.title.match(/^\[(.*?)\]\s*(.*)$/);
-    const salle = match ? match[1] : "";
+              console.log("Titre de l'événement :", ev.title); // DEBUG
+              const rawTitle = ev.title.replace(/<[^>]*>/g, ''); // Supprime toutes les balises HTML
+              const match = rawTitle.match(/^\[(.*?)\]/);
+              const salle = match ? match[1] : "";
+              const association = ev.extendedProps.nom_association || "Inconnue"; // Récupère le nom de l'association ou "Inconnue" si non défini
 
         const options = {
         year: 'numeric',
@@ -668,6 +671,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const startStr = new Date(ev.start).toLocaleString("fr-FR", options);
     const endStr = new Date(ev.end).toLocaleString("fr-FR", options);
                 data.push([
+                    association,
                     startStr,
                     endStr,
                     salle,
