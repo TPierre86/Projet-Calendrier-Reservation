@@ -30,15 +30,15 @@ const associationColors = {
   7: '#34495e', // gris foncé
   8: '#e67e22', // orange foncé
   9: '#c0392b',  // rouge foncé
-  10: '#ff00ff', // magenta
+  10: '#808080', // gris
   11: '#00ffff', // cyan
   12: '#ffff00', // jaune
   13: '#00ff00', // vert
   14: '#0000ff', // bleu
-  15: '#ffff00', // jaune
-  16: '#ff00ff', // magenta
-  17: '#00ffff', // cyan
-  18: '#808080', // gris
+  15: '#ff6600', // orange vif
+  16: '#0066ff', // bleu vif
+  17: '#66ff66', // vert clair
+  18: '#ff00ff', // magenta
   19: '#c0c0c0', // gris clair
 };
 
