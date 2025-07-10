@@ -42,8 +42,8 @@ try {
     $dao->connexion();
 
 
-    $menageCheckbox = !empty($data['menageCheckbox']) ? 1 : 0;
-    $menage = !empty($data['Menage']) ? 1 : 0;
+    $menageCheckbox = !empty($data['menage']) ? 1 : 0;
+    $menage = 0; // Le ménage n'est pas encore effectué lors de la création
 
     if ($recurrence && $weeks > 0) {
         $duration = (new DateTime($endDate))->diff(new DateTime($startDate))->days;

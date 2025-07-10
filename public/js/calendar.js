@@ -202,6 +202,7 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
         menageCheckbox.checked = !!arg.event.extendedProps.menage;
         menageCheckbox.disabled = (role !== "Ménage");
         menageCheckbox.style.marginLeft = '8px';
+        menageCheckbox.style.pointerEvents = (role === "Ménage") ? 'auto' : 'none';
         const menageLabel = document.createElement('label');
         menageLabel.textContent = 'Ménage';
         menageLabel.style.marginLeft = '4px';
@@ -209,21 +210,34 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
         container.appendChild(menageLabel);
 
         if (role === "Ménage") {
-        menageCheckbox.addEventListener('change', function() {
-            fetch('/Projet-Calendrier-Reservation/models/setMenage.php', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: `id=${encodeURIComponent(arg.event.id)}&checked=${menageCheckbox.checked ? 1 : 0}`
-            })
-            .then(res => res.json())
-            .then(data => {
-            if (data.success) {
-                window.calendar.refetchEvents();
-            } else {
-                alert('Erreur lors de la mise à jour du ménage');
-            }
+            menageCheckbox.addEventListener('change', function(e) {
+                e.stopPropagation(); // Empêche la propagation vers l'événement click de l'événement
+                const isChecked = menageCheckbox.checked;
+                console.log('Mise à jour ménage:', arg.event.id, isChecked);
+                
+                fetch('/Projet-Calendrier-Reservation/models/setMenage.php', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                    body: `id=${encodeURIComponent(arg.event.id)}&checked=${isChecked ? 1 : 0}`
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Ménage mis à jour avec succès');
+                        window.calendar.refetchEvents();
+                    } else {
+                        console.error('Erreur mise à jour ménage:', data);
+                        alert('Erreur lors de la mise à jour du ménage');
+                        // Remettre la checkbox dans son état précédent
+                        menageCheckbox.checked = !isChecked;
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur réseau:', error);
+                    alert('Erreur réseau lors de la mise à jour du ménage');
+                    menageCheckbox.checked = !isChecked;
+                });
             });
-        });
         }
     }
 
@@ -328,9 +342,15 @@ window.calendar.on('eventClick', function (info) {
     if(info.jsEvent.target.closest('.attachment-link')){
       return
     }
+    
+    // Si c'est un utilisateur Ménage et qu'il clique sur une checkbox, ne pas ouvrir la modale
+    if (role === "Ménage" && info.jsEvent.target.type === 'checkbox') {
+      return;
+    }
+    
     info.jsEvent.preventDefault();
     if (role === "Ménage") {
-    return;
+      return;
     }
     if (!canEditEvent(info.event)) {
     alert("Vous n'avez pas le droit de modifier cette réservation.");
@@ -347,6 +367,12 @@ window.calendar.on('eventClick', function (info) {
     document.getElementById('startTime').value = currentEvent.extendedProps.heure_debut;
     document.getElementById('endTime').value = currentEvent.extendedProps.heure_fin;
     document.getElementById('roomSelect').value = currentEvent.extendedProps.salle_id;
+
+    // Pré-remplir la checkbox ménage avec la valeur actuelle
+    const menageCheckbox = document.getElementById('menageCheckbox');
+    if (menageCheckbox) {
+        menageCheckbox.checked = currentEvent.extendedProps.menageCheckbox;
+    }
 
   // Affiche uniquement si rôle = 'Gestionnaire'
     if (role === "Gestionnaire") {
@@ -369,7 +395,9 @@ window.calendar.on('eventClick', function (info) {
         if (recurrenceCheckbox) recurrenceCheckbox.checked = false;
         if (reservationAssociation) reservationAssociation.style.display = "none";
     }
-    if (menageOptions) menageOptions.style.display = "none";
+    if (menageOptions) {
+        menageOptions.style.display = (role === "Gestionnaire") ? "block" : "none";
+    }
 
   // Affiche ou cache le bouton supprimer selon droits
     deleteBtn.style.display = canDeleteEvent(currentEvent) ? 'inline-block' : 'none';
@@ -609,6 +637,7 @@ if (saveModifBtn) {
         attachments: window.uploadedFilePath || 'NULL', // Conserver l'attachment si nécessaire
       roomSelect: room,
       recurrent: recurrence,
+      menage: document.getElementById('menageCheckbox').checked,
       association_id: association_id,
     })
     })

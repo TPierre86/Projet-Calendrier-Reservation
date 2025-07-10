@@ -22,8 +22,10 @@ try {
     $endTime = $data['endTime'] ?? '';
     $roomSelect = $data['roomSelect'] ?? '';
     $recurrent = !empty($data['recurrence']) ? 1 : 0;
-    $menageCheckbox = !empty($data['menageCheckbox']) ? 1 : 0;
-    $menage = !empty($data['menage']) ? 1 : 0;
+    $menageCheckbox = !empty($data['menage']) ? 1 : 0;
+    // Pour la modification, on garde la valeur actuelle du ménage
+    $resa = $dao->getReservationById($id_reservation);
+    $menage = $resa ? $resa['Menage'] : 0;
 
     $connectedUser = $_SESSION['connected_user'] ?? null;
     if (!$connectedUser) {
