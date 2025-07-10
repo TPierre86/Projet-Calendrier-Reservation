@@ -11,9 +11,10 @@ try {
     $sql = "
         SELECT r.id_reservation, r.salle_id, r.date_debut, r.date_fin, r.heure_debut, r.heure_fin,r.pieces_jointe,
             r.association_id, r.recurrent, r.menageCheckbox, r.menage,
-            s.nom_salle,
+            s.nom_salle, a.nom_association,
             u.association_id AS utilisateur_association_id
         FROM reservations r
+        JOIN associations a ON r.association_id = a.id_association
         JOIN salles s ON r.salle_id = s.id_salle
         JOIN utilisateurs u ON r.utilisateur_id = u.id_utilisateur
         ORDER BY r.date_debut, r.heure_debut
@@ -43,8 +44,10 @@ try {
                 'heure_fin' => $row['heure_fin'],
                 'attachments' => $row['pieces_jointe'],
                 'salle_id' => $row['salle_id'],
+                'nom_salle' => $row['nom_salle'],
                 // Utilise l'association de la réservation pour les droits/couleur
                 'association_id' => $row['association_id'],
+                'nom_association' => $row['nom_association'],
                 'recurrence' => isset($row['recurrent']) ? (bool)$row['recurrent'] : false,
                 'menageCheckbox' => isset($row['menageCheckbox']) ? (bool)$row['menageCheckbox'] : false,
                 'menage' => isset($row['menage']) ? (bool)$row['menage'] : false,
