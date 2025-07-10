@@ -118,7 +118,7 @@ require_once('../../templates/headers.php');
                     <input type="text" id="tel" name="tel" class="form1" pattern="0[67][0-9]{8}" required />
                     
                     <label for="mail" class="txt">Adresse e-mail</label>
-                    <input type="text" id="mail" name="mail" class="form1" required />
+                    <input type="email" id="mail" name="mail" class="form1" required />
                     
                     <label for="pwd" class="txt">Mots de passe</label>
                     <input type="password" id="pwd" name="pwd" class="form1" required />

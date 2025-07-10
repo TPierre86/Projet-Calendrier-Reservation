@@ -44,7 +44,7 @@ if ($user["nom_utilisateur"] == $name && $user["prenom_utilisateur"] == $firstNa
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Inscription</title>
+    <title>Comité monestiés</title>
     <link rel="stylesheet" href="/Projet-Calendrier-Reservation/public/styles/components/inscription.css" />
   </head>
   <body id="bodyFormInscription">
@@ -64,7 +64,7 @@ if ($user["nom_utilisateur"] == $name && $user["prenom_utilisateur"] == $firstNa
         <label for="tel" class="txt">n° Téléphone (format: 0615251168)</label>
         <input type="text" id="tel" name="tel" class="inputForm" pattern="0[67][0-9]{8}" required />
         <label for="mail" class="txt">Adresse e-mail</label>
-        <input type="text" id="mail" name="mail" class="inputForm" required />
+        <input type="email" id="mail" name="mail" class="inputForm" required />
         <label for="pwd" class="txt">Mots de passe</label>
         <input type="password" id="pwd" name="pwd" class="inputForm" required />
         <input type="hidden" name="profil" class="inputForm" value="Membres">
