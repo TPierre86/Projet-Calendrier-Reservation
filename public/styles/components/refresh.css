@@ -10,3 +10,31 @@
 #bug {
   font-size: 0.6em;
 }
+
+.progress {
+  display: inline-block; /* important */
+  vertical-align: middle;
+  width: 57.6px;
+  height: 10.6px;
+  border-radius: 9.6px;
+  color: #58d68c;
+  border: 1px solid;
+  position: relative;
+  margin-left: 10px; /* petit espace après le texte */
+}
+
+.progress::before {
+   content: "";
+   position: absolute;
+   margin: 1px;
+   inset: 0 100% 0 0;
+   border-radius: inherit;
+   background: currentColor;
+   animation: progress-pf82op 2s infinite;
+}
+
+@keyframes progress-pf82op {
+   100% {
+      inset: 0;
+   }
+}
