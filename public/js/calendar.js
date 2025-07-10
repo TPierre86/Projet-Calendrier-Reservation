@@ -243,13 +243,8 @@ select: function (info) {
     return `${year}-${month}-${day}`;
     }
 
-    selectedRangeStart = formatDateLocal(startDate);
-    selectedRangeEnd = formatDateLocal(new Date(endDate.getTime() - 24 * 60 * 60 * 1000));
-
-  // Remplit automatiquement les heures
-    startTime.value = info.start.toISOString().substring(11, 16); // Heure de début (HH:MM)
-    endTime.value = info.end.toISOString().substring(11, 16);     // Heure de fin (HH:MM)
-
+  document.getElementById("startDate").value = formatDateLocal(startDate);
+  document.getElementById("endDate").value = formatDateLocal(startDate);
   // Réinitialise les champs de la modale pour repartir d'un formulaire vierge
     roomSelect.selectedIndex = 0;          // Remet la sélection de salle à zéro
     recurrenceCheckbox.checked = false;    // Décoche la récurrence
