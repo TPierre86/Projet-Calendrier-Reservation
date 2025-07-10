@@ -325,12 +325,11 @@ window.calendar.on('eventClick', function (info) {
         if (recurrenceCheckboxSection) recurrenceCheckboxSection.style.display = "block";
         if (reservationAssociation) {
             reservationAssociation.style.display = "block";
-            // Sélectionne la première association si aucune n'est sélectionnée
+            // Sélectionne l'association correspondant à la réservation
             const select = document.getElementById("id_association");
-            if (select && (!select.value || select.value === "0")) {
-                if (select.options.length > 1) {
-                    select.selectedIndex = 1; // saute l'option --Choisir Association--
-                }
+            const eventAssocId = currentEvent.extendedProps.association_id;
+            if (select && eventAssocId) {
+                select.value = eventAssocId;
             }
         }
     } else {
@@ -484,6 +483,10 @@ if (conflict) {
 
 if(role === 'Gestionnaire'){
   association_id = document.getElementById("id_association").value;
+  if (!association_id || association_id === "0") {
+    alert("Merci de sélectionner une association.");
+    return;
+  }
 } else {
   association_id = userAssocId; // Utilise l'association de l'utilisateur connecté
 }
@@ -698,26 +701,13 @@ document.getElementById('attachments').addEventListener('change', function(e) {
 
   const file = e.target.files[0];
   if (!file) return;
-    // Renommer le fichier pour qu'il n'ait pas d'espaces ou de caractères spéciaux
-  const fileName = file.name
-    .replace(/\s+/g, '_')         // Remplace les espaces par des underscores
-    .replace(/[^a-zA-Z0-9._-]/g, '');  // Supprime tous les caractères spéciaux
-  // Créer un nouvel objet `File` avec le nom modifié
-  const renamedFile = new File([file], fileName, { type: file.type });
+  const formData = new FormData();
+  
+  
+  
+  formData.append('file', file);
+  console.log(formData);
+ file.type });
   const formData = new FormData();
     formData.append('file', renamedFile);
-  fetch('/Projet-Calendrier-Reservation/uploads/uploads.php', {
-    method: 'POST',
-    body: formData
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      // Stocke le chemin pour l'utiliser lors de la création de l'événement
-      window.uploadedFilePath = data.filePath;
-      alert('Fichier uploadé avec succès !');
-    } else {
-      alert('Erreur upload : ' + data.error);
-    }
-  });
-});
+    formData.append('file', renamedFile);

@@ -1,16 +1,32 @@
+#main-container {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    padding-top: 200px; /* hauteur du header */
+}
+
 #nav-menu-open {
-    height: 120%;
+    height: 125%;
     width: 250px;
     position: absolute;
-    z-index: 1000;
+    z-index: 1;
     top: 200px;
+    bottom: -240px;
     left: -250px;
-    background-color: #2b3d4f;
+    background-color: rgb(28, 53, 69);
     padding-top: 60px;
     transition: left 0.5s ease;
     box-shadow: 2px 0 8px rgba(0,0,0,0.1);
     margin-top: 0;
     padding-top: 0;
+}
+
+@media (max-width: 600px) {
+    #nav-menu-open {
+        width: 80vw;
+        min-width: 180px;
+        max-width: 95vw;
+    }
 }
 
 #btn-close-menu {

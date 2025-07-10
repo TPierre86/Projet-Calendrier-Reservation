@@ -12,7 +12,7 @@ try {
         SELECT r.id_reservation, r.salle_id, r.date_debut, r.date_fin, r.heure_debut, r.heure_fin,r.pieces_jointe,
             r.association_id, r.recurrent, r.menageCheckbox, r.menage,
             s.nom_salle,
-            u.association_id
+            u.association_id AS utilisateur_association_id
         FROM reservations r
         JOIN salles s ON r.salle_id = s.id_salle
         JOIN utilisateurs u ON r.utilisateur_id = u.id_utilisateur
@@ -20,8 +20,6 @@ try {
     ";
 
     $stmt = $pdo->query($sql);
-
-// Récupération des réservations (remplace 'id' par 'id_reservation')
 
     $events = [];
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -35,6 +33,7 @@ try {
             'start' => $start,
             'end' => $end,
             'allDay' => false,
+            // Utilise l'association de la réservation pour la couleur
             'association_id' => (int)$row['association_id'],
             'extendedProps' => [
                 'id_reservation' => $row['id_reservation'],
@@ -44,6 +43,7 @@ try {
                 'heure_fin' => $row['heure_fin'],
                 'attachments' => $row['pieces_jointe'],
                 'salle_id' => $row['salle_id'],
+                // Utilise l'association de la réservation pour les droits/couleur
                 'association_id' => $row['association_id'],
                 'recurrence' => isset($row['recurrent']) ? (bool)$row['recurrent'] : false,
                 'menageCheckbox' => isset($row['menageCheckbox']) ? (bool)$row['menageCheckbox'] : false,

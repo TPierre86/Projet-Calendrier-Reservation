@@ -21,8 +21,9 @@ $startTime = $data['startTime'];
 $endTime = $data['endTime'];
 $room = $data['roomSelect'];
 $utilisateur_id = isset($_SESSION['connected_user']) ? $_SESSION['connected_user'] : null;
-if ($utilisateur_id == 2 && isset($data['association_id'])) {
-    $association_id = $data['association_id'];
+if ($utilisateur_id == 2 && (!isset($data['association_id']) || !$data['association_id'] || $data['association_id'] == "0")) {
+    echo json_encode(["success" => false, "error" => "Aucune association sélectionnée."]);
+    exit;
 } else {
     $association_id = isset($_SESSION['association_id']) ? $_SESSION['association_id'] : null;
 }
