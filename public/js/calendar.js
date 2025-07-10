@@ -90,6 +90,11 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
     // Récupère le lien <a> s'il existe
         const link = container.querySelector('.comment-link');
         const attachment = container.querySelector('.attachment-link');
+        const hasAttachment = arg.event.extendedProps.attachments;
+
+    if (!hasAttachment) {
+    if (attachment) attachment.style.display = "none";
+  }
         if (link) {
 
         link.onclick = function(e) {
@@ -435,13 +440,17 @@ saveBtn.addEventListener("click", (e) => {
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
 
+  // Récupère les dates et heures depuis les inputs
+    const startDateTime = new Date(`${startDate}T${start}`);
+    const endDateTime = new Date(`${endDate}T${end}`);
+
   // Vérifie les champs obligatoires
     if (!start || !end || !room || !startDate || !endDate) {
     alert("Merci de remplir tous les champs.");
     return;
     }
-    if (start >= end) {
-    alert("L'heure de fin doit être après l'heure de début.");
+    if (startDateTime >= endDateTime) {
+    alert("La date et l'heure de fin doivent être après la date et l'heure de début.");
     return;
     }
 
@@ -524,13 +533,17 @@ if (saveModifBtn) {
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
 
+  // Récupère les dates et heures depuis les inputs
+    const startDateTime = new Date(`${startDate}T${start}`);
+    const endDateTime = new Date(`${endDate}T${end}`);
+
   // Vérifie les champs obligatoires
     if (!start || !end || !room || !startDate || !endDate) {
     alert("Merci de remplir tous les champs.");
     return;
     }
-    if (start >= end) {
-    alert("L'heure de fin doit être après l'heure de début.");
+    if (startDateTime >= endDateTime) {
+    alert("La date et l'heure de fin doivent être après la date et l'heure de début.");
     return;
     }
 
@@ -684,12 +697,14 @@ document.getElementById('attachments').addEventListener('change', function(e) {
 
   const file = e.target.files[0];
   if (!file) return;
+    // Renommer le fichier pour qu'il n'ait pas d'espaces ou de caractères spéciaux
+  const fileName = file.name
+    .replace(/\s+/g, '_')         // Remplace les espaces par des underscores
+    .replace(/[^a-zA-Z0-9._-]/g, '');  // Supprime tous les caractères spéciaux
+  // Créer un nouvel objet `File` avec le nom modifié
+  const renamedFile = new File([file], fileName, { type: file.type });
   const formData = new FormData();
-  
-  
-  
-  formData.append('file', file);
-  console.log(formData);
+    formData.append('file', renamedFile);
   fetch('/Projet-Calendrier-Reservation/uploads/uploads.php', {
     method: 'POST',
     body: formData
