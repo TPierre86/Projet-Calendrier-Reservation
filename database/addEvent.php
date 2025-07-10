@@ -29,7 +29,7 @@ if ($utilisateur_id == 2 && isset($data['association_id'])) {
 
 $recurrence = !empty($data['recurrence']);
 $weeks = isset($data['recurrenceWeeks']) ? (int)$data['recurrenceWeeks'] : 0;
-$attachments = isset($data['attachments']) ? $data['attachments'] : null;
+$attachments = isset($data['attachments']) ? $data['attachments'] : 'NULL';
 
 
 if (!$utilisateur_id) {

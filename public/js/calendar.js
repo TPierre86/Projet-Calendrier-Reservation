@@ -92,7 +92,7 @@ window.calendar = new FullCalendar.Calendar(calendarEl, { // permet l'affichage 
         const attachment = container.querySelector('.attachment-link');
         const hasAttachment = arg.event.extendedProps.attachments;
 
-    if (!hasAttachment) {
+    if (!hasAttachment || hasAttachment === 'NULL') {
     if (attachment) attachment.style.display = "none";
   }
         if (link) {
@@ -496,7 +496,7 @@ if(role === 'Gestionnaire'){
       endDate: endDate,
       startTime: start,
       endTime: end,
-      attachments: window.uploadedFilePath || null,
+      attachments: window.uploadedFilePath || 'NULL',
       roomSelect: room,
       recurrence: recurrence,
       recurrenceWeeks: recurrenceWeeks,
@@ -571,7 +571,7 @@ if (saveModifBtn) {
         endDate: endDate,
         startTime: start,
         endTime: end,
-        attachments: window.uploadedFilePath || null, // Conserver l'attachment si nécessaire
+        attachments: window.uploadedFilePath || 'NULL', // Conserver l'attachment si nécessaire
       roomSelect: room,
       recurrent: recurrence,
       association_id: association_id,
