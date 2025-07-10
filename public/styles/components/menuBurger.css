@@ -9,7 +9,7 @@
     height: 125%;
     width: 250px;
     position: absolute;
-    z-index: 1;
+    z-index: 10;
     top: 200px;
     bottom: -240px;
     left: -250px;
