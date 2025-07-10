@@ -88,7 +88,7 @@ public function getMail($email) {
 }
 
 public function setMenage($id_reservation, $checked) {
-    $stmt = $this->dbh->prepare("UPDATE reservations SET menage = ? WHERE id_reservation = ?");
+    $stmt = $this->dbh->prepare("UPDATE reservations SET Menage = ? WHERE id_reservation = ?");
     return $stmt->execute([$checked, $id_reservation]);
 }
 
@@ -101,7 +101,7 @@ public function getCommentsByReservationId($reservation_id) {
 /**Ajouter les donnees */
 
 public function NewReservation($startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $utilisateur_id, $association_id, $recurrent = 0, $menageCheckbox = 0,  $menage = 0) {
-    $newReservation = $this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `pieces_jointe`, `salle_id`, `utilisateur_id`, `association_id`, `recurrent`, `menageCheckbox`, `menage`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+    $newReservation = $this->dbh->prepare("INSERT INTO `reservations`(`date_debut`, `date_fin`, `heure_debut`, `heure_fin`, `pieces_jointe`, `salle_id`, `utilisateur_id`, `association_id`, `recurrent`, `menageCheckbox`, `Menage`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
     $newReservation->execute([$startDate, $endDate, $startTime, $endTime, $attachments, $roomSelect, $utilisateur_id, $association_id, $recurrent, $menageCheckbox, $menage]);
     return $newReservation;
 }

@@ -43,7 +43,7 @@ try {
 
 
     $menageCheckbox = !empty($data['menageCheckbox']) ? 1 : 0;
-    $menage = !empty($data['menage']) ? 1 : 0;
+    $menage = !empty($data['Menage']) ? 1 : 0;
 
     if ($recurrence && $weeks > 0) {
         $duration = (new DateTime($endDate))->diff(new DateTime($startDate))->days;
