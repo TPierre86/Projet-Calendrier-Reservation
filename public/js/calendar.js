@@ -436,13 +436,17 @@ saveBtn.addEventListener("click", (e) => {
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
 
+  // Récupère les dates et heures depuis les inputs
+    const startDateTime = new Date(`${startDate}T${start}`);
+    const endDateTime = new Date(`${endDate}T${end}`);
+
   // Vérifie les champs obligatoires
     if (!start || !end || !room || !startDate || !endDate) {
     alert("Merci de remplir tous les champs.");
     return;
     }
-    if (start >= end) {
-    alert("L'heure de fin doit être après l'heure de début.");
+    if (startDateTime >= endDateTime) {
+    alert("La date et l'heure de fin doivent être après la date et l'heure de début.");
     return;
     }
 
@@ -525,13 +529,17 @@ if (saveModifBtn) {
     const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
 
+  // Récupère les dates et heures depuis les inputs
+    const startDateTime = new Date(`${startDate}T${start}`);
+    const endDateTime = new Date(`${endDate}T${end}`);
+
   // Vérifie les champs obligatoires
     if (!start || !end || !room || !startDate || !endDate) {
     alert("Merci de remplir tous les champs.");
     return;
     }
-    if (start >= end) {
-    alert("L'heure de fin doit être après l'heure de début.");
+    if (startDateTime >= endDateTime) {
+    alert("La date et l'heure de fin doivent être après la date et l'heure de début.");
     return;
     }
 
