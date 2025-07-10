@@ -53,6 +53,7 @@ echo "<script type='text/javascript'>alert('$message');</script>";
         <span class="circle5"></span>
         <span>Connexion</span>
         </button>
+        <a id="mdp" href="https://www.slytio.com/4-astuces-pour-ne-plus-jamais-rien-oublier/" target="_blank" >Mots de passe oublié ?</a>
     </form>
     </article>
     </body>
