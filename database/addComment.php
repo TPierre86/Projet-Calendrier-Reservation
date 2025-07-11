@@ -25,7 +25,7 @@ if ($success) {
         'success' => true,
         'comment' => htmlspecialchars($comment),
         'nom_utilisateur' => htmlspecialchars($user['nom_utilisateur']),
-        'heure_comment' => date('d/m/Y H:i')
+        'heure_comment' => date('H:i', time()),
     ]);
     exit;
 } else {
