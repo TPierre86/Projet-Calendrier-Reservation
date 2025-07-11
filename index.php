@@ -24,7 +24,8 @@ echo "<script>window.userRole = ".json_encode($userRole).";</script>";
 //==================================
 // appeler les associations pour le select
 $associations = $dao->getAssociations();
-
+// appeler les salles pour le select
+$salles = $dao->getSalles();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     
@@ -203,9 +204,9 @@ if (isset($_SESSION['connected_user']) && isset($_SESSION['profil'])) {
               <label for="roomSelect" class="form-label">Salle</label>
               <select class="form-select" id="roomSelect" name="roomSelect">
                 <option selected disabled value="">--</option>
-                <option value="1">Salle de réunion</option>
-                <option value="2">Bar</option>
-                <option value="3">Réfectoire</option>
+                <?php foreach ($salles as $salle) { ?>
+                  <option value="<?php echo $salle['id_salle']; ?>"><?php echo $salle['nom_salle']; ?></option>
+                <?php } ?>
               </select>
             <section id="recurrenceCheckboxSection" class="form-check mb-2">
               <input type="checkbox" class="form-check-input" name="recurrence" id="recurrenceCheckbox" />
