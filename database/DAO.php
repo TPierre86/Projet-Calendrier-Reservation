@@ -93,7 +93,7 @@ public function setMenage($id_reservation, $checked) {
 }
 
 public function getCommentsByReservationId($reservation_id) {
-    $comments = $this->dbh->prepare("SELECT commentaires.id_comment, commentaires.comment, commentaires.heure_comment, utilisateurs.nom_utilisateur FROM commentaires INNER JOIN utilisateurs ON commentaires.utilisateur_id=utilisateurs.id_utilisateur WHERE reservation_id = ? ORDER BY heure_comment DESC;");
+    $comments = $this->dbh->prepare("SELECT commentaires.id_comment, commentaires.comment, commentaires.heure_comment, utilisateurs.nom_utilisateur FROM commentaires INNER JOIN utilisateurs ON commentaires.utilisateur_id=utilisateurs.id_utilisateur WHERE reservation_id = ? ORDER BY heure_comment ASC;");
     $comments->execute([$reservation_id]);
     return $comments->fetchAll(PDO::FETCH_ASSOC);
 }
